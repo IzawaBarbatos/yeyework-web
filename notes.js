@@ -271,20 +271,49 @@
       if (t) localStorage.setItem(this._tokenKey, t.trim());
       else localStorage.removeItem(this._tokenKey);
     },
+    isAuthError: function (e) {
+      return /\((401|403)\)/.test((e && e.message) || '');
+    },
+    // 弹出 Token 输入框；retry=true 表示上次写入因鉴权失败需重设；返回 null 表示用户取消
+    promptToken: function (retry) {
+      var cur = this.getToken();
+      var msg;
+      if (retry) {
+        msg = '上次的 GitHub Token 无效或权限不足，写入失败。\n\n' +
+          '请重新输入正确的 Token（需勾选 repo 权限），留空可取消：';
+      } else if (cur) {
+        msg = '当前已配置 GitHub Token（' + cur.slice(0, 4) + '****' + cur.slice(-4) + '）。\n\n' +
+          '如需更换请输入新 Token，输入空白可清除：';
+      } else {
+        msg = '首次发小纸条需要提供个人 GitHub Token（勾选 repo 权限）：\n\n' +
+          '生成方式：GitHub 个人头像 -> Settings -> Developer Settings -> Personal access tokens\n' +
+          '输入后本浏览器会自动记住，以后发帖无需再输。\n\n' +
+          '请输入你的 Token：';
+      }
+      var next = window.prompt(msg, retry ? '' : (cur || ''));
+      if (next === null) return null;
+      this.setToken(next);
+      return next.trim();
+    },
     ensureToken: function () {
       var t = this.getToken();
       if (t) return Promise.resolve(t);
-      var input = window.prompt(
-        '首次发小纸条需要提供个人 GitHub Token（勾选 repo 权限）：\n\n' +
-        '生成方式：GitHub 个人头像 -> Settings -> Developer Settings -> Personal access tokens\n' +
-        '输入后本浏览器会自动记住，以后发帖无需再输。\n\n' +
-        '请输入你的 Token：'
-      );
-      if (input && input.trim()) {
-        this.setToken(input.trim());
-        return Promise.resolve(input.trim());
-      }
+      var input = this.promptToken(false);
+      if (input) return Promise.resolve(input);
       return Promise.reject(new Error('未提供 GitHub Token，无法写入。如需发帖也可直接前往 GitHub Issues 页面发帖。'));
+    },
+    // 带鉴权自愈：写入遇 401/403 时清除失效 Token 并弹窗重设，填入新 Token 后自动重试一次
+    withAuth: function (run) {
+      var self = this;
+      return self.ensureToken().then(function (token) {
+        return run(token).catch(function (e) {
+          if (!self.isAuthError(e)) throw e;
+          self.setToken('');
+          var next = self.promptToken(true);
+          if (next) return run(next);
+          throw new Error('GitHub Token 无效或权限不足，写入已取消。可点击面板右上角「GitHub Issues」重新设置。');
+        });
+      });
     },
     _headers: function (token) {
       var h = { 'Accept': 'application/vnd.github.v3+json' };
@@ -302,11 +331,22 @@
 
       var h = self._headers();
 
-      return Promise.all([
-        fetch(issuesUrl, { headers: h }).then(function (r) {
+      function fetchIssues() {
+        return fetch(issuesUrl, { headers: self._headers() }).then(function (r) {
+          if (r.status === 401 && self.getToken()) {
+            // 本地残留的失效 Token 会阻断公开读取，清除后匿名重试一次
+            self.setToken('');
+            return fetch(issuesUrl, { headers: self._headers() });
+          }
+          return r;
+        }).then(function (r) {
           if (!r.ok) throw new Error('拉取 Issues 失败 (' + r.status + ')');
           return r.json();
-        }),
+        });
+      }
+
+      return Promise.all([
+        fetchIssues(),
         fetch(commentsUrl, { headers: h }).then(function (r) {
           if (!r.ok) return []; // comments 拉取失败时不阻断主帖呈现
           return r.json();
@@ -375,7 +415,7 @@
     add: function (rec) {
       var self = this;
       var gh = CFG.github;
-      return self.ensureToken().then(function (token) {
+      return self.withAuth(function (token) {
         var base = 'https://api.github.com/repos/' + gh.owner + '/' + gh.repo;
         if (rec.parent_id) {
           // 回复评论
@@ -424,7 +464,7 @@
     setStatus: function (id, status) {
       var self = this;
       var gh = CFG.github;
-      return self.ensureToken().then(function (token) {
+      return self.withAuth(function (token) {
         var url = 'https://api.github.com/repos/' + gh.owner + '/' + gh.repo + '/issues/' + id;
         return fetch(url, {
           method: 'PATCH',
@@ -439,7 +479,7 @@
     remove: function (id) {
       var self = this;
       var gh = CFG.github;
-      return self.ensureToken().then(function (token) {
+      return self.withAuth(function (token) {
         var base = 'https://api.github.com/repos/' + gh.owner + '/' + gh.repo;
         if (id.indexOf('c_') === 0) {
           var commentId = id.slice(2);
@@ -1416,14 +1456,9 @@
       // 如果是 GitHub 模式，允许点击切换或查看 Token
       els.mode.style.cursor = isGithub ? 'pointer' : 'default';
       els.mode.onclick = isGithub ? function () {
-        var cur = GithubStore.getToken();
-        var msg = cur
-          ? '当前已配置 GitHub Token（' + cur.slice(0, 4) + '****' + cur.slice(-4) + '）。\n\n如需更换请输入新 Token，输入空白可清除：'
-          : '当前尚未配置 GitHub Token（游客模式可读不可写）。\n\n请输入你的 Token：';
-        var next = window.prompt(msg, cur || '');
+        var next = GithubStore.promptToken(false);
         if (next !== null) {
-          GithubStore.setToken(next);
-          alert(next.trim() ? 'Token 已更新！' : 'Token 已清除。');
+          alert(next ? 'Token 已更新！' : 'Token 已清除。');
         }
       } : null;
     }
