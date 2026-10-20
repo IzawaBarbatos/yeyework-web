@@ -19,7 +19,7 @@
     github: { owner: 'IzawaBarbatos', repo: 'yeyework-web', issueLabel: 'ef-note' },
     envId: '', region: 'ap-shanghai', collection: 'notes',
     authors: [], targets: [], allowCustomTarget: true,
-    maxLength: 500, pollInterval: 30000, localKey: 'ef_notes_local_v1',
+    maxLength: 20000, pollInterval: 30000, localKey: 'ef_notes_local_v1',
     sdkUrl: 'https://static.cloudbase.net/cloudbase-js-sdk/2.28.6/cloudbase.full.js'
   };
 
@@ -1327,6 +1327,7 @@
 
     if (!authors.length) { alert('请至少选择一位回复人。'); return; }
     if (!text) { alert('请输入回复内容。'); return; }
+    if (text.length > CFG.maxLength) { alert('回复超过 ' + CFG.maxLength + ' 字限制。'); return; }
 
     var rec = {
       authors: authors,
@@ -1581,6 +1582,8 @@
     bindCompose();
     bindToolbar();
     bindList();
+    // 正文输入框上限统一由配置驱动，避免与 HTML 写死值不一致
+    if (els.text) els.text.maxLength = CFG.maxLength;
     updateCounter();
 
     if (CFG.mode === 'github' || (!CFG.envId && CFG.github && CFG.github.owner && CFG.github.repo)) {

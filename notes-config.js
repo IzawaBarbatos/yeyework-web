@@ -26,8 +26,8 @@ window.EF_NOTES_CONFIG = {
   /* 是否允许在标签之外自由输入对接人 */
   allowCustomTarget: true,
 
-  /* 单条小纸条字数上限 */
-  maxLength: 500,
+  /* 单条小纸条字数上限（GitHub Issue 正文硬上限 65536，留足 JSON 转义余量） */
+  maxLength: 20000,
 
   /* 自动刷新间隔（毫秒），30 秒刷新一次 */
   pollInterval: 30000,
