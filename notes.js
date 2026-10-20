@@ -624,10 +624,47 @@
     updateCollapseUI();
   }
 
-  /* ---------------- 贴上/关联资产多选选择器 ---------------- */
-  var attachedAssets = []; // [{ relPath, cn, name, cat }]
+  /* ---------------- 贴上/关联资产多选选择器与排列控制 ---------------- */
+  var attachedAssets = []; // [{ relPath, cn, name, cat, kind, kindLabel, identifier }]
   var pickerSelected = {}; // relPath -> asset item
   var assetFilterQuery = '';
+
+  var attachedLayout = 'list';
+  var pickerLayout = 'list';
+  try {
+    attachedLayout = localStorage.getItem('ef_attached_layout') || 'list';
+    pickerLayout = localStorage.getItem('ef_picker_layout') || 'list';
+  } catch (e) {}
+
+  function setAttachedLayout(mode) {
+    attachedLayout = mode === 'grid' ? 'grid' : 'list';
+    try { localStorage.setItem('ef_attached_layout', attachedLayout); } catch (e) {}
+    var listEl = $('#ef-notes-attached-list');
+    var segEl = $('#ef-attached-layout');
+    if (listEl) listEl.setAttribute('data-layout', attachedLayout);
+    if (segEl) {
+      var btns = segEl.querySelectorAll('.ef-layout-btn');
+      btns.forEach(function (b) {
+        var isCur = b.getAttribute('data-layout') === attachedLayout;
+        b.setAttribute('aria-pressed', isCur ? 'true' : 'false');
+      });
+    }
+  }
+
+  function setPickerLayout(mode) {
+    pickerLayout = mode === 'grid' ? 'grid' : 'list';
+    try { localStorage.setItem('ef_picker_layout', pickerLayout); } catch (e) {}
+    var listEl = $('#ef-asset-picker-list');
+    var segEl = $('#ef-asset-picker-layout');
+    if (listEl) listEl.setAttribute('data-layout', pickerLayout);
+    if (segEl) {
+      var btns = segEl.querySelectorAll('.ef-layout-btn');
+      btns.forEach(function (b) {
+        var isCur = b.getAttribute('data-layout') === pickerLayout;
+        b.setAttribute('aria-pressed', isCur ? 'true' : 'false');
+      });
+    }
+  }
 
   var cachedAssets = null;
   function getFlatAssets() {
@@ -635,6 +672,11 @@
     if (window.YYBLD_ASSETS && Array.isArray(window.YYBLD_ASSETS.FLAT)) {
       var seen = {};
       var list = [];
+      var kindMap = {
+        model: '模型',
+        animation: '动画',
+        texture: '贴图'
+      };
       window.YYBLD_ASSETS.FLAT.forEach(function (f) {
         var r = f.rel_path || f.relPath || f.path || '';
         if (!r || seen[r]) return;
@@ -642,12 +684,18 @@
         var entry = f._entry || {};
         var cn = entry.chinese_name || f.chinese_name || f.cn || '';
         var name = f.file_name || f.name || r.split(/[\\/]/).pop();
-        var cat = entry.category || f.category || f._kind || 'asset';
+        var cat = entry.category || f.category || '';
+        var kind = f._kind || 'asset';
+        var kindLabel = kindMap[kind] || '资产';
+        var identifier = entry.identifier || entry.id || '';
         list.push({
           relPath: r,
           name: name,
           cn: cn,
-          cat: cat
+          cat: cat,
+          kind: kind,
+          kindLabel: kindLabel,
+          identifier: identifier
         });
       });
       cachedAssets = list;
@@ -659,23 +707,45 @@
   function syncAttachedUI() {
     var countEl = $('#ef-notes-assets-count');
     var listEl = $('#ef-notes-attached-list');
+    var layoutSeg = $('#ef-attached-layout');
     if (!listEl) return;
 
     if (!attachedAssets.length) {
       if (countEl) countEl.textContent = '未关联文件';
+      if (layoutSeg) layoutSeg.style.display = 'none';
       listEl.innerHTML = '';
       return;
     }
 
     if (countEl) countEl.textContent = '已贴上 ' + attachedAssets.length + ' 个关联文件';
+    if (layoutSeg) layoutSeg.style.display = '';
+
+    listEl.setAttribute('data-layout', attachedLayout);
 
     listEl.innerHTML = attachedAssets.map(function (item, idx) {
-      var displayName = item.cn || item.name || item.relPath;
+      var cnTitle = item.cn || item.name;
+      var kindLabel = item.kindLabel || (item.kind === 'model' ? '模型' : item.kind === 'animation' ? '动画' : item.kind === 'texture' ? '贴图' : '资产');
       return '' +
-        '<div class="notes-attached-tag cut-br" data-idx="' + idx + '">' +
-          '<span class="notes-tag-cn">' + esc(displayName) + '</span>' +
-          '<span class="notes-tag-path">' + esc(item.relPath) + '</span>' +
-          '<button type="button" class="notes-attached-tag-del" data-del-asset="' + idx + '" title="移除此文件">✕</button>' +
+        '<div class="notes-attached-item cut-br" data-idx="' + idx + '" data-asset-path="' + esc(item.relPath) + '">' +
+          '<div class="notes-attached-item-main">' +
+            '<div class="notes-attached-item-header">' +
+              '<span class="notes-attached-kind-badge">' + esc(kindLabel) + '</span>' +
+              '<strong class="notes-attached-cn">' + esc(cnTitle) + '</strong>' +
+              (item.identifier ? '<span class="notes-attached-id">' + esc(item.identifier) + '</span>' : '') +
+            '</div>' +
+            '<div class="notes-attached-item-row notes-attached-item-file">' +
+              '<span class="notes-attached-prop">真实文件:</span>' +
+              '<code class="notes-attached-filename">' + esc(item.name) + '</code>' +
+            '</div>' +
+            '<div class="notes-attached-item-row notes-attached-item-path">' +
+              '<span class="notes-attached-prop">相对路径:</span>' +
+              '<span class="notes-attached-relpath">' + esc(item.relPath) + '</span>' +
+            '</div>' +
+          '</div>' +
+          '<div class="notes-attached-item-actions">' +
+            '<button type="button" class="ef-btn small cut-br notes-attached-view-btn" data-view-asset="' + esc(item.relPath) + '" title="在网站中定位此资产">查看详情</button>' +
+            '<button type="button" class="notes-attached-del-btn" data-del-asset="' + idx + '" title="移除此文件">✕ 移除</button>' +
+          '</div>' +
         '</div>';
     }).join('');
   }
@@ -685,6 +755,8 @@
     var countEl = $('#ef-asset-picker-count');
     var totalEl = $('#ef-asset-picker-total');
     if (!listEl) return;
+
+    listEl.setAttribute('data-layout', pickerLayout);
 
     var all = getFlatAssets();
     var q = assetFilterQuery.trim().toLowerCase();
@@ -696,7 +768,12 @@
         var name = (it.name || '').toLowerCase();
         var relPath = (it.relPath || '').toLowerCase();
         var cat = (it.cat || '').toLowerCase();
-        return cn.indexOf(q) >= 0 || name.indexOf(q) >= 0 || relPath.indexOf(q) >= 0 || cat.indexOf(q) >= 0;
+        var kind = (it.kind || '').toLowerCase();
+        var kindLabel = (it.kindLabel || '').toLowerCase();
+        var identifier = (it.identifier || '').toLowerCase();
+        return cn.indexOf(q) >= 0 || name.indexOf(q) >= 0 || relPath.indexOf(q) >= 0 ||
+               cat.indexOf(q) >= 0 || kind.indexOf(q) >= 0 || kindLabel.indexOf(q) >= 0 ||
+               identifier.indexOf(q) >= 0;
       });
     }
 
@@ -709,20 +786,29 @@
       return;
     }
 
-    var limit = 200;
+    var limit = 300;
     var slice = filtered.slice(0, limit);
 
     listEl.innerHTML = slice.map(function (it) {
       var isChecked = !!pickerSelected[it.relPath];
       var cnTitle = it.cn || it.name;
+      var kindLabel = it.kindLabel || (it.kind === 'model' ? '模型' : it.kind === 'animation' ? '动画' : it.kind === 'texture' ? '贴图' : '资产');
       return '' +
         '<div class="ef-asset-item cut-br' + (isChecked ? ' is-checked' : '') + '" data-asset-path="' + esc(it.relPath) + '">' +
           '<div class="ef-asset-item-box" aria-hidden="true"></div>' +
           '<div class="ef-asset-item-meta">' +
-            '<div class="ef-asset-item-cn" title="' + esc(cnTitle) + '">' + esc(cnTitle) + '</div>' +
-            '<div class="ef-asset-item-sub">' +
-              '<span class="ef-asset-item-cat">' + esc(it.cat || 'asset') + '</span>' +
-              '<span title="' + esc(it.relPath) + '">' + esc(it.name) + '</span>' +
+            '<div class="ef-asset-item-head">' +
+              '<span class="ef-asset-item-kind">' + esc(kindLabel) + '</span>' +
+              '<strong class="ef-asset-item-cn">' + esc(cnTitle) + '</strong>' +
+              (it.identifier ? '<span class="ef-asset-item-id">' + esc(it.identifier) + '</span>' : '') +
+            '</div>' +
+            '<div class="ef-asset-item-row ef-asset-item-file">' +
+              '<span class="ef-asset-item-label">真实文件:</span>' +
+              '<code class="ef-asset-item-name">' + esc(it.name) + '</code>' +
+            '</div>' +
+            '<div class="ef-asset-item-row ef-asset-item-path">' +
+              '<span class="ef-asset-item-label">相对路径:</span>' +
+              '<span class="ef-asset-item-relpath">' + esc(it.relPath) + '</span>' +
             '</div>' +
           '</div>' +
         '</div>';
@@ -795,7 +881,12 @@
             var name = (it.name || '').toLowerCase();
             var relPath = (it.relPath || '').toLowerCase();
             var cat = (it.cat || '').toLowerCase();
-            return cn.indexOf(q) >= 0 || name.indexOf(q) >= 0 || relPath.indexOf(q) >= 0 || cat.indexOf(q) >= 0;
+            var kind = (it.kind || '').toLowerCase();
+            var kindLabel = (it.kindLabel || '').toLowerCase();
+            var identifier = (it.identifier || '').toLowerCase();
+            return cn.indexOf(q) >= 0 || name.indexOf(q) >= 0 || relPath.indexOf(q) >= 0 ||
+                   cat.indexOf(q) >= 0 || kind.indexOf(q) >= 0 || kindLabel.indexOf(q) >= 0 ||
+                   identifier.indexOf(q) >= 0;
           });
         }
         filtered.forEach(function (it) {
@@ -803,7 +894,10 @@
             relPath: it.relPath,
             name: it.name,
             cn: it.cn || it.name,
-            cat: it.cat
+            cat: it.cat,
+            kind: it.kind,
+            kindLabel: it.kindLabel,
+            identifier: it.identifier
           };
         });
         renderPickerList();
@@ -828,6 +922,28 @@
       });
     }
 
+    // 弹窗排列方式切换（详细列表 ☰ / 网格平铺 ⊞）
+    var pickerLayoutSeg = $('#ef-asset-picker-layout');
+    if (pickerLayoutSeg) {
+      pickerLayoutSeg.addEventListener('click', function (ev) {
+        var btn = ev.target.closest('.ef-layout-btn');
+        if (!btn) return;
+        var mode = btn.dataset.layout;
+        if (mode) setPickerLayout(mode);
+      });
+    }
+
+    // 编写区已贴文件排列方式切换（清单列表 ☰ / 多列平铺 ⊞）
+    var attachedLayoutSeg = $('#ef-attached-layout');
+    if (attachedLayoutSeg) {
+      attachedLayoutSeg.addEventListener('click', function (ev) {
+        var btn = ev.target.closest('.ef-layout-btn');
+        if (!btn) return;
+        var mode = btn.dataset.layout;
+        if (mode) setAttachedLayout(mode);
+      });
+    }
+
     if (listEl) {
       listEl.addEventListener('click', function (ev) {
         var itemEl = ev.target.closest('.ef-asset-item');
@@ -845,7 +961,10 @@
               relPath: found.relPath,
               name: found.name,
               cn: found.cn || found.name,
-              cat: found.cat
+              cat: found.cat,
+              kind: found.kind,
+              kindLabel: found.kindLabel,
+              identifier: found.identifier
             };
           }
         }
@@ -856,14 +975,27 @@
     if (attachedListEl) {
       attachedListEl.addEventListener('click', function (ev) {
         var delBtn = ev.target.closest('[data-del-asset]');
-        if (!delBtn) return;
-        var idx = Number(delBtn.dataset.delAsset);
-        if (!isNaN(idx) && idx >= 0 && idx < attachedAssets.length) {
-          attachedAssets.splice(idx, 1);
-          syncAttachedUI();
+        if (delBtn) {
+          var idx = Number(delBtn.dataset.delAsset);
+          if (!isNaN(idx) && idx >= 0 && idx < attachedAssets.length) {
+            attachedAssets.splice(idx, 1);
+            syncAttachedUI();
+          }
+          return;
+        }
+
+        var viewBtn = ev.target.closest('[data-view-asset]');
+        if (viewBtn) {
+          var relPath = viewBtn.dataset.viewAsset;
+          if (window.YYBLD_ASSETS && typeof window.YYBLD_ASSETS.openDrawerByRelPath === 'function') {
+            window.YYBLD_ASSETS.openDrawerByRelPath(relPath);
+          }
         }
       });
     }
+
+    setAttachedLayout(attachedLayout);
+    setPickerLayout(pickerLayout);
   }
 
   /* ---------------- UI 渲染 ---------------- */
@@ -942,14 +1074,28 @@
     if (files.length) {
       assetsBlock = '' +
         '<div class="notes-card-assets">' +
-          '<span class="notes-card-assets-label">// 关联文件:</span>' +
-          files.map(function (f) {
-            var label = f.cn || f.name || f.relPath;
-            return '<button type="button" class="notes-asset-chip cut-br" data-open-asset="' + esc(f.relPath) + '" title="在网站中打开此资产详情">' +
-              '<span class="chip-cn">' + esc(label) + '</span>' +
-              '<span class="chip-path">' + esc(f.relPath) + '</span>' +
-            '</button>';
-          }).join('') +
+          '<div class="notes-card-assets-label">// 关联文件 (' + files.length + ' 项):</div>' +
+          '<div class="notes-card-assets-list">' +
+            files.map(function (f) {
+              var cn = f.cn || f.name || f.relPath;
+              var name = f.name || (f.relPath ? f.relPath.split(/[\\/]/).pop() : '');
+              var kindLabel = f.kindLabel || (f.kind === 'model' ? '模型' : f.kind === 'animation' ? '动画' : f.kind === 'texture' ? '贴图' : (f.cat || '资产'));
+              return '<button type="button" class="notes-asset-card cut-br" data-open-asset="' + esc(f.relPath) + '" title="在网站中打开此资产详情">' +
+                '<div class="notes-asset-card-top">' +
+                  '<span class="notes-asset-card-kind">' + esc(kindLabel) + '</span>' +
+                  '<strong class="notes-asset-card-cn">' + esc(cn) + '</strong>' +
+                '</div>' +
+                '<div class="notes-asset-card-row">' +
+                  '<span class="notes-asset-card-k">文件:</span>' +
+                  '<code class="notes-asset-card-file">' + esc(name) + '</code>' +
+                '</div>' +
+                '<div class="notes-asset-card-row">' +
+                  '<span class="notes-asset-card-k">路径:</span>' +
+                  '<span class="notes-asset-card-path">' + esc(f.relPath) + '</span>' +
+                '</div>' +
+              '</button>';
+            }).join('') +
+          '</div>' +
         '</div>';
     }
 

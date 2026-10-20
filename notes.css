@@ -635,56 +635,197 @@
   color: var(--ef-ink-2);
 }
 
-.notes-attached-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.4rem;
-  min-height: 1.6rem;
+/* ---------- 排列方式切换控件（终末地工业分段切换器） ---------- */
+.ef-layout-btn {
+  font-family: var(--ef-font-ui);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  padding: 0.2rem 0.55rem;
+  cursor: pointer;
+  border: 0;
+  background: transparent;
+  color: var(--ef-ink-2);
+  transition: all 0.15s var(--ef-ease);
 }
 
-.notes-attached-tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.2rem 0.55rem;
+.ef-layout-btn:hover {
+  color: var(--ef-ink);
+}
+
+.ef-layout-btn[aria-pressed="true"] {
+  background: var(--ef-signal);
+  color: var(--ef-on-signal);
+  font-weight: 700;
+}
+
+.notes-attached-layout-seg {
+  margin-left: auto;
+}
+
+/* ---------- 编写小纸条：已贴上关联文件区域 ---------- */
+.notes-attached-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  margin-top: 0.4rem;
+}
+
+/* 清单列表模式（单列通栏详细清单，每项整行，完整呈现名字与信息） */
+.notes-attached-list[data-layout="list"] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.notes-attached-list[data-layout="list"] .notes-attached-item {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 0.8rem;
   background: var(--ef-paper);
   border: 1px solid var(--ef-rule);
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.35rem), calc(100% - 0.35rem) 100%, 0 100%);
-  font-family: var(--ef-font-ui);
-  font-size: var(--ef-t-field);
-  color: var(--ef-ink);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.5rem), calc(100% - 0.5rem) 100%, 0 100%);
   transition: border-color 0.15s var(--ef-ease), background 0.15s var(--ef-ease);
 }
 
-.notes-attached-tag:hover {
-  border-color: var(--ef-ink);
+/* 多列平铺模式（自适应卡片网格，卡片内完整折行） */
+.notes-attached-list[data-layout="grid"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.6rem;
 }
 
-.notes-attached-tag .notes-tag-cn {
+.notes-attached-list[data-layout="grid"] .notes-attached-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.65rem;
+  padding: 0.65rem 0.8rem;
+  background: var(--ef-paper);
+  border: 1px solid var(--ef-rule);
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.5rem), calc(100% - 0.5rem) 100%, 0 100%);
+  transition: border-color 0.15s var(--ef-ease), background 0.15s var(--ef-ease);
+}
+
+.notes-attached-item:hover {
+  border-color: var(--ef-ink);
+  background: color-mix(in srgb, var(--ef-paper) 95%, var(--ef-signal));
+}
+
+.notes-attached-item-main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.notes-attached-item-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  line-height: 1.4;
+}
+
+.notes-attached-kind-badge {
+  display: inline-block;
+  padding: 0.1rem 0.35rem;
+  background: var(--ef-chip);
+  border: 1px solid var(--ef-rule);
+  font-family: var(--ef-font-ui);
+  font-size: 0.68rem;
   font-weight: 700;
   color: var(--ef-ink);
+  line-height: 1.2;
 }
 
-.notes-attached-tag .notes-tag-path {
+.notes-attached-cn {
+  font-family: var(--ef-font-ui);
+  font-size: var(--ef-t-ui);
+  font-weight: 800;
+  color: var(--ef-ink);
+  word-break: break-all;
+  white-space: normal;
+}
+
+.notes-attached-id {
   font-family: var(--ef-font-mono);
+  font-size: 0.72rem;
+  color: var(--ef-ink-2);
+  word-break: break-all;
+  white-space: normal;
+}
+
+.notes-attached-item-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.notes-attached-prop {
+  flex: none;
+  font-family: var(--ef-font-ui);
   font-size: 0.72rem;
   color: var(--ef-ink-2);
 }
 
-.notes-attached-tag-del {
-  margin-left: 0.25rem;
-  background: none;
-  border: 0;
-  padding: 0;
-  color: var(--ef-ink-2);
-  cursor: pointer;
-  font-size: 0.8rem;
-  line-height: 1;
-  transition: color 0.12s var(--ef-ease);
+.notes-attached-filename {
+  font-family: var(--ef-font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ef-ink);
+  background: var(--ef-chip);
+  padding: 0.05rem 0.3rem;
+  border-radius: 2px;
+  word-break: break-all;
+  white-space: normal;
 }
 
-.notes-attached-tag-del:hover {
+.notes-attached-relpath {
+  font-family: var(--ef-font-mono);
+  font-size: 0.72rem;
+  color: var(--ef-ink-2);
+  word-break: break-all;
+  white-space: normal;
+}
+
+.notes-attached-item-actions {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.notes-attached-view-btn {
+  white-space: nowrap;
+}
+
+.notes-attached-del-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.2rem;
+  padding: 0.25rem 0.5rem;
+  background: transparent;
+  border: 1px solid var(--ef-rule);
+  color: var(--ef-ink-2);
+  cursor: pointer;
+  font-family: var(--ef-font-ui);
+  font-size: 0.72rem;
+  line-height: 1.2;
+  transition: all 0.15s var(--ef-ease);
+}
+
+.notes-attached-del-btn:hover {
   color: var(--ef-danger);
+  border-color: var(--ef-danger);
+  background: color-mix(in srgb, var(--ef-danger) 10%, transparent);
 }
 
 /* ---------- 终末地工业风：美术资产多选弹窗 ---------- */
@@ -692,8 +833,8 @@
   padding: 0;
   border: 0;
   background: transparent;
-  max-width: 52rem;
-  width: min(94vw, 52rem);
+  max-width: 58rem;
+  width: min(94vw, 58rem);
   max-height: 85vh;
   margin: auto;
 }
@@ -706,7 +847,7 @@
 .ef-asset-dialog-inner {
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  height: 82vh;
   max-height: 85vh;
   background: var(--ef-panel);
   border: 1px solid var(--ef-ink);
@@ -769,26 +910,40 @@
 
 .ef-asset-picker-stat {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 0.5rem;
-  padding-bottom: 0.35rem;
+  padding-bottom: 0.45rem;
   border-bottom: 1px dashed var(--ef-rule);
   color: var(--ef-ink-2);
   font-size: var(--ef-t-field);
 }
 
+.ef-asset-picker-layout-wrap {
+  margin-left: auto;
+}
+
+/* 弹窗中美术资产列表：支持清单列表与网格平铺 */
 .ef-asset-picker-list {
   flex: 1 1 auto;
   overflow-y: auto;
   min-height: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
-  gap: 0.5rem;
   padding-right: 0.35rem;
 }
 
+.ef-asset-picker-list[data-layout="list"] {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ef-asset-picker-list[data-layout="grid"] {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.55rem;
+}
+
 .ef-asset-picker-empty {
-  grid-column: 1 / -1;
   padding: 3rem 1rem;
   text-align: center;
   color: var(--ef-ink-2);
@@ -798,30 +953,31 @@
 .ef-asset-item {
   display: flex;
   align-items: flex-start;
-  gap: 0.6rem;
-  padding: 0.55rem 0.65rem;
+  gap: 0.65rem;
+  padding: 0.6rem 0.75rem;
   background: var(--ef-paper);
   border: 1px solid var(--ef-rule);
   cursor: pointer;
   user-select: none;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.4rem), calc(100% - 0.4rem) 100%, 0 100%);
   transition: all 0.12s var(--ef-ease);
 }
 
 .ef-asset-item:hover {
   border-color: var(--ef-ink);
-  background: var(--ef-chip);
+  background: color-mix(in srgb, var(--ef-paper) 95%, var(--ef-signal));
 }
 
 .ef-asset-item.is-checked {
-  background: color-mix(in srgb, var(--ef-signal) 14%, var(--ef-paper));
+  background: color-mix(in srgb, var(--ef-signal) 15%, var(--ef-paper));
   border-color: var(--ef-ink);
 }
 
 .ef-asset-item-box {
   flex: none;
-  margin-top: 0.15rem;
-  width: 1.05rem;
-  height: 1.05rem;
+  margin-top: 0.2rem;
+  width: 1.1rem;
+  height: 1.1rem;
   border: 1px solid var(--ef-ink);
   background: var(--ef-panel);
   display: flex;
@@ -854,37 +1010,80 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.25rem;
+}
+
+.ef-asset-item-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.35rem;
+  line-height: 1.4;
+}
+
+.ef-asset-item-kind {
+  padding: 0.08rem 0.3rem;
+  background: var(--ef-chip);
+  border: 1px solid var(--ef-rule);
+  font-family: var(--ef-font-ui);
+  font-size: 0.65rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--ef-ink);
 }
 
 .ef-asset-item-cn {
   font-family: var(--ef-font-ui);
   font-size: var(--ef-t-ui);
-  font-weight: 700;
+  font-weight: 800;
   color: var(--ef-ink);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  word-break: break-all;
+  white-space: normal;
 }
 
-.ef-asset-item-sub {
-  display: flex;
-  align-items: center;
-  gap: 0.35rem;
+.ef-asset-item-id {
   font-family: var(--ef-font-mono);
   font-size: 0.72rem;
   color: var(--ef-ink-2);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  word-break: break-all;
+  white-space: normal;
 }
 
-.ef-asset-item-cat {
-  padding: 0.05rem 0.25rem;
+.ef-asset-item-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.4rem;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.ef-asset-item-label {
+  flex: none;
+  font-family: var(--ef-font-ui);
+  font-size: 0.7rem;
+  color: var(--ef-ink-2);
+}
+
+.ef-asset-item-name {
+  font-family: var(--ef-font-mono);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--ef-ink);
   background: var(--ef-chip);
-  border: 1px solid var(--ef-rule);
-  font-size: 0.65rem;
-  line-height: 1.2;
+  padding: 0.05rem 0.3rem;
+  border-radius: 2px;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.ef-asset-item-relpath {
+  font-family: var(--ef-font-mono);
+  font-size: 0.72rem;
+  color: var(--ef-ink-2);
+  word-break: break-all;
+  white-space: normal;
 }
 
 .ef-asset-dialog-foot {
@@ -897,52 +1096,100 @@
   border-top: 1px solid var(--ef-rule);
 }
 
-/* ---------- 小纸条卡片关联资产栏目 ---------- */
+/* ---------- 小纸条卡片已贴关联文件完整展示 ---------- */
 .notes-card-assets {
   display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.35rem;
-  padding-top: 0.45rem;
+  flex-direction: column;
+  gap: 0.45rem;
+  margin-top: 0.5rem;
+  padding-top: 0.55rem;
   border-top: 1px dashed var(--ef-rule);
 }
 
 .notes-card-assets-label {
   font-family: var(--ef-font-ui);
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--ef-ink-2);
   font-stretch: var(--ef-wider);
 }
 
-.notes-asset-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
-  padding: 0.15rem 0.45rem;
+.notes-card-assets-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 0.5rem;
+}
+
+.notes-asset-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.5rem 0.65rem;
   background: var(--ef-paper);
   border: 1px solid var(--ef-rule);
   font-family: var(--ef-font-ui);
-  font-size: var(--ef-t-field);
   color: var(--ef-ink);
   cursor: pointer;
-  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.35rem), calc(100% - 0.35rem) 100%, 0 100%);
+  text-align: left;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.4rem), calc(100% - 0.4rem) 100%, 0 100%);
   text-decoration: none;
   transition: all 0.15s var(--ef-ease);
 }
 
-.notes-asset-chip:hover {
+.notes-asset-card:hover {
   background: var(--ef-signal);
   color: var(--ef-on-signal);
   border-color: var(--ef-signal);
 }
 
-.notes-asset-chip .chip-cn {
+.notes-asset-card-top {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.notes-asset-card-kind {
+  padding: 0.05rem 0.25rem;
+  background: var(--ef-chip);
+  border: 1px solid var(--ef-rule);
+  font-size: 0.65rem;
+  line-height: 1.2;
+}
+
+.notes-asset-card:hover .notes-asset-card-kind {
+  background: var(--ef-on-signal);
+  color: var(--ef-signal);
+  border-color: var(--ef-on-signal);
+}
+
+.notes-asset-card-cn {
+  font-weight: 700;
+  font-size: 0.8rem;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.notes-asset-card-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  word-break: break-all;
+  white-space: normal;
+}
+
+.notes-asset-card-k {
+  flex: none;
+  opacity: 0.75;
+}
+
+.notes-asset-card-file {
+  font-family: var(--ef-font-mono);
+  font-size: 0.74rem;
   font-weight: 700;
 }
 
-.notes-asset-chip .chip-path {
+.notes-asset-card-path {
   font-family: var(--ef-font-mono);
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   opacity: 0.8;
 }

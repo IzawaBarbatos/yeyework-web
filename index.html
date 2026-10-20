@@ -1007,8 +1007,12 @@
                         <span class="ic">+</span> 贴上/选择文件…
                       </button>
                       <span class="ef-field notes-assets-hint" id="ef-notes-assets-count">未关联文件</span>
+                      <span class="ef-seg notes-attached-layout-seg" id="ef-attached-layout" role="group" aria-label="已贴文件排列方式" style="display: none;">
+                        <button type="button" data-layout="list" class="ef-layout-btn" aria-pressed="true" title="单列详细清单：每项独立一行，完整呈现名字与路径">清单列表 ☰</button>
+                        <button type="button" data-layout="grid" class="ef-layout-btn" aria-pressed="false" title="多列平铺：自适应卡片平铺">多列平铺 ⊞</button>
+                      </span>
                     </div>
-                    <div class="notes-attached-tags" id="ef-notes-attached-list"></div>
+                    <div class="notes-attached-list" id="ef-notes-attached-list" data-layout="list"></div>
                   </div>
                 </div>
 
@@ -1134,8 +1138,14 @@
             <span id="ef-asset-picker-count">已选 0 项</span>
             <span class="notes-meta-sep">│</span>
             <span id="ef-asset-picker-total">检索中…</span>
+            <div class="ef-asset-picker-layout-wrap">
+              <span class="ef-seg" id="ef-asset-picker-layout" role="group" aria-label="资产列表排列方式">
+                <button type="button" data-layout="list" class="ef-layout-btn" aria-pressed="true" title="单列详细列表：完整通栏展现名字与路径">详细列表 ☰</button>
+                <button type="button" data-layout="grid" class="ef-layout-btn" aria-pressed="false" title="多列网格卡片：多项平铺浏览">网格平铺 ⊞</button>
+              </span>
+            </div>
           </div>
-          <div class="ef-asset-picker-list" id="ef-asset-picker-list"></div>
+          <div class="ef-asset-picker-list" id="ef-asset-picker-list" data-layout="list"></div>
         </div>
         <div class="ef-asset-dialog-foot">
           <button class="ef-btn cut-br" type="button" id="ef-asset-picker-confirm">确定贴上</button>
