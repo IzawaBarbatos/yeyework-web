@@ -2,12 +2,12 @@
  * 小纸条留言板 —— 配置
  *
  * 运行模式：
- *   - 'github'：基于 GitHub Issues（完全 0 元，三端实时同步）
+ *   - 'github'：基于 GitHub Issues（三端同步）
  *   - 'local' ：本地单机测试（保存在各人浏览器 localStorage）
  *   - 'cloud' ：腾讯云 CloudBase（需付费开通环境）
  * ============================================================ */
 window.EF_NOTES_CONFIG = {
-  /* 存储模式：默认使用 GitHub Issues，免服务器，终身 0 元 */
+  /* 存储模式：默认使用 GitHub Issues */
   mode: "github",
 
   /* GitHub 仓库配置 */

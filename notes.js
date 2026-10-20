@@ -3,7 +3,7 @@
  *
  * 设计：
  *   - 存储层用「同一接口、多种实现」的适配器模式（依赖倒置）：
- *       GithubStore（基于 GitHub Issues API，终身 0 元，三端共享）
+ *       GithubStore（基于 GitHub Issues API，三端共享）
  *       CloudStore（腾讯云 CloudBase，按量计费）
  *       LocalStore（localStorage，单人本地兜底）
  *     上层 UI 只依赖接口，不关心底层是 GitHub、云开发还是本地。

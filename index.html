@@ -463,9 +463,9 @@
 
       /* ============ 页面级增强：字号缩放 / hover 过渡 / 响应式 ============ */
 
-      /* 字体缩放：全部 rem 尺寸随根字号同比放大（默认 1.125 → 18px 基准） */
+      /* 字体缩放：全部 rem 尺寸随根字号同比放大（默认 1.05 基准） */
       html {
-        font-size: calc(16px * var(--ef-fs, 1.125));
+        font-size: calc(16px * var(--ef-fs, 1.05));
       }
 
       /* 让所有可 hover 的元素都带过渡，避免生硬跳变 */
@@ -624,6 +624,18 @@
         font-size: 0.85rem;
       }
 
+      /* ---------- 美术资产对照索引主标题增强：扩大画面占比与字间距 ---------- */
+      .ef-head h1 {
+        font-size: clamp(2.35rem, 5.2vw, 3.4rem);
+        font-weight: 900;
+        letter-spacing: 0.08em;
+        line-height: 1.16;
+      }
+      .ef-head h1 small {
+        font-size: 0.8rem;
+        letter-spacing: 0.18em;
+      }
+
       /* ---------- 响应式：适配平板 / 移动端 ---------- */
       @media (max-width: 1100px) {
         .wrap {
@@ -641,7 +653,8 @@
           flex: 1 1 100%;
         }
         .ef-head h1 {
-          font-size: clamp(1.6rem, 7vw, 2.1rem);
+          font-size: clamp(1.85rem, 7.5vw, 2.45rem);
+          letter-spacing: 0.06em;
         }
         .ef-figs b {
           font-size: 2rem;
@@ -649,7 +662,7 @@
       }
       @media (max-width: 480px) {
         html {
-          font-size: calc(15px * var(--ef-fs, 1.125));
+          font-size: calc(15px * var(--ef-fs, 1.05));
         }
         .ef-figs {
           grid-template-columns: 1fr 1fr;
@@ -897,7 +910,7 @@
     <main class="wrap">
       <header class="ef-head ef-in-drive">
         <h1>美术资产对照索引 <small>Model / Animation / Texture / Name</small></h1>
-        <p>便利店工程内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。</p>
+        <p>便利店项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。</p>
       </header>
 
       <!-- 顶置小纸条留言板：查看在上、编写在下，支持整卡一键收起与文件资产多选贴上 -->
@@ -1676,12 +1689,20 @@
 
         // 字体大小调节（A− / A / A+）：写入 --ef-fs 并持久化
         var FS_STEPS = [0.95, 1.05, 1.125, 1.25, 1.4];
-        var FS_DEFAULT = 1.125;
+        var FS_DEFAULT = 1.05;
         var fsWrap = document.getElementById('ef-fontsize');
         var fsCur = FS_DEFAULT;
         try {
           var savedFs = parseFloat(localStorage.getItem('yybld-asset-fs'));
-          if (isFinite(savedFs) && savedFs > 0) fsCur = savedFs;
+          if (isFinite(savedFs) && savedFs > 0) {
+            // 如果用户之前存过旧版的 1.125 默认值，将其无缝升级为新默认 1.05
+            if (savedFs === 1.125) {
+              fsCur = FS_DEFAULT;
+              localStorage.setItem('yybld-asset-fs', String(fsCur));
+            } else {
+              fsCur = savedFs;
+            }
+          }
         } catch (e) {}
         function fsIndex() {
           var i = FS_STEPS.indexOf(fsCur);
