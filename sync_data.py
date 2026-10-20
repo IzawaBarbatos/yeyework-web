@@ -16,8 +16,9 @@ import datetime
 
 # ────────────────────────────── 路径常量 ──────────────────────────────
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__)) if "__file__" in locals() else \
-    r"D:\0.minecraft\Models\QuMod工作区\QuModProject\椰椰工坊：便利店-美术资产\项目对照查询网站"
-WORKSPACE_DIR = r"D:\0.minecraft\Models\QuMod工作区"
+    r"D:\0.minecraft\Models\QuMod工作区\QuModProject\项目对照查询网站"
+WORKSPACE_DIR = os.path.abspath(os.path.join(SCRIPT_DIR, "..", "..")) if os.path.isdir(os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))) else \
+    r"D:\0.minecraft\Models\QuMod工作区"
 PROJECT_REL = r"QuModProject\椰椰工坊：便利店"
 PROJECT_DIR = os.path.join(WORKSPACE_DIR, PROJECT_REL)
 BP_DIR = os.path.join(PROJECT_DIR, "behavior_pack")
