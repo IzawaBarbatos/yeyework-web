@@ -364,11 +364,12 @@
       var h = self._headers();
 
       function fetchIssues() {
-        return fetch(issuesUrl, { headers: self._headers() }).then(function (r) {
+        // no-store：GitHub 列表响应带 max-age=60 缓存头，写入后立即重读会命中旧缓存导致新纸条不显示
+        return fetch(issuesUrl, { headers: self._headers(), cache: 'no-store' }).then(function (r) {
           if (r.status === 401 && self.getToken()) {
             // 本地残留的失效 Token 会阻断公开读取，清除后匿名重试一次
             self.setToken('');
-            return fetch(issuesUrl, { headers: self._headers() });
+            return fetch(issuesUrl, { headers: self._headers(), cache: 'no-store' });
           }
           return r;
         }).then(function (r) {
@@ -379,7 +380,7 @@
 
       return Promise.all([
         fetchIssues(),
-        fetch(commentsUrl, { headers: h }).then(function (r) {
+        fetch(commentsUrl, { headers: h, cache: 'no-store' }).then(function (r) {
           if (!r.ok) return []; // comments 拉取失败时不阻断主帖呈现
           return r.json();
         }).catch(function () { return []; })
