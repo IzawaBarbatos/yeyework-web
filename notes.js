@@ -271,6 +271,38 @@
       if (t) localStorage.setItem(this._tokenKey, t.trim());
       else localStorage.removeItem(this._tokenKey);
     },
+    _memberKey: 'ef_notes_gh_member',
+    // 本地缓存的成员态；无 Token 时一律视为访客
+    isMember: function () {
+      return !!this.getToken() && localStorage.getItem(this._memberKey) === '1';
+    },
+    _setMember: function (v) {
+      if (v) localStorage.setItem(this._memberKey, '1');
+      else localStorage.removeItem(this._memberKey);
+    },
+    // 校验当前 Token 所属用户是否为仓库协作者（拥有写权限即项目成员）；结果本地缓存
+    checkMember: function () {
+      var self = this;
+      var t = this.getToken();
+      if (!t) { self._setMember(false); return Promise.resolve(false); }
+      var gh = CFG.github;
+      var url = 'https://api.github.com/repos/' + gh.owner + '/' + gh.repo;
+      return fetch(url, { headers: self._headers(t) }).then(function (r) {
+        if (r.status === 401 || r.status === 403) {
+          // Token 失效或无权查看：清除并视为访客
+          self.setToken('');
+          self._setMember(false);
+          return false;
+        }
+        if (!r.ok) return self.isMember(); // 非鉴权类异常沿用缓存，避免误判
+        return r.json().then(function (res) {
+          var perms = (res && res.permissions) || {};
+          var ok = !!(perms.push || perms.maintain || perms.admin);
+          self._setMember(ok);
+          return ok;
+        });
+      }).catch(function () { return self.isMember(); });
+    },
     isAuthError: function (e) {
       return /\((401|403)\)/.test((e && e.message) || '');
     },
@@ -577,6 +609,7 @@
     q: '',
     replyFor: null,
     replyDraft: {},
+    isMember: true, // 是否项目成员（仅 GitHub 模式按仓库写权限判定）
     pollTimer: null,
     watchHandler: null
   };
@@ -1095,15 +1128,20 @@
     var targets = isReply ? [] : toArray(n.targets);
     var acts = [];
 
-    if (!isReply) {
-      acts.push('<button class="notes-link" data-act="reply" data-id="' + esc(n._id) + '">回复</button>');
-      acts.push(
-        '<button class="notes-link" data-act="toggle-status" data-id="' + esc(n._id) + '">' +
-          (isResolved ? '重新打开' : '标记已解决') +
-        '</button>'
-      );
+    if (state.isMember) {
+      if (!isReply) {
+        acts.push('<button class="notes-link" data-act="reply" data-id="' + esc(n._id) + '">回复</button>');
+        acts.push(
+          '<button class="notes-link" data-act="toggle-status" data-id="' + esc(n._id) + '">' +
+            (isResolved ? '重新打开' : '标记已解决') +
+          '</button>'
+        );
+      }
+      acts.push('<button class="notes-link is-danger" data-act="delete" data-id="' + esc(n._id) + '">删除</button>');
+    } else if (!isReply) {
+      // 访客只读提示
+      acts.push('<span class="notes-guest-hint">// 只读 · 仅项目成员可回复 / 编辑 / 删除</span>');
     }
-    acts.push('<button class="notes-link is-danger" data-act="delete" data-id="' + esc(n._id) + '">删除</button>');
 
     var targetBlock = (!isReply && targets.length)
       ? '<span class="notes-meta-sep">│</span><span class="notes-targets-label">对接 →</span> ' + peopleTags(targets)
@@ -1189,7 +1227,7 @@
       }).join('');
 
       var replyListHtml = reps.length ? '<ul class="notes-replies">' + repsHtml + '</ul>' : '';
-      var formHtml = replyFormHtml(top);
+      var formHtml = state.isMember ? replyFormHtml(top) : '';
 
       return '' +
         '<li class="notes-item ' + (top.status === 'resolved' ? 'is-resolved' : '') + '" data-id="' + esc(top._id) + '">' +
@@ -1272,6 +1310,7 @@
       syncAttachedUI();
       updateCounter();
       refresh(false);
+      refreshMember(); // 首次录入 Token 后重新判定成员态
     }).catch(function (e) {
       disable(false);
       showError('发送失败：' + (e && e.message ? e.message : e));
@@ -1376,6 +1415,12 @@
       var act = btn.dataset.act;
       var id = btn.dataset.id;
 
+      // 成员守卫：回复 / 状态 / 删除仅项目成员可用（按钮已按成员态隐藏，此处防御）
+      if ((act === 'reply' || act === 'toggle-status' || act === 'delete') && !state.isMember) {
+        alert('仅项目成员可回复 / 编辑 / 删除小纸条。');
+        return;
+      }
+
       if (act === 'reply') {
         state.replyFor = (state.replyFor === id) ? null : id;
         render();
@@ -1444,6 +1489,20 @@
   }
 
   /* ---------------- 启动 ---------------- */
+  // 判定当前访客是否为项目成员并同步 UI；仅 GitHub 模式需校验仓库写权限，其余模式视为成员
+  function refreshMember() {
+    if (!state.store || state.store.mode !== 'github') {
+      if (state.isMember !== true) { state.isMember = true; render(); }
+      return Promise.resolve(true);
+    }
+    var cached = GithubStore.isMember();
+    if (cached !== state.isMember) { state.isMember = cached; render(); }
+    return GithubStore.checkMember().then(function (ok) {
+      if (ok !== state.isMember) { state.isMember = ok; render(); }
+      return ok;
+    });
+  }
+
   function setMode(store) {
     state.store = store;
     var isGithub = store.mode === 'github';
@@ -1459,6 +1518,7 @@
         var next = GithubStore.promptToken(false);
         if (next !== null) {
           alert(next ? 'Token 已更新！' : 'Token 已清除。');
+          refreshMember();
         }
       } : null;
     }
@@ -1471,8 +1531,10 @@
         els.hint.innerHTML = '当前是<strong>本地模式</strong>，小纸条只保存在这台电脑的浏览器里。';
       }
     }
+    state.isMember = isGithub ? GithubStore.isMember() : true;
     render();
     refresh(false).then(startSync, startSync);
+    refreshMember();
   }
 
   function boot() {

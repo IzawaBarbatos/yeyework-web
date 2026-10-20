@@ -576,6 +576,15 @@
   color: var(--ef-danger);
 }
 
+/* 访客只读提示（非项目成员不可回复 / 编辑 / 删除） */
+.notes-guest-hint {
+  font-family: var(--ef-font-ui);
+  font-size: var(--ef-t-field);
+  font-stretch: var(--ef-wide);
+  color: var(--ef-ink-2);
+  opacity: 0.7;
+}
+
 /* 回复列表与回复表单 */
 .notes-replies {
   margin: 0;
