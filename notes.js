@@ -612,6 +612,8 @@
     replyDraft: {},
     isMember: true, // 是否项目成员（仅 GitHub 模式按仓库写权限判定）
     pending: {}, // 乐观渲染暂存：写入成功但服务端列表尚未收录的条目（id -> {note, ts}）
+    gone: {}, // 删除墓碑：本地已删除但服务端缓存仍可能返回的条目（id -> ts）
+    statusOverride: {}, // 状态覆盖：本地已改、服务端尚未同步的状态（id -> {status, ts}）
     pollTimer: null,
     watchHandler: null
   };
@@ -1381,10 +1383,11 @@
 
   /* 乐观渲染：GitHub 列表接口读侧有缓存/收录延迟，写入成功后先本地落一条并暂存，
      刷新时若服务端仍未收录则由暂存补齐，避免"提交后要等一会儿才出现" */
-  var PENDING_TTL = 180000; // 3 分钟兜底，防止异常时暂存长期驻留
+  var OVERLAY_TTL = 180000; // 3 分钟兜底，防止异常时覆盖项长期驻留
 
   function addPending(rec) {
     var note = normalize(rec);
+    delete state.gone[note._id]; // 与墓碑互斥（同 id 复活时以最新写入为准）
     state.pending[note._id] = { note: note, ts: Date.now() };
     state.notes.push(note);
     render();
@@ -1395,7 +1398,7 @@
     var now = Date.now();
     Object.keys(state.pending).forEach(function (id) {
       var p = state.pending[id];
-      if (!p || now - p.ts > PENDING_TTL) { delete state.pending[id]; return; }
+      if (!p || now - p.ts > OVERLAY_TTL) { delete state.pending[id]; return; }
       var hit = list.some(function (n) { return n._id === id; });
       if (hit) { delete state.pending[id]; return; } // 服务端已收录，改用权威数据
       list.push(p.note);
@@ -1403,10 +1406,67 @@
     return list;
   }
 
+  /* 本地删除：立即移出视图并立墓碑，服务端缓存仍返回该条时由墓碑过滤（含其子回复） */
+  function removeLocal(id) {
+    var now = Date.now();
+    var killed = {};
+    killed[id] = true;
+    state.notes.forEach(function (n) { if (n.parent_id === id) killed[n._id] = true; });
+    Object.keys(killed).forEach(function (k) {
+      state.gone[k] = now;
+      delete state.pending[k]; // 防止 mergePending 把刚删的条目补回来
+    });
+    state.notes = state.notes.filter(function (n) { return !killed[n._id]; });
+    render();
+  }
+
+  /* 本地改状态：立即覆盖视图，服务端同步后由 applyOverlay 自动解除 */
+  function setStatusLocal(id, status) {
+    state.statusOverride[id] = { status: status, ts: Date.now() };
+    state.notes.forEach(function (n) { if (n._id === id) n.status = status; });
+    render();
+  }
+
+  /* 把服务端列表与本地覆盖层合并：墓碑过滤 → 补齐暂存 → 强制状态覆盖 */
+  function applyOverlay(serverList) {
+    var now = Date.now();
+
+    // 1) 墓碑：服务端仍在返回被删条目时剔除；不再返回即清除墓碑
+    Object.keys(state.gone).forEach(function (id) {
+      if (now - state.gone[id] > OVERLAY_TTL) { delete state.gone[id]; return; }
+      var hit = false;
+      for (var i = serverList.length - 1; i >= 0; i--) {
+        if (serverList[i]._id === id) { serverList.splice(i, 1); hit = true; }
+      }
+      if (!hit) delete state.gone[id];
+    });
+
+    // 2) 补齐写入成功但服务端尚未收录的条目，并对其再过滤一次墓碑
+    mergePending(serverList);
+    Object.keys(state.gone).forEach(function (id) {
+      for (var i = serverList.length - 1; i >= 0; i--) {
+        if (serverList[i]._id === id) serverList.splice(i, 1);
+      }
+    });
+
+    // 3) 状态覆盖：本地已改的状态优先，服务端追上后解除
+    Object.keys(state.statusOverride).forEach(function (id) {
+      var ov = state.statusOverride[id];
+      if (!ov || now - ov.ts > OVERLAY_TTL) { delete state.statusOverride[id]; return; }
+      var rec = null;
+      serverList.some(function (n) { if (n._id === id) { rec = n; return true; } return false; });
+      if (!rec) return; // 尚未收录，保持覆盖等待
+      if (rec.status === ov.status) { delete state.statusOverride[id]; return; }
+      rec.status = ov.status;
+    });
+
+    return serverList;
+  }
+
   function refresh(silent) {
     if (!state.store) return Promise.resolve();
     return state.store.list().then(function (rawList) {
-      state.notes = mergePending((rawList || []).map(normalize));
+      state.notes = applyOverlay((rawList || []).map(normalize));
       render();
     }).catch(function (e) {
       console.warn('[小纸条] 刷新失败：', e);
@@ -1465,12 +1525,16 @@
         var cur = state.notes.find(function (n) { return n._id === id; });
         if (!cur) return;
         var next = cur.status === 'resolved' ? 'open' : 'resolved';
-        state.store.setStatus(id, next).then(function () { refresh(false); })
-          .catch(function (e) { alert('修改状态失败：' + (e && e.message ? e.message : e)); });
+        state.store.setStatus(id, next).then(function () {
+          setStatusLocal(id, next); // 立即本地生效，不等服务端列表回读
+          refresh(false);
+        }).catch(function (e) { alert('修改状态失败：' + (e && e.message ? e.message : e)); });
       } else if (act === 'delete') {
         if (!window.confirm('确定要删除这条小纸条吗？（如有回复将一并删除）')) return;
-        state.store.remove(id).then(function () { refresh(false); })
-          .catch(function (e) { alert('删除失败：' + (e && e.message ? e.message : e)); });
+        state.store.remove(id).then(function () {
+          removeLocal(id); // 立即本地移除，不等服务端列表回读
+          refresh(false);
+        }).catch(function (e) { alert('删除失败：' + (e && e.message ? e.message : e)); });
       }
     });
 
