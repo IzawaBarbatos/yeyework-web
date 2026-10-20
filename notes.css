@@ -1,0 +1,263 @@
+/* ============================================================
+ * 小纸条留言板 —— 样式
+ * 仅复用 endfield.css 的设计 token（配色 / 字体 / 圆角切角 / 动效），
+ * 不引入任何新配色，保证与整体视觉一致。
+ * ============================================================ */
+
+/* ---------- 区块 ---------- */
+.notes {
+  margin-top: 1.5rem;
+}
+
+.notes > h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+
+.notes-hint {
+  margin: 0 0 0.9rem;
+  color: var(--ef-ink-2);
+}
+
+.notes-hint strong {
+  color: var(--ef-ink);
+}
+
+/* ---------- 写入区 ---------- */
+.notes-compose {
+  display: grid;
+  gap: 0.7rem;
+  margin-bottom: 1.1rem;
+}
+
+.notes-row {
+  display: grid;
+  grid-template-columns: 6.5rem minmax(0, 1fr);
+  align-items: start;
+  gap: 0.35rem 0.9rem;
+}
+
+@media (max-width: 719px) {
+  .notes-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+.notes-label {
+  padding-top: 0.3rem;
+  font-family: var(--ef-font-ui);
+  font-size: var(--ef-t-field);
+  font-stretch: var(--ef-wide);
+  color: var(--ef-ink-2);
+  white-space: nowrap;
+}
+
+.notes-label i {
+  font-style: normal;
+  opacity: 0.7;
+}
+
+.notes-chips {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.notes-chips:empty::before {
+  content: '（暂无可选标签）';
+  font-size: var(--ef-t-field);
+  color: var(--ef-ink-2);
+}
+
+/* 复用 .ef-chip 的按钮外观，这里只做尺寸微调 */
+.notes-chips .ef-chip {
+  cursor: pointer;
+}
+
+.notes-custom {
+  margin-top: 0.4rem;
+  max-width: 16rem;
+}
+
+.notes input[type='text'].notes-custom,
+.notes textarea.notes-text {
+  width: 100%;
+  padding: 0.5rem 0.6rem;
+  font-family: var(--ef-font-text);
+  font-size: var(--ef-t-body);
+  color: var(--ef-ink);
+  background: var(--ef-panel);
+  border: 1px solid var(--ef-rule);
+  border-style: solid;
+  outline: none;
+  transition: border-color 0.15s var(--ef-ease);
+}
+
+.notes input[type='text'].notes-custom:focus-visible,
+.notes textarea.notes-text:focus-visible {
+  border-color: var(--ef-ink);
+}
+
+.notes textarea.notes-text {
+  min-height: 4.5rem;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.notes-actions {
+  align-items: center;
+}
+
+.notes-counter {
+  margin-left: auto;
+  color: var(--ef-ink-2);
+}
+
+.notes-counter.is-over {
+  color: var(--ef-danger);
+}
+
+/* ---------- 工具条 ---------- */
+.notes-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.6rem;
+}
+
+.notes-search {
+  flex: 1 1 14rem;
+  min-width: 12rem;
+}
+
+/* ---------- 列表 ---------- */
+.notes-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  border-top: 1px solid var(--ef-rule);
+}
+
+.notes-item {
+  border-bottom: 1px solid var(--ef-rule);
+}
+
+.notes-card {
+  position: relative;
+  display: grid;
+  gap: 0.4rem;
+  padding: 0.85rem 0.6rem 0.85rem 0.9rem;
+}
+
+.notes-card::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 4px;
+  background: var(--ef-trace);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform 0.2s var(--ef-snap);
+}
+
+.notes-item:is(:hover, :focus-within) > .notes-card::before {
+  transform: none;
+}
+
+.notes-item.is-resolved > .notes-card {
+  opacity: 0.72;
+}
+
+.notes-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--ef-t-field);
+  color: var(--ef-ink-2);
+}
+
+.notes-time {
+  font-family: var(--ef-font-mono);
+  font-variant-numeric: tabular-nums;
+}
+
+.notes-body {
+  font-family: var(--ef-font-text);
+  font-size: var(--ef-t-body);
+  line-height: 1.7;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.notes-acts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+/* 纯文字按钮：区别于 ef-btn 的方块，轻量操作使用 */
+.notes-link {
+  padding: 0;
+  font-family: var(--ef-font-ui);
+  font-size: var(--ef-t-field);
+  font-stretch: var(--ef-wide);
+  color: var(--ef-ink-2);
+  background: none;
+  border: 0;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 0.2em;
+}
+
+.notes-link:is(:hover, :focus-visible) {
+  color: var(--ef-ink);
+}
+
+.notes-link.is-danger:is(:hover, :focus-visible) {
+  color: var(--ef-danger);
+}
+
+/* ---------- 回复 ---------- */
+.notes-replies {
+  margin: 0;
+  padding: 0 0 0 1.1rem;
+  list-style: none;
+  border-left: 1px solid var(--ef-rule);
+}
+
+.notes-replies > li > .notes-card {
+  padding-top: 0.6rem;
+  padding-bottom: 0.6rem;
+}
+
+.notes-replies > li:last-child > .notes-card {
+  padding-bottom: 1rem;
+}
+
+.notes-reply-form {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 0.9rem;
+  padding: 0.7rem 0.6rem 0.7rem 0.9rem;
+  background: var(--ef-paper);
+  border: 1px solid var(--ef-rule);
+}
+
+.notes-reply-form[hidden] {
+  display: none;
+}
+
+.notes-reply-form .notes-row {
+  grid-template-columns: 5rem minmax(0, 1fr);
+}
+
+@media (max-width: 719px) {
+  .notes-reply-form .notes-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

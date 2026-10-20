@@ -1,0 +1,1665 @@
+<!doctype html>
+<html lang="zh-CN" data-ef-variant="standard">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>椰椰工坊 · 便利店 美术资产对照索引</title>
+    <script>
+      // 主题 / 字号：优先使用上次选择，其次跟随系统；在绘制前写入，避免闪烁
+      (function () {
+        try {
+          var t = localStorage.getItem('yybld-asset-theme');
+          if (t) document.documentElement.dataset.theme = t;
+          var fs = localStorage.getItem('yybld-asset-fs');
+          if (fs) document.documentElement.style.setProperty('--ef-fs', fs);
+        } catch (e) {}
+      })();
+    </script>
+    <script src="variant.js"></script>
+    <link rel="stylesheet" href="endfield.css" />
+    <link rel="stylesheet" href="notes.css" />
+    <!-- 站点图标：与主导航栏 seal 同款「黄底 + 右下斜切 + 深色 Y」 -->
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M0 0h36v28.8L28.8 36H0z' fill='%23fffa00'/%3E%3Ctext x='16.4' y='26' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-size='23' font-weight='800' fill='%23161616'%3EY%3C/text%3E%3C/svg%3E" />
+    <style>
+      /* ---------- 自托管字体：Saira（拉丁宽体），着色跟随 endfield tokens ---------- */
+      @font-face {
+        font-family: 'Saira';
+        src: url('fonts/Saira.ttf') format('truetype');
+        font-weight: 100 900;
+        font-stretch: 50% 125%;
+        font-display: swap;
+      }
+      @font-face {
+        font-family: 'Saira Variable';
+        src: url('fonts/Saira.ttf') format('truetype');
+        font-weight: 100 900;
+        font-stretch: 50% 125%;
+        font-display: swap;
+      }
+
+      /* ---------- 页面专属布局（不含新配色，全部取自 endfield tokens） ---------- */
+      [hidden] {
+        display: none !important;
+      }
+      .wrap {
+        max-width: 84rem;
+        margin: 0 auto;
+        padding: 1.75rem var(--ef-pad) 4.5rem;
+      }
+      .stack {
+        display: grid;
+        gap: 1.25rem;
+        margin-bottom: 1.5rem;
+      }
+      /* 搜索与筛选 */
+      .bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 0.7rem;
+      }
+      .bar > .ef-search {
+        flex: 1 1 20rem;
+      }
+      .filters {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.6rem;
+      }
+      .count-line {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.75rem;
+        margin: 0 0 0.4rem;
+      }
+      /* ---------- 视图 ---------- */
+      .ef-view {
+        margin-top: 0.75rem;
+      }
+      /* ---------- 对照树 ---------- */
+      .ef-tree {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border-top: 1px solid var(--ef-rule);
+      }
+      .ef-node {
+        border-bottom: 1px solid var(--ef-rule);
+      }
+      .ef-node-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem 0.75rem;
+        width: 100%;
+        padding: 0.7rem 0.5rem;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        /* hover 走「全部展开」按钮(.ef-btn)同款特效，见下方「条目 hover」段 */
+        position: relative;
+        isolation: isolate;
+        /* 自身裁剪：擦除黄块休眠态被推到宿主左边界之外，不裁掉会在左侧漏出一条黄带 */
+        overflow: hidden;
+        transition: color 0.12s 0.06s;
+      }
+      .ef-node-head:focus-visible {
+        outline: 2px solid var(--ef-trace);
+        outline-offset: -2px;
+      }
+      .ef-node-name {
+        font-size: 1.05rem;
+        font-weight: 700;
+      }
+      .ef-node-id {
+        color: var(--ef-ink-2);
+        font-size: 0.78rem;
+        font-stretch: var(--ef-wide);
+      }
+      .ef-node-fields {
+        margin-left: auto;
+        white-space: nowrap;
+      }
+      .ef-caret {
+        flex: none;
+        width: 9px;
+        height: 9px;
+        border-right: 2px solid var(--ef-ink);
+        border-bottom: 2px solid var(--ef-ink);
+        transform: rotate(45deg);
+        transition: transform 0.22s var(--ef-mech);
+      }
+      .ef-node.is-open .ef-caret {
+        transform: rotate(-135deg);
+      }
+      /* 展开/折叠：grid-template-rows 0fr → 1fr，纯 CSS 过渡，无脚本测高 */
+      .ef-node-body {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.3s var(--ef-mech);
+      }
+      .ef-node.is-open .ef-node-body {
+        grid-template-rows: 1fr;
+      }
+      .ef-node-inner {
+        min-height: 0;
+        overflow: hidden;
+      }
+      .ef-branch {
+        margin: 0 0 0.6rem 0.6rem;
+        padding-left: 1rem;
+        border-left: 2px solid var(--ef-rule);
+      }
+      .ef-branch-head {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 1rem;
+        margin: 0.6rem 0 0.3rem;
+      }
+      .ef-leaves {
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      /* 定列网格 [文件名][分类标签][大小]：列宽固定，标签左边缘不再随文件名长度漂移 */
+      .ef-leaf {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 6.5rem 5rem;
+        align-items: center;
+        column-gap: 0.75rem;
+        width: 100%;
+        padding: 0.4rem 0.5rem;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        /* hover 走「全部展开」按钮(.ef-btn)同款特效，见下方「条目 hover」段 */
+        position: relative;
+        isolation: isolate;
+        /* 自身裁剪：擦除黄块休眠态被推到宿主左边界之外，不裁掉会在左侧漏出一条黄带 */
+        overflow: hidden;
+        transition: color 0.12s 0.06s;
+      }
+      .ef-leaf:focus-visible {
+        outline: 2px solid var(--ef-trace);
+        outline-offset: -2px;
+      }
+      .ef-leaf-name {
+        font-stretch: var(--ef-wide);
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      .ef-leaf-tag {
+        justify-self: start;
+      }
+      .ef-leaf-size {
+        justify-self: end;
+        text-align: right;
+        white-space: nowrap;
+      }
+      /* ---------- 条目 hover：与「全部展开」按钮(.ef-btn)同款特效 ----------
+         黄色黄块自左擦入铺满整行 + 文字转深色 + 左缘一道亮边闪过。 */
+      .ef-node-head::before,
+      .ef-leaf::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: var(--ef-signal);
+        transform: translateX(-101%);
+        transition: transform 0.28s var(--ef-mech);
+      }
+      .ef-node-head::after,
+      .ef-leaf::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background: linear-gradient(var(--ef-on-signal), var(--ef-on-signal)) left / 3px 100% no-repeat;
+        opacity: 0;
+      }
+      .ef-node-head:is(:hover, :focus-visible),
+      .ef-leaf:is(:hover, :focus-visible) {
+        color: var(--ef-on-signal);
+      }
+      .ef-node-head:is(:hover, :focus-visible)::before,
+      .ef-leaf:is(:hover, :focus-visible)::before {
+        transform: none;
+      }
+      .ef-node-head:hover::after,
+      .ef-leaf:hover::after {
+        animation: ef-edge 0.3s var(--ef-mech);
+      }
+      /* 黄底上把自带颜色的次要文字/图标一并转深色，保证阅读对比 */
+      .ef-node-head:is(:hover, :focus-visible) :is(.ef-node-id, .ef-cat, .ef-node-fields, .ef-field, .ef-state),
+      .ef-leaf:is(:hover, :focus-visible) :is(.ef-field, .ef-state) {
+        color: var(--ef-on-signal);
+      }
+      .ef-node-head:is(:hover, :focus-visible) :is(.ef-caret, .ef-cat) {
+        border-color: currentColor;
+      }
+      .ef-node-head:is(:hover, :focus-visible) .ef-ico svg {
+        stroke: var(--ef-on-signal);
+      }
+      /* 搜索命中：黄块垫字 = 醒目提醒（终末地唯一强调色的正当用法） */
+      mark {
+        padding: 0 0.1em;
+        background: var(--ef-signal);
+        color: var(--ef-on-signal);
+        font-weight: 700;
+      }
+      /* ---------- 平铺表格 ---------- */
+      .ef-cell-btn {
+        padding: 0 0 1px;
+        border: 0;
+        border-bottom: 1px solid var(--ef-rule);
+        background: none;
+        color: inherit;
+        font: inherit;
+        font-stretch: var(--ef-wide);
+        text-align: left;
+        cursor: pointer;
+      }
+      .ef-cell-btn:hover,
+      .ef-cell-btn:focus-visible {
+        border-bottom-color: var(--ef-ink);
+      }
+      /* ---------- 详情抽屉 ---------- */
+      .ef-drawer-sec {
+        padding: 0.2rem var(--ef-pad) 0.85rem;
+      }
+      .ef-drawer .ef-ledger > li > :first-child {
+        flex: none;
+        color: var(--ef-ink-2);
+        font-size: 0.85rem;
+      }
+      .ef-drawer .ef-ledger > li > :last-child {
+        min-width: 0;
+        max-width: 66%;
+        text-align: right;
+        word-break: break-all;
+      }
+      .ef-drawer-title {
+        font-weight: 700;
+        word-break: break-all;
+      }
+      @media (max-width: 720px) {
+        .ef-node-fields {
+          width: 100%;
+          margin-left: 0;
+        }
+        .ef-node-id {
+          display: none;
+        }
+        .ef-drawer .ef-ledger > li > :last-child {
+          max-width: 58%;
+        }
+      }
+
+      /* ---------- 项目导航（便利店 / 中餐厅预留） ---------- */
+      .ef-cmdbar .proj-nav {
+        align-items: center;
+        gap: 0.45rem;
+        padding-block: 0.5rem;
+      }
+      .proj-nav .ef-chip {
+        font-stretch: var(--ef-wide);
+      }
+      .proj-nav .ef-chip[disabled] {
+        opacity: 0.45;
+        cursor: not-allowed;
+        --fill: #2e2e2e;
+        color: #9a9a9a;
+      }
+      /* ---------- 视图切换分段控件 ---------- */
+      .ef-seg {
+        display: inline-flex;
+        gap: 2px;
+        padding: 2px;
+        background: var(--ef-chip);
+      }
+      .ef-seg > button {
+        padding: 0.3rem 0.75rem;
+        border: 0;
+        background: none;
+        color: var(--ef-ink-2);
+        font: inherit;
+        font-size: 0.78rem;
+        font-stretch: var(--ef-wide);
+        cursor: pointer;
+        transition: background-color 0.18s var(--ef-ease), color 0.18s var(--ef-ease);
+      }
+      .ef-seg > button[aria-pressed='true'] {
+        background: var(--ef-paper);
+        color: var(--ef-ink);
+      }
+      /* ---------- 条目图标（游戏贴图 / 分类 SVG 兜底） ---------- */
+      .ef-ico {
+        flex: none;
+        display: grid;
+        place-items: center;
+        width: 26px;
+        height: 26px;
+        border: 1px solid var(--ef-rule);
+        background: var(--ef-chip);
+        overflow: hidden;
+      }
+      .ef-ico img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        image-rendering: pixelated;
+      }
+      .ef-ico svg {
+        width: 15px;
+        height: 15px;
+        fill: none;
+        stroke: var(--ef-ink-2);
+      }
+      /* ---------- 分类标签 ---------- */
+      .ef-cat {
+        flex: none;
+        padding: 0.06rem 0.42rem;
+        border: 1px solid var(--ef-rule);
+        color: var(--ef-ink-2);
+        font-size: 0.72rem;
+        font-stretch: var(--ef-wide);
+        white-space: nowrap;
+      }
+      .ef-cat[data-cat='food'] {
+        border-color: var(--ef-ink);
+        color: var(--ef-ink);
+      }
+      .ef-cat[data-cat='block_entity'] {
+        border-style: dashed;
+      }
+      /* ---------- 分类筛选 chips ---------- */
+      .filters .ef-chip .ic {
+        display: inline-grid;
+        place-items: center;
+        width: 14px;
+        height: 14px;
+        margin-right: 0.3rem;
+        vertical-align: -2px;
+      }
+      .filters .ef-chip .ic svg {
+        width: 14px;
+        height: 14px;
+        fill: none;
+        stroke: currentColor;
+      }
+      /* ---------- 贴图资源链 ---------- */
+      .ef-tex-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        padding: 0 0 0.4rem;
+      }
+      .ef-tex {
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.22rem 0.55rem 0.22rem 0.3rem;
+        border: 1px solid var(--ef-rule);
+        background: var(--ef-chip);
+        color: inherit;
+        font: inherit;
+        font-size: 0.72rem;
+        font-stretch: var(--ef-wide);
+        cursor: pointer;
+      }
+      .ef-tex .ef-ico {
+        width: 22px;
+        height: 22px;
+        border: 0;
+        background: none;
+      }
+      /* ---------- 表格内中文名（图标 + 名称） ---------- */
+      .ef-cell-name {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+      }
+      .ef-ico-sm {
+        width: 20px;
+        height: 20px;
+      }
+      /* ---------- hover 流畅动效（尊重减弱动效偏好） ---------- */
+      @media (prefers-reduced-motion: no-preference) {
+        .ef-node-head > .ef-ico,
+        .ef-ico img {
+          transition: border-color 0.2s var(--ef-ease), background-color 0.2s var(--ef-ease),
+            transform 0.2s var(--ef-snap);
+        }
+        .ef-node-head:hover > .ef-ico {
+          border-color: var(--ef-ink);
+          background: var(--ef-paper);
+          transform: scale(1.06);
+        }
+        .ef-tex {
+          transition: border-color 0.2s var(--ef-ease), transform 0.2s var(--ef-snap),
+            background-color 0.2s var(--ef-ease);
+        }
+        .ef-tex:hover,
+        .ef-tex:focus-visible {
+          border-color: var(--ef-ink);
+          background: var(--ef-paper);
+          transform: translateY(-1px);
+        }
+      }
+
+      /* ============ 页面级增强：字号缩放 / hover 过渡 / 响应式 ============ */
+
+      /* 字体缩放：全部 rem 尺寸随根字号同比放大（默认 1.125 → 18px 基准） */
+      html {
+        font-size: calc(16px * var(--ef-fs, 1.125));
+      }
+
+      /* 让所有可 hover 的元素都带过渡，避免生硬跳变 */
+      @property --fill {
+        syntax: '<color>';
+        inherits: true;
+        initial-value: #e4e4e0;
+      }
+      .ef-chip,
+      .ef-tag,
+      .ef-kv {
+        transition: --fill 0.2s var(--ef-ease), color 0.2s var(--ef-ease);
+      }
+      .ef-search {
+        transition: border-color 0.2s var(--ef-ease), box-shadow 0.2s var(--ef-ease);
+      }
+      .ef-cell-btn {
+        transition: color 0.18s var(--ef-ease), border-bottom-color 0.18s var(--ef-ease);
+      }
+      .ef-node-id {
+        transition: color 0.2s var(--ef-ease);
+      }
+      .ef-table tbody tr {
+        transition: background-color 0.2s var(--ef-ease), box-shadow 0.2s var(--ef-ease);
+      }
+      .ef-table tbody tr:hover {
+        /* 表格直接铺在纸面背景上，原「纸色」hover 不可见，改用可见填充 */
+        background: var(--ef-chip);
+      }
+
+      /* 资产总览数字：去掉背景擦除动画，仅保留文字层 hover */
+      .ef-figs b {
+        background: none;
+        transition: color 0.2s var(--ef-ease);
+      }
+      .ef-figs > :is(a:hover, a:focus-visible) b,
+      .ef-figs .is-alert b {
+        background: none;
+        color: var(--ef-ink);
+      }
+      .ef-figs > a span {
+        border-bottom: 1px solid transparent;
+        transition: color 0.2s var(--ef-ease), border-color 0.2s var(--ef-ease);
+      }
+      .ef-figs > a:hover span,
+      .ef-figs > a:focus-visible span {
+        color: var(--ef-ink);
+        border-bottom-color: var(--ef-trace);
+      }
+
+      /* 抽屉内「复制相对路径」：与详情「关闭」按钮(.ef-btn)同款——黄块自左擦除 + 文字变色 */
+      .ef-act {
+        --fill: var(--ef-chip);
+        --wipe: var(--ef-signal);
+        position: relative;
+        isolation: isolate;
+        background: var(--fill);
+        /* 自身裁剪：擦除黄块休眠态被推到宿主左边界之外，不裁掉会在左侧漏出一条黄带 */
+        overflow: hidden;
+        transition: color 0.12s 0.06s, background-color 0.12s 0.06s, transform 0.1s;
+      }
+      /* 擦除层（::after 已被「›」箭头占用，故用 ::before） */
+      .ef-act::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        z-index: -1;
+        background: var(--wipe);
+        transform: translateX(-101%);
+        transition: transform 0.28s var(--ef-mech);
+      }
+      .ef-act::after {
+        transition: color 0.12s 0.06s, transform 0.2s var(--ef-snap);
+      }
+      .ef-act:is(:hover, :focus-visible) {
+        color: var(--ef-on-signal);
+      }
+      .ef-act:is(:hover, :focus-visible)::before {
+        transform: none;
+      }
+      .ef-act:is(:hover, :focus-visible)::after {
+        color: var(--ef-on-signal);
+        transform: translateX(3px);
+      }
+      .ef-act:active {
+        transform: translateY(1px) scale(0.985);
+      }
+
+      /* ---------- 食品饮料四组资源链容器 ---------- */
+      .ef-chain-sec {
+        margin-top: 0.75rem;
+        padding: 0.6rem 0.75rem 0.75rem;
+        background: color-mix(in srgb, var(--ef-chip) 35%, transparent);
+        border: 1px solid var(--ef-rule);
+        border-left: 3px solid var(--ef-ink-2);
+      }
+      .ef-chain-sec:first-child {
+        margin-top: 0;
+      }
+      .ef-chain-sec[data-chain='block'] {
+        border-left-color: var(--ef-ink-2);
+      }
+      .ef-chain-sec[data-chain='display'] {
+        border-left-color: #3b82f6;
+      }
+      .ef-chain-sec[data-chain='hand'] {
+        border-left-color: var(--ef-signal);
+      }
+      .ef-chain-sec[data-chain='hold'] {
+        border-left-color: #10b981;
+      }
+      .ef-chain-head {
+        display: flex;
+        align-items: baseline;
+        gap: 0.45rem;
+        padding-bottom: 0.4rem;
+        margin-bottom: 0.45rem;
+        border-bottom: 1px dashed var(--ef-rule);
+      }
+      .ef-chain-head .ef-tag {
+        font-size: 0.62rem;
+        padding: 0 0.35rem;
+        background: var(--ef-ink);
+        color: var(--ef-panel);
+        font-stretch: var(--ef-wide);
+      }
+      .ef-chain-name {
+        font-weight: 700;
+        font-size: 0.92rem;
+        letter-spacing: 0.02em;
+      }
+      .ef-chain-tag {
+        font-size: 0.72rem;
+        color: var(--ef-ink-2);
+        font-stretch: var(--ef-wide);
+      }
+      .ef-chain-head .ef-field {
+        margin-left: auto;
+      }
+      .ef-chain-body {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .ef-chain-body .ef-branch {
+        margin: 0;
+      }
+
+      .ef-drawer > .body {
+        overflow-x: clip;
+      }
+
+      /* 字体调节控件（复用分段控件外观，仅加大点击区） */
+      #ef-fontsize > button {
+        min-width: 2.1rem;
+        font-size: 0.85rem;
+      }
+
+      /* ---------- 响应式：适配平板 / 移动端 ---------- */
+      @media (max-width: 1100px) {
+        .wrap {
+          max-width: 100%;
+        }
+      }
+      @media (max-width: 720px) {
+        .wrap {
+          padding: 1.25rem var(--ef-pad) 3.5rem;
+        }
+        .ef-cmdbar {
+          gap: 0 0.9rem;
+        }
+        .bar > .ef-search {
+          flex: 1 1 100%;
+        }
+        .ef-head h1 {
+          font-size: clamp(1.6rem, 7vw, 2.1rem);
+        }
+        .ef-figs b {
+          font-size: 2rem;
+        }
+      }
+      @media (max-width: 480px) {
+        html {
+          font-size: calc(15px * var(--ef-fs, 1.125));
+        }
+        .ef-figs {
+          grid-template-columns: 1fr 1fr;
+        }
+        .ef-figs > :last-child {
+          grid-column: 1 / -1;
+        }
+        .filters {
+          gap: 0.4rem;
+        }
+        /* 窄屏：文件名独占一行，分类标签与大小落到第二行，避免名称被挤到只剩几个字 */
+        .ef-leaf {
+          grid-template-columns: minmax(0, 1fr) auto;
+          row-gap: 0.15rem;
+        }
+        .ef-leaf-name {
+          grid-column: 1 / -1;
+        }
+        .ef-drawer .ef-ledger > li > :last-child {
+          max-width: 52%;
+        }
+      }
+
+      /* ---------- 标题类文本：字间距略微拉大，贴合终末地宽体气息 ---------- */
+      .ef :is(h1, h2, h3, h4) {
+        letter-spacing: 0.045em;
+      }
+      .ef-drawer-title,
+      .ef-node-name {
+        letter-spacing: 0.03em;
+      }
+
+      /* ---------- 侧边导航：宽屏左侧竖排轨道，窄屏顶栏横向胶囊 ---------- */
+      .ef-sidenav {
+        position: fixed;
+        left: 0.75rem;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 30;
+        display: none;
+        flex-direction: column;
+        gap: 0.1rem;
+        padding: 0.35rem;
+        background: var(--ef-panel);
+        border: 1px solid var(--ef-rule);
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.7rem), calc(100% - 0.7rem) 100%, 0 100%);
+      }
+      .ef-sidenav a {
+        position: relative;
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        padding: 0.5rem 0.85rem 0.5rem 0.95rem;
+        color: var(--ef-ink-2);
+        transition: background-color 0.18s var(--ef-ease), color 0.18s var(--ef-ease);
+      }
+      .ef-sidenav a .n {
+        flex: none;
+        font-size: 0.62rem;
+        font-stretch: var(--ef-wider);
+        letter-spacing: 0.12em;
+        opacity: 0.7;
+      }
+      .ef-sidenav a .t {
+        font-size: 0.85rem;
+        font-weight: 700;
+        white-space: nowrap;
+      }
+      .ef-sidenav a::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.35rem;
+        bottom: 0.35rem;
+        width: 3px;
+        background: var(--ef-signal);
+        transform: scaleY(0);
+        transform-origin: top;
+        transition: transform 0.2s var(--ef-snap);
+      }
+      .ef-sidenav a:hover {
+        background: var(--ef-chip);
+        color: var(--ef-ink);
+      }
+      .ef-sidenav a:hover::before,
+      .ef-sidenav a[aria-current='true']::before {
+        transform: scaleY(1);
+      }
+      .ef-sidenav a[aria-current='true'] {
+        background: var(--ef-signal);
+        color: var(--ef-on-signal);
+      }
+      .ef-sidenav a[aria-current='true']::before {
+        background: var(--ef-on-signal);
+      }
+      /* 宽屏：左侧竖排轨道 + 内容区左移避让 */
+      @media (min-width: 1400px) {
+        .ef-sidenav {
+          display: flex;
+        }
+        .wrap {
+          padding-left: calc(var(--ef-pad) + 7.5rem);
+        }
+      }
+      /* 窄屏：收成顶栏下方可横向滑动的胶囊条 */
+      @media (max-width: 1399px) {
+        .ef-sidenav {
+          display: flex;
+          flex-direction: row;
+          align-items: stretch;
+          gap: 0.35rem;
+          position: sticky;
+          top: 0;
+          left: auto;
+          transform: none;
+          z-index: 25;
+          margin: 0;
+          padding: 0.45rem var(--ef-pad);
+          background: var(--ef-panel);
+          border: 0;
+          border-bottom: 1px solid var(--ef-rule);
+          clip-path: none;
+          overflow-x: auto;
+          overscroll-behavior-x: contain;
+          scrollbar-width: none;
+        }
+        .ef-sidenav::-webkit-scrollbar {
+          display: none;
+        }
+        .ef-sidenav a {
+          flex: none;
+          padding: 0.35rem 0.8rem;
+          border: 1px solid var(--ef-rule);
+        }
+        .ef-sidenav a .t {
+          font-size: 0.8rem;
+        }
+        .ef-sidenav a::before {
+          display: none;
+        }
+        .ef-sidenav a[aria-current='true'] {
+          border-color: var(--ef-signal);
+        }
+      }
+
+      /* ---------- 回到顶部按钮 ---------- */
+      .ef-totop {
+        position: fixed;
+        right: 1.25rem;
+        bottom: 1.25rem;
+        z-index: 40;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.05rem;
+        width: 3rem;
+        height: 3rem;
+        padding: 0;
+        background: var(--ef-panel);
+        color: var(--ef-ink);
+        border: 1px solid var(--ef-rule);
+        clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.65rem), calc(100% - 0.65rem) 100%, 0 100%);
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(0.75rem);
+        transition: opacity 0.24s var(--ef-ease), transform 0.24s var(--ef-snap),
+          background-color 0.2s var(--ef-ease), border-color 0.2s var(--ef-ease), color 0.2s var(--ef-ease);
+      }
+      .ef-totop.is-on {
+        opacity: 1;
+        visibility: visible;
+        transform: none;
+      }
+      .ef-totop:hover {
+        background: var(--ef-signal);
+        border-color: var(--ef-signal);
+        color: var(--ef-on-signal);
+      }
+      .ef-totop .ar {
+        font-size: 1.05rem;
+        font-weight: 800;
+        line-height: 1;
+      }
+      .ef-totop .lb {
+        font-size: 0.5rem;
+        font-stretch: var(--ef-wider);
+        letter-spacing: 0.12em;
+      }
+
+      /* 锚点滚动：为顶栏胶囊预留间距，并启用平滑滚动 */
+      html {
+        scroll-behavior: smooth;
+      }
+      #overview,
+      #ef-notes,
+      .ef-view {
+        scroll-margin-top: 3.5rem;
+      }
+      @media (min-width: 1400px) {
+        #overview,
+        #ef-notes,
+        .ef-view {
+          scroll-margin-top: 1.25rem;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+        .ef-totop,
+        .ef-sidenav a {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body class="ef ef-contours">
+    <div class="ef-tri ef-in-sweep" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <header class="ef-cmdbar">
+      <a class="brand" href="#tree" data-view="tree"><span class="seal">Y</span>YYBLD · ASSET INDEX</a>
+      <nav class="proj-nav" id="ef-projects" aria-label="项目导航"></nav>
+      <div class="util">
+        <span class="ef-field" id="ef-stamp">未同步</span>
+        <span class="ef-seg" id="ef-fontsize" role="group" aria-label="字体大小">
+          <button type="button" data-fs="-" title="缩小字体" aria-label="缩小字体">A−</button>
+          <button type="button" data-fs="reset" title="默认字号" aria-label="默认字号" aria-pressed="true">A</button>
+          <button type="button" data-fs="+" title="放大字体" aria-label="放大字体">A+</button>
+        </span>
+        <button class="ef-btn small" id="ef-theme" type="button" aria-pressed="false">切换深浅</button>
+      </div>
+    </header>
+
+    <nav class="ef-sidenav" id="ef-sidenav" aria-label="分类导航">
+      <a href="#tree" data-nav-filter="all" aria-current="true"><span class="n">00</span><span class="t">全部</span></a>
+      <a href="#tree" data-nav-filter="food"><span class="n">01</span><span class="t">食品饮料</span></a>
+      <a href="#tree" data-nav-filter="block"><span class="n">02</span><span class="t">普通方块</span></a>
+      <a href="#tree" data-nav-filter="block_entity"><span class="n">03</span><span class="t">方块实体</span></a>
+      <a href="#tree" data-nav-filter="item"><span class="n">04</span><span class="t">物品</span></a>
+      <a href="#tree" data-nav-filter="entity"><span class="n">05</span><span class="t">实体</span></a>
+      <a href="#ef-notes" data-nav-notes="1"><span class="n">06</span><span class="t">小纸条</span></a>
+    </nav>
+
+    <main class="wrap">
+      <header class="ef-head ef-in-drive">
+        <h1>美术资产对照索引 <small>Model / Animation / Texture / Name</small></h1>
+        <p>便利店工程内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。</p>
+      </header>
+
+      <div class="stack">
+        <section class="ef-panel cut-br ef-in-power" id="overview" style="--i: 0">
+          <h2>资产总览 <span class="ef-field" id="ef-stamp-2">未同步</span></h2>
+          <div class="ef-figs">
+            <a href="#tree" data-view="tree"><b data-fig="entries">--</b><span>中文名条目</span></a>
+            <a href="#models" data-view="models"><b data-fig="models">--</b><span>模型文件</span></a>
+            <a href="#anims" data-view="anims"><b data-fig="anims">--</b><span>动画文件</span></a>
+          </div>
+        </section>
+      </div>
+
+      <div class="bar">
+        <label class="ef-search">
+          <input type="search" id="ef-q" placeholder="搜索中文名、文件名、标识符或相对路径" aria-label="搜索美术资产" autocomplete="off" />
+        </label>
+        <span class="ef-seg" id="ef-views" role="group" aria-label="视图切换">
+          <button type="button" data-view="tree" aria-pressed="true">对照树</button>
+          <button type="button" data-view="models" aria-pressed="false">全部模型</button>
+          <button type="button" data-view="anims" aria-pressed="false">全部动画</button>
+        </span>
+        <button class="ef-btn small" id="ef-expand" type="button">全部展开</button>
+      </div>
+
+      <div class="filters" id="ef-filters" role="group" aria-label="按内容分类筛选"></div>
+
+      <p class="count-line ef-field" id="ef-count">正在载入资产数据…</p>
+
+      <section class="ef-view" id="view-tree" aria-label="对照树">
+        <ol class="ef-tree" id="ef-tree"></ol>
+        <p class="ef-empty" id="ef-tree-empty" hidden>没有匹配的条目。换一个关键词，或点「全部」清除筛选。</p>
+      </section>
+
+      <section class="ef-view" id="view-models" aria-label="全部模型文件" hidden>
+        <div class="ef-table-wrap">
+          <table class="ef-table">
+            <thead>
+              <tr><th>所属中文名</th><th>模型文件</th><th>类型</th><th class="num">大小</th><th class="num">修改时间</th></tr>
+            </thead>
+            <tbody id="ef-models-body"></tbody>
+          </table>
+        </div>
+        <p class="ef-empty" id="ef-models-empty" hidden>没有匹配的模型文件。</p>
+      </section>
+
+      <section class="ef-view" id="view-anims" aria-label="全部动画文件" hidden>
+        <div class="ef-table-wrap">
+          <table class="ef-table">
+            <thead>
+              <tr><th>所属中文名</th><th>动画文件</th><th>类型</th><th class="num">大小</th><th class="num">修改时间</th></tr>
+            </thead>
+            <tbody id="ef-anims-body"></tbody>
+          </table>
+        </div>
+        <p class="ef-empty" id="ef-anims-empty" hidden>没有匹配的动画文件。</p>
+      </section>
+
+      <section class="ef-panel cut-br notes" id="ef-notes" aria-labelledby="ef-notes-title">
+        <h2 id="ef-notes-title">
+          小纸条
+          <small id="ef-notes-mode">载入中…</small>
+          <span class="ef-field" id="ef-notes-count">—</span>
+        </h2>
+        <p class="notes-hint ef-field" id="ef-notes-hint"></p>
+
+        <form class="notes-compose" id="ef-notes-form" autocomplete="off">
+          <p class="ef-notice" id="ef-notes-error" hidden data-flag="提示"></p>
+
+          <div class="notes-row">
+            <span class="notes-label">填写人 <i>/ 多选</i></span>
+            <div class="notes-chips" id="ef-notes-authors"></div>
+          </div>
+
+          <div class="notes-row">
+            <span class="notes-label">对接人 <i>/ 可选</i></span>
+            <div>
+              <div class="notes-chips" id="ef-notes-targets"></div>
+              <input class="notes-custom" id="ef-notes-target-custom" type="text"
+                     list="ef-notes-target-options" placeholder="也可在此自由填写对接人"
+                     maxlength="24" aria-label="自由填写对接人" />
+              <datalist id="ef-notes-target-options"></datalist>
+            </div>
+          </div>
+
+          <div class="notes-row">
+            <label class="notes-label" for="ef-notes-text">内容</label>
+            <textarea class="notes-text" id="ef-notes-text" rows="3"
+                      maxlength="500" placeholder="写点什么，例如：某张贴图需要重画 / 某个模型朝向不对…（Ctrl 或 ⌘ + Enter 提交）"></textarea>
+          </div>
+
+          <div class="ef-actions notes-actions">
+            <button class="ef-btn" type="submit" id="ef-notes-submit">贴上小纸条</button>
+            <button class="ef-btn small" type="reset" id="ef-notes-reset">清空</button>
+            <span class="notes-counter ef-field" id="ef-notes-counter">0 / 500</span>
+          </div>
+        </form>
+
+        <div class="notes-toolbar">
+          <span class="ef-seg" id="ef-notes-filter" role="group" aria-label="小纸条筛选">
+            <button type="button" data-nf="all" aria-pressed="true">全部</button>
+            <button type="button" data-nf="open" aria-pressed="false">待处理</button>
+            <button type="button" data-nf="resolved" aria-pressed="false">已解决</button>
+          </span>
+          <label class="ef-search notes-search">
+            <input type="search" id="ef-notes-q" placeholder="搜索小纸条内容或人名" aria-label="搜索小纸条" autocomplete="off" />
+          </label>
+          <button class="ef-btn small" type="button" id="ef-notes-refresh">刷新</button>
+        </div>
+
+        <ol class="notes-list" id="ef-notes-list"></ol>
+        <p class="ef-empty" id="ef-notes-empty" hidden>还没有小纸条，来写第一条吧。</p>
+      </section>
+
+      <noscript>
+        <p class="ef-notice" data-flag="提示">本页需要启用 JavaScript 才能渲染对照树与搜索。</p>
+      </noscript>
+    </main>
+
+    <button class="ef-totop" id="ef-totop" type="button" aria-label="回到顶部" title="回到顶部">
+      <span class="ar" aria-hidden="true">↑</span>
+      <span class="lb">TOP</span>
+    </button>
+
+    <dialog class="ef-drawer" id="ef-drawer" aria-labelledby="ef-drawer-title">
+      <div class="body">
+        <div class="grab" aria-hidden="true"></div>
+        <header class="ef-pair">
+          <span class="ef-eyebrow slash" id="ef-drawer-kind">File</span>
+          <span class="ef-drawer-title" id="ef-drawer-title">—</span>
+        </header>
+        <div class="ef-drawer-sec">
+          <ul class="ef-ledger" id="ef-drawer-rows"></ul>
+        </div>
+        <button class="ef-act" type="button" data-copy="rel"><span>复制相对路径</span></button>
+        <p class="ef-actions"><button class="ef-btn" type="button" data-close>关闭</button></p>
+      </div>
+    </dialog>
+
+    <!--EF_DATA_START-->
+    <!-- 资产数据已外链化：运行时读取同目录 data.js（window.EF_DATA）。
+         本块仅为同步脚本的定位标记，请勿手动写入数据。 -->
+    <!--EF_DATA_END-->
+
+    <!-- 资产数据外链：由 sync_data.py 生成的 data.js 注入 window.EF_DATA -->
+    <script src="data.js"></script>
+
+    <script>
+      (function () {
+        'use strict';
+
+        /* ---------- 0. 数据（外链：同目录 data.js 由 sync_data.py 生成） ---------- */
+        var RAW = window.EF_DATA || null;
+        if (!RAW) {
+          // 兼容：若页面仍残留旧版内嵌数据块，则回退读取
+          var embedded = document.getElementById('ef-data');
+          if (embedded) {
+            try { RAW = JSON.parse(embedded.textContent); } catch (err) { console.error('[资产索引] 内嵌数据解析失败：', err); }
+          }
+        }
+        if (!RAW) {
+          RAW = { meta: {}, entries: [] };
+          console.error('[资产索引] 未加载到 data.js，请先运行 sync_data.py 生成数据文件。');
+        }
+        var meta = RAW.meta || {};
+        var entries = RAW.entries || [];
+        var CATS = meta.categories || [];
+
+        var KIND_CN = { model: '模型文件', animation: '动画文件', texture: '贴图文件' };
+        // 依赖链映射文案（抽屉里展示关联配置的用途）
+        var DEF_CN = {
+          client_entity: '客户端实体定义', block_entity: '方块实体定义',
+          block: '方块配置', item: '物品配置', food: '饮品/食品配置（动画映射）'
+        };
+
+        // 分类内联图标（条目无游戏贴图时的兜底）
+        var SVG = ' viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"';
+        var CAT_ICON = {
+          food: '<svg' + SVG + '><path d="M6 8h12l-1 12H7L6 8Z"/><path d="M9 8V5a3 3 0 0 1 6 0v3"/><path d="M10 12v4M14 12v4"/></svg>',
+          block: '<svg' + SVG + '><path d="M12 3 21 8v8l-9 5-9-5V8l9-5Z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg>',
+          block_entity: '<svg' + SVG + '><path d="M12 3 21 8v8l-9 5-9-5V8l9-5Z"/><path d="M3 8l9 5 9-5M12 13v8"/><circle cx="12" cy="8" r="1.5"/></svg>',
+          item: '<svg' + SVG + '><path d="M7 7h10l1 12H6L7 7Z"/><path d="M9 7V5a3 3 0 0 1 6 0v2"/></svg>',
+          entity: '<svg' + SVG + '><circle cx="12" cy="6" r="3"/><path d="M12 9v7M6 12h12M9 21l3-5 3 5"/></svg>',
+          common: '<svg' + SVG + '><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="8" cy="7" r="1.6"/><circle cx="16" cy="12" r="1.6"/><circle cx="8" cy="17" r="1.6"/></svg>'
+        };
+
+        /* ---------- 1. 扁平索引与搜索语料 ---------- */
+        var FLAT = [];
+        var KEYS = [['models', 'model'], ['animations', 'animation'], ['textures', 'texture']];
+        entries.forEach(function (e, i) {
+          e._no = i + 1;
+          e.models = e.models || [];
+          e.animations = e.animations || [];
+          e.textures = e.textures || [];
+          e._nameHay = (e.chinese_name + '\n' + e.id + '\n' + e.identifier).toLowerCase();
+          var hay = [e._nameHay];
+          KEYS.forEach(function (pair) {
+            e[pair[0]].forEach(function (f) {
+              f._kind = pair[1];
+              f._entry = e;
+              f._flat = FLAT.length;
+              FLAT.push(f);
+              hay.push(String(f.file_name || f.path).toLowerCase(), String(f.rel_path).toLowerCase());
+            });
+          });
+          e._hay = hay.join('\n');
+        });
+
+        // 平铺表用：按路径去重（动画/贴图可能被多个条目引用）
+        var MODEL_ROWS = FLAT.filter(function (f) { return f._kind === 'model'; });
+        var seen = Object.create(null);
+        var ANIM_ROWS = FLAT.filter(function (f) {
+          if (f._kind !== 'animation' || seen[f.rel_path]) return false;
+          seen[f.rel_path] = 1;
+          return true;
+        });
+
+        /* ---------- 2. 工具函数 ---------- */
+        function esc(s) {
+          return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
+            return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+          });
+        }
+        // 仅高亮第一处命中，避免破坏转义与超长文本
+        function hl(text, q) {
+          var s = String(text == null ? '' : text);
+          if (!q) return esc(s);
+          var i = s.toLowerCase().indexOf(q);
+          if (i < 0) return esc(s);
+          return esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length));
+        }
+        function tagBadge(f) {
+          if (f._kind === 'texture') {
+            if (f.group === 'display') return '<span class="ef-field">display贴图</span>';
+            if (f.group === 'hand') return '<span class="ef-state">hand贴图</span>';
+            if (f.group === 'hold') return '<span class="ef-field">hold贴图</span>';
+            return '<span class="ef-field">贴图</span>';
+          }
+          if (f.group === 'display') return '<span class="ef-field" style="border-color:var(--ef-ink);">display</span>';
+          if (f.group === 'hand' || f.tag === 'hand') return '<span class="ef-state">hand</span>';
+          if (f.group === 'hold') return '<span class="ef-field">hold</span>';
+          return '<span class="ef-field">普通方块</span>';
+        }
+        function iconHtml(e, cls) {
+          var c = cls ? ' ' + cls : '';
+          if (e.icon) return '<span class="ef-ico' + c + '"><img alt="" src="' + e.icon + '"></span>';
+          return '<span class="ef-ico' + c + '">' + (CAT_ICON[e.category] || CAT_ICON.common) + '</span>';
+        }
+
+        /* ---------- 3. 对照树渲染 ---------- */
+        var FOOD_CHAINS = [
+          { key: 'block', name: '方块', en: 'Block', tag: '无标注', num: '01' },
+          { key: 'display', name: '货架上（display）', en: 'Display', tag: 'display标注', num: '02' },
+          { key: 'hand', name: '第一人称（hand）', en: 'Hand', tag: 'hand标注', num: '03' },
+          { key: 'hold', name: '第三人称（hold）', en: 'Hold', tag: 'hold标注', num: '04' }
+        ];
+
+        function renderFoodChains(e, q) {
+          var html = [];
+          FOOD_CHAINS.forEach(function (ch) {
+            var mList = e.models.filter(function (m) { return (m.group || 'block') === ch.key; });
+            var aList = e.animations.filter(function (a) { return (a.group || 'block') === ch.key; });
+            var tList = e.textures.filter(function (t) { return (t.group || 'block') === ch.key; });
+            var total = mList.length + aList.length + tList.length;
+            if (!total) return;
+            html.push(
+              '<div class="ef-chain-sec" data-chain="' + ch.key + '">' +
+                '<div class="ef-chain-head">' +
+                  '<span class="ef-tag">' + ch.num + '</span>' +
+                  '<span class="ef-chain-name">' + esc(ch.name) + '</span>' +
+                  '<span class="ef-chain-tag">(' + esc(ch.tag) + ')</span>' +
+                  '<span class="ef-field">' + total + ' 个资源</span>' +
+                '</div>' +
+                '<div class="ef-chain-body">' +
+                  branchHtml('模型文件', 'Models', mList, q) +
+                  branchHtml('动画文件', 'Animations', aList, q) +
+                  texHtml(tList, q) +
+                '</div>' +
+              '</div>'
+            );
+          });
+          return html.join('');
+        }
+
+        function leafHtml(f, q) {
+          return '<li><button class="ef-leaf" type="button" data-flat="' + f._flat + '">' +
+            '<span class="ef-leaf-name">' + hl(f.file_name, q) + '</span>' +
+            '<span class="ef-leaf-tag">' + tagBadge(f) + '</span>' +
+            '<span class="ef-leaf-size ef-field">' + esc(f.size_str) + '</span>' +
+            '</button></li>';
+        }
+        function branchHtml(title, en, list, q) {
+          if (!list.length) return '';
+          return '<div class="ef-branch">' +
+            '<p class="ef-branch-head"><span class="ef-eyebrow slash">' + en + ' · ' + title + '</span>' +
+            '<span class="ef-field">' + list.length + '</span></p>' +
+            '<ul class="ef-leaves">' + list.map(function (f) { return leafHtml(f, q); }).join('') + '</ul>' +
+            '</div>';
+        }
+        function texHtml(list, q) {
+          if (!list.length) return '';
+          return '<div class="ef-branch">' +
+            '<p class="ef-branch-head"><span class="ef-eyebrow slash">Textures · 贴图资源</span>' +
+            '<span class="ef-field">' + list.length + '</span></p>' +
+            '<div class="ef-tex-grid">' + list.map(function (t) {
+              var thumb = t.thumb ? '<span class="ef-ico"><img alt="" src="' + t.thumb + '"></span>' : '';
+              return '<button class="ef-tex" type="button" data-flat="' + t._flat + '">' + thumb +
+                '<span>' + hl(t.file_name || t.path, q) + '</span></button>';
+            }).join('') + '</div></div>';
+        }
+        function nodeHtml(e, q, open, order, stagger) {
+          var hasAny = e.models.length || e.animations.length || e.textures.length;
+          var innerContent = '';
+          if (e.category === 'food') {
+            innerContent = renderFoodChains(e, q);
+          } else {
+            innerContent = branchHtml('模型文件', 'Models', e.models, q) +
+              branchHtml('动画文件', 'Animations', e.animations, q) +
+              texHtml(e.textures, q);
+          }
+          if (!hasAny || !innerContent) {
+            innerContent = '<p class="ef-empty">该中文名名下暂无已实装的资源文件。</p>';
+          }
+          var body = '<div class="ef-node-body"><div class="ef-node-inner">' + innerContent + '</div></div>';
+          return '<li class="ef-node' + (open ? ' is-open' : '') + (stagger >= 0 ? ' ef-in-come' : '') + '"' +
+            (stagger >= 0 ? ' style="--i:' + stagger + '"' : '') + ' data-idx="' + order + '">' +
+            '<button class="ef-node-head" type="button" aria-expanded="' + (open ? 'true' : 'false') + '">' +
+            '<span class="ef-node-name">' + hl(e.chinese_name, q) + '</span>' +
+            iconHtml(e) +
+            '<span class="ef-node-id">' + hl(e.identifier, q) + '</span>' +
+            '<span class="ef-cat" data-cat="' + esc(e.category) + '">' + esc(e.category_name) + '</span>' +
+            '<span class="ef-node-fields ef-field">模型 ' + e.model_count + ' │ 动画 ' + e.anim_count + ' │ 贴图 ' + e.texture_count + '</span>' +
+            '<span class="ef-caret" aria-hidden="true"></span>' +
+            '</button>' + body + '</li>';
+        }
+
+        /* ---------- 4. 状态 ---------- */
+        var state = { view: 'tree', filter: 'all', q: '' };
+        var treeEl = document.getElementById('ef-tree');
+        var treeEmpty = document.getElementById('ef-tree-empty');
+        var modelsBody = document.getElementById('ef-models-body');
+        var modelsEmpty = document.getElementById('ef-models-empty');
+        var animsBody = document.getElementById('ef-anims-body');
+        var animsEmpty = document.getElementById('ef-anims-empty');
+        var countEl = document.getElementById('ef-count');
+
+        function rowHtml(f, q) {
+          var e = f._entry || {};
+          return '<tr>' +
+            '<td><span class="ef-cell-name">' + iconHtml(e, 'ef-ico-sm') + hl(e.chinese_name || '—', q) + '</span></td>' +
+            '<td><button class="ef-cell-btn" type="button" data-flat="' + f._flat + '">' + hl(f.file_name, q) + '</button></td>' +
+            '<td>' + tagBadge(f) + '</td>' +
+            '<td class="num">' + esc(f.size_str) + '</td>' +
+            '<td class="num">' + esc(f.mtime) + '</td>' +
+            '</tr>';
+        }
+        function matchesRow(f, q) {
+          if (state.filter !== 'all' && (!f._entry || f._entry.category !== state.filter)) return false;
+          if (!q) return true;
+          return (String(f.file_name) + '\n' + f.rel_path + '\n' +
+            (f._entry ? f._entry.chinese_name : '')).toLowerCase().indexOf(q) >= 0;
+        }
+
+        function renderTree(q, animate) {
+          var html = [];
+          var shown = 0;
+          var order = 0;
+          var cap = 12;
+          entries.forEach(function (e) {
+            if (state.filter !== 'all' && e.category !== state.filter) return;
+            var nameHit = !q || e._nameHay.indexOf(q) >= 0;
+            var childHit = q && !nameHit && e._hay.indexOf(q) >= 0;
+            if (q && !nameHit && !childHit) return;
+            shown++;
+            html.push(nodeHtml(e, q, childHit, order, animate ? Math.min(order, cap) : -1));
+            order++;
+          });
+          treeEl.innerHTML = html.join('');
+          treeEmpty.hidden = shown > 0;
+          return shown;
+        }
+
+        function renderTables(q) {
+          var mHtml = [];
+          var mShown = 0;
+          MODEL_ROWS.forEach(function (f, i) {
+            if (!matchesRow(f, q)) return;
+            mShown++;
+            mHtml.push(rowHtml(f, q));
+          });
+          modelsBody.innerHTML = mHtml.join('');
+          modelsEmpty.hidden = mShown > 0;
+
+          var aHtml = [];
+          var aShown = 0;
+          ANIM_ROWS.forEach(function (f) {
+            if (!matchesRow(f, q)) return;
+            aShown++;
+            aHtml.push(rowHtml(f, q));
+          });
+          animsBody.innerHTML = aHtml.join('');
+          animsEmpty.hidden = aShown > 0;
+          return { models: mShown, anims: aShown };
+        }
+
+        function render(animate) {
+          var q = state.q;
+          var counts = { models: MODEL_ROWS.length, anims: ANIM_ROWS.length };
+          var shown;
+          if (state.view === 'tree') {
+            shown = renderTree(q, animate);
+            countEl.textContent = '显示 ' + shown + ' / ' + entries.length + ' 条目' +
+              (q ? '　│　搜索「' + q + '」' : '') + '　│　模型 ' + counts.models + ' │ 动画 ' + counts.anims;
+          } else {
+            var r = renderTables(q);
+            shown = state.view === 'models' ? r.models : r.anims;
+            countEl.textContent = '显示 ' + shown + ' / ' + (state.view === 'models' ? counts.models + ' 模型文件' : counts.anims + ' 动画文件') +
+              (q ? '　│　搜索「' + q + '」' : '');
+          }
+        }
+
+        /* ---------- 5. 视图切换 ---------- */
+        function syncViewBtns() {
+          document.querySelectorAll('#ef-views [data-view]').forEach(function (b) {
+            b.setAttribute('aria-pressed', b.dataset.view === state.view ? 'true' : 'false');
+          });
+        }
+        function setView(view) {
+          if (view === state.view) return;
+          state.view = view;
+          syncViewBtns();
+          syncSidenav();
+          ['tree', 'models', 'anims'].forEach(function (v) {
+            document.getElementById('view-' + v).hidden = v !== view;
+          });
+          // 视图切换动效：表格类视图从左擦入，对照树用节点错峰入场
+          var active = document.getElementById('view-' + view);
+          if (active && view !== 'tree') {
+            active.classList.remove('ef-in-wipe');
+            void active.offsetWidth;
+            active.classList.add('ef-in-wipe');
+          }
+          render(true);
+          if (history.replaceState) history.replaceState(null, '', '#' + view);
+        }
+
+        /* ---------- 6. 详情抽屉 ---------- */
+        var drawer = document.getElementById('ef-drawer');
+        var dKind = document.getElementById('ef-drawer-kind');
+        var dTitle = document.getElementById('ef-drawer-title');
+        var dRows = document.getElementById('ef-drawer-rows');
+        var current = null;
+
+        function defLabel(key) { return DEF_CN[key] || key; }
+
+        function openDrawer(f) {
+          current = f;
+          var e = f._entry || {};
+          dKind.textContent = (KIND_CN[f._kind] || '文件') + ' / ' + (e.identifier || '');
+          dTitle.textContent = f.file_name;
+
+          var tagTxt = f._kind === 'texture' ? '贴图' : (f.tag === 'hand' ? '第一人称' : '普通');
+          var rows = [
+            ['文件类型', (KIND_CN[f._kind] || '—') + '（' + tagTxt + '）'],
+            ['所属中文名', e.chinese_name || '—'],
+            ['内容分类', e.category_name || '—'],
+            ['资源标识符', f.identifier || e.identifier || f.path || '—'],
+            ['相对路径', f.rel_path],
+            ['文件大小', f.size_str || '—'],
+            ['修改时间', f.mtime || '—']
+          ];
+          if (f.geometry_ids && f.geometry_ids.length) rows.push(['几何标识 geometry', f.geometry_ids.join('、')]);
+          if (f.animation_ids && f.animation_ids.length) rows.push(['动画标识 animation', f.animation_ids.join('、')]);
+
+          var defs = e.definitions || {};
+          Object.keys(defs).forEach(function (key) {
+            if (!defs[key]) return;
+            rows.push([defLabel(key), '已配置']);
+          });
+
+          dRows.innerHTML = rows.map(function (r) {
+            return '<li><span>' + esc(r[0]) + '</span><span class="ef-field">' + esc(r[1]) + '</span></li>';
+          }).join('');
+
+          if (typeof drawer.showModal === 'function') drawer.showModal();
+          else drawer.setAttribute('open', '');
+        }
+
+        drawer.addEventListener('click', function (ev) {
+          if (ev.target === drawer || ev.target.closest('[data-close]')) drawer.close();
+        });
+
+        function toast(msg) {
+          var el = document.createElement('div');
+          el.className = 'ef-toast';
+          el.setAttribute('role', 'status');
+          el.textContent = msg;
+          document.body.appendChild(el);
+          setTimeout(function () {
+            el.classList.add('is-closing');
+            setTimeout(function () { el.remove(); }, 200);
+          }, 1900);
+        }
+
+        function copy(text, okMsg) {
+          var done = function () { toast(okMsg); };
+          var fail = function () { toast('复制失败，请手动选中文本复制。'); };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(text).then(done, fail);
+          } else {
+            var ta = document.createElement('textarea');
+            ta.value = text;
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); done(); } catch (e) { fail(); }
+            ta.remove();
+          }
+        }
+
+        drawer.addEventListener('click', function (ev) {
+          var btn = ev.target.closest('[data-copy]');
+          if (!btn || !current) return;
+          copy(current.rel_path, '已复制相对路径。');
+        });
+
+        /* ---------- 7. 交互绑定 ---------- */
+        // 树：展开/折叠 + 打开详情
+        treeEl.addEventListener('click', function (ev) {
+          var leaf = ev.target.closest('.ef-leaf');
+          if (leaf) {
+            var item = FLAT[Number(leaf.dataset.flat)];
+            if (item) openDrawer(item);
+            return;
+          }
+          var head = ev.target.closest('.ef-node-head');
+          if (head) {
+            var node = head.closest('.ef-node');
+            var open = node.classList.toggle('is-open');
+            head.setAttribute('aria-expanded', open ? 'true' : 'false');
+          }
+        });
+
+        // 平铺表：打开详情
+        [modelsBody, animsBody].forEach(function (tb) {
+          tb.addEventListener('click', function (ev) {
+            var btn = ev.target.closest('[data-flat]');
+            if (!btn) return;
+            var item = FLAT[Number(btn.dataset.flat)];
+            if (item) openDrawer(item);
+          });
+        });
+
+        // 搜索
+        var input = document.getElementById('ef-q');
+        var timer = 0;
+        input.addEventListener('input', function () {
+          clearTimeout(timer);
+          timer = setTimeout(function () {
+            state.q = input.value.trim().toLowerCase();
+            render();
+          }, 90);
+        });
+
+        // 分类筛选（chips 由 JS 渲染，事件委托；与侧边栏双向联动）
+        var filtersEl = document.getElementById('ef-filters');
+        var sidenavEl = document.getElementById('ef-sidenav');
+
+        function setFilter(filter, scroll) {
+          state.filter = filter || 'all';
+          if (filtersEl) {
+            filtersEl.querySelectorAll('[data-filter]').forEach(function (c) {
+              c.setAttribute('aria-pressed', c.dataset.filter === state.filter ? 'true' : 'false');
+            });
+          }
+          if (sidenavEl) {
+            sidenavEl.querySelectorAll('[data-nav-filter]').forEach(function (a) {
+              if (a.dataset.navFilter === state.filter) a.setAttribute('aria-current', 'true');
+              else a.removeAttribute('aria-current');
+            });
+          }
+          if (scroll && state.view !== 'tree') {
+            setView('tree');
+          }
+          render();
+          if (scroll) {
+            var target = document.querySelector('.bar') || document.getElementById('view-tree');
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+
+        filtersEl.addEventListener('click', function (ev) {
+          var chip = ev.target.closest('[data-filter]');
+          if (!chip) return;
+          setFilter(chip.dataset.filter, false);
+        });
+
+        if (sidenavEl) {
+          sidenavEl.addEventListener('click', function (ev) {
+            var link = ev.target.closest('[data-nav-filter]');
+            if (!link) return;
+            ev.preventDefault();
+            setFilter(link.dataset.navFilter, true);
+          });
+        }
+
+        // 全部展开 / 收起
+        var expandBtn = document.getElementById('ef-expand');
+        expandBtn.addEventListener('click', function () {
+          var nodes = treeEl.querySelectorAll('.ef-node');
+          var anyClosed = Array.prototype.some.call(nodes, function (n) { return !n.classList.contains('is-open'); });
+          Array.prototype.forEach.call(nodes, function (n) {
+            n.classList.toggle('is-open', anyClosed);
+            var h = n.querySelector('.ef-node-head');
+            if (h) h.setAttribute('aria-expanded', anyClosed ? 'true' : 'false');
+          });
+          expandBtn.textContent = anyClosed ? '全部收起' : '全部展开';
+        });
+
+        // 视图切换（命令栏导航 / 看板数字）
+        document.addEventListener('click', function (ev) {
+          var link = ev.target.closest('[data-view]');
+          if (!link) return;
+          ev.preventDefault();
+          setView(link.dataset.view);
+        });
+
+        /* ---------- 侧边导航高亮 / 回到顶部 ---------- */
+        var topBtn = document.getElementById('ef-totop');
+
+        function syncSidenav() {
+          if (!sidenavEl) return;
+          Array.prototype.forEach.call(sidenavEl.querySelectorAll('[data-nav-filter]'), function (a) {
+            if (a.dataset.navFilter === state.filter) a.setAttribute('aria-current', 'true');
+            else a.removeAttribute('aria-current');
+          });
+        }
+
+        // 回到顶部：滚过一屏后淡入
+        function syncTopBtn() {
+          if (!topBtn) return;
+          var y = window.scrollY || document.documentElement.scrollTop || 0;
+          topBtn.classList.toggle('is-on', y > 400);
+        }
+
+        var scrollTick = false;
+        function onPageScroll() {
+          if (scrollTick) return;
+          scrollTick = true;
+          requestAnimationFrame(function () {
+            scrollTick = false;
+            syncSidenav();
+            syncTopBtn();
+          });
+        }
+        window.addEventListener('scroll', onPageScroll, { passive: true });
+        window.addEventListener('resize', onPageScroll);
+        if (topBtn) {
+          topBtn.addEventListener('click', function () {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
+        syncSidenav();
+        syncTopBtn();
+
+        // 深浅切换
+        var themeBtn = document.getElementById('ef-theme');
+        function syncThemeBtn() {
+          var dark = document.documentElement.dataset.theme === 'dark';
+          themeBtn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+          themeBtn.textContent = dark ? '浅色' : '深色';
+        }
+        themeBtn.addEventListener('click', function () {
+          var dark = document.documentElement.dataset.theme === 'dark';
+          var next = dark ? 'light' : 'dark';
+          document.documentElement.dataset.theme = next;
+          try { localStorage.setItem('yybld-asset-theme', next); } catch (e) {}
+          syncThemeBtn();
+        });
+        syncThemeBtn();
+
+        // 字体大小调节（A− / A / A+）：写入 --ef-fs 并持久化
+        var FS_STEPS = [0.95, 1.05, 1.125, 1.25, 1.4];
+        var FS_DEFAULT = 1.125;
+        var fsWrap = document.getElementById('ef-fontsize');
+        var fsCur = FS_DEFAULT;
+        try {
+          var savedFs = parseFloat(localStorage.getItem('yybld-asset-fs'));
+          if (isFinite(savedFs) && savedFs > 0) fsCur = savedFs;
+        } catch (e) {}
+        function fsIndex() {
+          var i = FS_STEPS.indexOf(fsCur);
+          return i >= 0 ? i : FS_STEPS.indexOf(FS_DEFAULT);
+        }
+        function applyFs() {
+          document.documentElement.style.setProperty('--ef-fs', String(fsCur));
+          fsWrap.querySelectorAll('button[data-fs]').forEach(function (b) {
+            var on = b.dataset.fs === 'reset' && fsCur === FS_DEFAULT;
+            b.setAttribute('aria-pressed', on ? 'true' : 'false');
+          });
+        }
+        fsWrap.addEventListener('click', function (ev) {
+          var b = ev.target.closest('button[data-fs]');
+          if (!b) return;
+          var d = b.dataset.fs;
+          if (d === 'reset') {
+            fsCur = FS_DEFAULT;
+          } else {
+            var i = Math.max(0, Math.min(FS_STEPS.length - 1, fsIndex() + (d === '+' ? 1 : -1)));
+            fsCur = FS_STEPS[i];
+          }
+          try { localStorage.setItem('yybld-asset-fs', String(fsCur)); } catch (e) {}
+          applyFs();
+        });
+        applyFs();
+
+        /* ---------- 8. 项目导航 / 分类 chips / 统计注入 ---------- */
+        function setText(sel, val) {
+          document.querySelectorAll(sel).forEach(function (el) { el.textContent = val; });
+        }
+
+        // 8.1 项目导航（便利店激活；中餐厅等预留置灰）
+        document.getElementById('ef-projects').innerHTML = (meta.projects || []).map(function (p) {
+          if (p.active) {
+            return '<button class="ef-chip" type="button" aria-pressed="true" data-proj="' + esc(p.key) + '">' +
+              esc(p.name) + ' <span class="n">' + p.count + '</span></button>';
+          }
+          return '<button class="ef-chip" type="button" disabled title="预留项目，暂未接入">' +
+            esc(p.name) + ' <span class="n">预留</span></button>';
+        }).join('');
+
+        // 8.2 分类筛选 chips（全部 + 五个内容分类，含内联图标与计数）
+        filtersEl.innerHTML =
+          '<button class="ef-chip" type="button" data-filter="all" aria-pressed="true">' +
+          '<span class="ic">' + CAT_ICON.common + '</span>全部 <span class="n">' + (meta.total_entries || entries.length) + '</span></button>' +
+          CATS.map(function (c) {
+            return '<button class="ef-chip" type="button" data-filter="' + esc(c.key) + '" aria-pressed="false" title="' + esc(c.desc || '') + '">' +
+              '<span class="ic">' + (CAT_ICON[c.key] || CAT_ICON.common) + '</span>' +
+              esc(c.name) + ' <span class="n">' + c.count + '</span></button>';
+          }).join('');
+
+        // 8.3 统计数字
+        setText('[data-fig="entries"]', String(meta.total_entries || entries.length));
+        setText('[data-fig="models"]', String(meta.total_models || MODEL_ROWS.length));
+        setText('[data-fig="anims"]', String(meta.total_animations || ANIM_ROWS.length));
+        setText('#ef-stamp, #ef-stamp-2', '同步于 ' + (meta.last_sync_time || '未同步'));
+
+        /* ---------- 9. 首次渲染：支持 #models / #anims 直达 ---------- */
+        var hash = (location.hash || '').replace('#', '');
+        if (hash === 'models' || hash === 'anims') state.view = hash;
+        ['tree', 'models', 'anims'].forEach(function (v) {
+          document.getElementById('view-' + v).hidden = v !== state.view;
+        });
+        syncViewBtns();
+        syncSidenav();
+        render(true);
+      })();
+    </script>
+
+    <!-- 小纸条留言板：配置 + 逻辑（数据层可在本地模式与 CloudBase 云端模式间自动切换） -->
+    <script src="notes-config.js"></script>
+    <script src="notes.js"></script>
+  </body>
+</html>
