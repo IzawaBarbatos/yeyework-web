@@ -900,6 +900,103 @@
         <p>便利店工程内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。</p>
       </header>
 
+      <!-- 顶置小纸条留言板：支持双独立折叠与终末地工业风下拉多选 -->
+      <section class="ef-panel cut-br notes" id="ef-notes" aria-labelledby="ef-notes-title">
+        <header class="notes-header">
+          <div class="notes-header-main">
+            <h2 class="notes-title" id="ef-notes-title">
+              小纸条留言板
+              <small id="ef-notes-mode">载入中…</small>
+            </h2>
+            <p class="notes-hint ef-field" id="ef-notes-hint"></p>
+          </div>
+          <div class="notes-header-toggles" role="group" aria-label="小纸条开关">
+            <button class="ef-btn small cut-br" type="button" id="ef-notes-toggle-compose" aria-expanded="true">
+              <span class="ic">✎</span> 编写纸条
+            </button>
+            <button class="ef-btn small cut-br" type="button" id="ef-notes-toggle-list" aria-expanded="true">
+              <span class="ic">☰</span> 查看纸条
+            </button>
+          </div>
+        </header>
+
+        <!-- 子分区 1：创建与编写 -->
+        <div class="notes-collapse-sec" id="ef-notes-compose-wrap" data-collapsed="false">
+          <div class="notes-sec-head">
+            <div class="notes-sec-title">
+              <span class="ef-mono">// 01 COMPOSE</span>
+              <span>编写小纸条</span>
+            </div>
+            <button class="notes-collapse-btn" type="button" data-toggle-sec="compose" aria-expanded="true">
+              收起 ▴
+            </button>
+          </div>
+          <div class="notes-collapse-body">
+            <form class="notes-compose" id="ef-notes-form" autocomplete="off">
+              <p class="ef-notice" id="ef-notes-error" hidden data-flag="提示"></p>
+
+              <div class="notes-row">
+                <span class="notes-label">填写人 <i>/ 多选</i></span>
+                <div id="ef-notes-authors-dropdown"></div>
+              </div>
+
+              <div class="notes-row">
+                <span class="notes-label">对接人 <i>/ 可选</i></span>
+                <div class="notes-target-wrap">
+                  <div id="ef-notes-targets-dropdown"></div>
+                  <input class="notes-custom" id="ef-notes-target-custom" type="text"
+                         list="ef-notes-target-options" placeholder="或自由输入对接人"
+                         maxlength="24" aria-label="自由填写对接人" />
+                  <datalist id="ef-notes-target-options"></datalist>
+                </div>
+              </div>
+
+              <div class="notes-row">
+                <label class="notes-label" for="ef-notes-text">内容 <i>/ 正文</i></label>
+                <textarea class="notes-text" id="ef-notes-text" rows="3"
+                          maxlength="500" placeholder="写点什么，例如：某张贴图需要重画 / 某个模型朝向不对…（Ctrl 或 ⌘ + Enter 提交）"></textarea>
+              </div>
+
+              <div class="ef-actions notes-actions">
+                <button class="ef-btn" type="submit" id="ef-notes-submit">贴上小纸条</button>
+                <button class="ef-btn small" type="reset" id="ef-notes-reset">清空</button>
+                <span class="notes-counter ef-field" id="ef-notes-counter">0 / 500</span>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- 子分区 2：查阅与处理 -->
+        <div class="notes-collapse-sec" id="ef-notes-list-wrap" data-collapsed="false">
+          <div class="notes-sec-head">
+            <div class="notes-sec-title">
+              <span class="ef-mono">// 02 ARCHIVE</span>
+              <span>查看小纸条</span>
+              <span class="ef-field" id="ef-notes-count">—</span>
+            </div>
+            <button class="notes-collapse-btn" type="button" data-toggle-sec="list" aria-expanded="true">
+              收起 ▴
+            </button>
+          </div>
+          <div class="notes-collapse-body">
+            <div class="notes-toolbar">
+              <span class="ef-seg" id="ef-notes-filter" role="group" aria-label="小纸条筛选">
+                <button type="button" data-nf="all" aria-pressed="true">全部</button>
+                <button type="button" data-nf="open" aria-pressed="false">待处理</button>
+                <button type="button" data-nf="resolved" aria-pressed="false">已解决</button>
+              </span>
+              <label class="ef-search notes-search">
+                <input type="search" id="ef-notes-q" placeholder="搜索小纸条内容或人名" aria-label="搜索小纸条" autocomplete="off" />
+              </label>
+              <button class="ef-btn small" type="button" id="ef-notes-refresh">刷新</button>
+            </div>
+
+            <ol class="notes-list" id="ef-notes-list"></ol>
+            <p class="ef-empty" id="ef-notes-empty" hidden>还没有小纸条，来写第一条吧。</p>
+          </div>
+        </div>
+      </section>
+
       <div class="stack">
         <section class="ef-panel cut-br ef-in-power" id="overview" style="--i: 0">
           <h2>资产总览 <span class="ef-field" id="ef-stamp-2">未同步</span></h2>
@@ -954,62 +1051,6 @@
           </table>
         </div>
         <p class="ef-empty" id="ef-anims-empty" hidden>没有匹配的动画文件。</p>
-      </section>
-
-      <section class="ef-panel cut-br notes" id="ef-notes" aria-labelledby="ef-notes-title">
-        <h2 id="ef-notes-title">
-          小纸条
-          <small id="ef-notes-mode">载入中…</small>
-          <span class="ef-field" id="ef-notes-count">—</span>
-        </h2>
-        <p class="notes-hint ef-field" id="ef-notes-hint"></p>
-
-        <form class="notes-compose" id="ef-notes-form" autocomplete="off">
-          <p class="ef-notice" id="ef-notes-error" hidden data-flag="提示"></p>
-
-          <div class="notes-row">
-            <span class="notes-label">填写人 <i>/ 多选</i></span>
-            <div class="notes-chips" id="ef-notes-authors"></div>
-          </div>
-
-          <div class="notes-row">
-            <span class="notes-label">对接人 <i>/ 可选</i></span>
-            <div>
-              <div class="notes-chips" id="ef-notes-targets"></div>
-              <input class="notes-custom" id="ef-notes-target-custom" type="text"
-                     list="ef-notes-target-options" placeholder="也可在此自由填写对接人"
-                     maxlength="24" aria-label="自由填写对接人" />
-              <datalist id="ef-notes-target-options"></datalist>
-            </div>
-          </div>
-
-          <div class="notes-row">
-            <label class="notes-label" for="ef-notes-text">内容</label>
-            <textarea class="notes-text" id="ef-notes-text" rows="3"
-                      maxlength="500" placeholder="写点什么，例如：某张贴图需要重画 / 某个模型朝向不对…（Ctrl 或 ⌘ + Enter 提交）"></textarea>
-          </div>
-
-          <div class="ef-actions notes-actions">
-            <button class="ef-btn" type="submit" id="ef-notes-submit">贴上小纸条</button>
-            <button class="ef-btn small" type="reset" id="ef-notes-reset">清空</button>
-            <span class="notes-counter ef-field" id="ef-notes-counter">0 / 500</span>
-          </div>
-        </form>
-
-        <div class="notes-toolbar">
-          <span class="ef-seg" id="ef-notes-filter" role="group" aria-label="小纸条筛选">
-            <button type="button" data-nf="all" aria-pressed="true">全部</button>
-            <button type="button" data-nf="open" aria-pressed="false">待处理</button>
-            <button type="button" data-nf="resolved" aria-pressed="false">已解决</button>
-          </span>
-          <label class="ef-search notes-search">
-            <input type="search" id="ef-notes-q" placeholder="搜索小纸条内容或人名" aria-label="搜索小纸条" autocomplete="off" />
-          </label>
-          <button class="ef-btn small" type="button" id="ef-notes-refresh">刷新</button>
-        </div>
-
-        <ol class="notes-list" id="ef-notes-list"></ol>
-        <p class="ef-empty" id="ef-notes-empty" hidden>还没有小纸条，来写第一条吧。</p>
       </section>
 
       <noscript>

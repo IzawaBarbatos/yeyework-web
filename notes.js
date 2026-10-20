@@ -1,5 +1,5 @@
 /* ============================================================
- * 小纸条留言板
+ * 小纸条留言板 —— 终末地工业风实现 (Endfield UI)
  *
  * 设计：
  *   - 存储层用「同一接口、多种实现」的适配器模式（依赖倒置）：
@@ -7,6 +7,9 @@
  *       CloudStore（腾讯云 CloudBase，按量计费）
  *       LocalStore（localStorage，单人本地兜底）
  *     上层 UI 只依赖接口，不关心底层是 GitHub、云开发还是本地。
+ *   - UI 组件：
+ *       DropdownMultiSelect：终末地工业风下拉多选控件（切角、复选框、标签回显）
+ *       双折叠子分区：支持独立展开/收起创建编写与查看列表
  * ============================================================ */
 (function () {
   'use strict';
@@ -47,34 +50,176 @@
     return v ? [v] : [];
   }
 
-  /* ---------------- 多选标签选择器 ---------------- */
-  function ChipPicker(host, options, selected) {
+  /* ---------------- 终末地工业风下拉多选组件 ---------------- */
+  function DropdownMultiSelect(host, options, selected, placeholder, eyebrow) {
     this.host = host;
     this.options = toArray(options);
     this.selected = {};
+    this.placeholder = placeholder || '// 请选择成员';
+    this.eyebrow = eyebrow || '// TEAM MEMBERS';
+    this._isOpen = false;
+    this._listeners = [];
+
     var self = this;
     toArray(selected).forEach(function (v) { self.selected[v] = true; });
-    this._render();
+
+    this._init();
   }
-  ChipPicker.prototype._render = function () {
+
+  DropdownMultiSelect.prototype._init = function () {
     var self = this;
-    this.host.innerHTML = this.options.map(function (name) {
-      return '<button class="ef-chip" type="button" data-chip="' + esc(name) + '" ' +
-        'aria-pressed="' + (self.selected[name] ? 'true' : 'false') + '">' + esc(name) + '</button>';
-    }).join('');
+    this.host.innerHTML = '' +
+      '<div class="notes-dropdown-wrap">' +
+        '<button class="notes-dropdown-trigger cut-br" type="button" aria-haspopup="listbox" aria-expanded="false">' +
+          '<span class="notes-dropdown-summary"></span>' +
+          '<span class="notes-dropdown-arrow" aria-hidden="true">▼</span>' +
+        '</button>' +
+        '<div class="notes-dropdown-panel" hidden role="listbox" aria-multiselectable="true">' +
+          '<div class="notes-dropdown-bar">' +
+            '<span class="notes-dropdown-eyebrow">' + esc(this.eyebrow) + '</span>' +
+            '<div class="notes-dropdown-actions">' +
+              '<button class="notes-dropdown-act" type="button" data-dd-act="all">全选</button>' +
+              '<button class="notes-dropdown-act" type="button" data-dd-act="clear">清空</button>' +
+            '</div>' +
+          '</div>' +
+          '<div class="notes-dropdown-options">' +
+            this.options.map(function (opt) {
+              var isSel = !!self.selected[opt];
+              return '' +
+                '<div class="notes-dropdown-option' + (isSel ? ' is-selected' : '') + '" ' +
+                     'role="option" aria-selected="' + (isSel ? 'true' : 'false') + '" data-val="' + esc(opt) + '">' +
+                  '<span class="notes-dropdown-checkbox" aria-hidden="true"></span>' +
+                  '<span class="notes-dropdown-option-text">' + esc(opt) + '</span>' +
+                '</div>';
+            }).join('') +
+          '</div>' +
+        '</div>' +
+      '</div>';
+
+    this.wrap = this.host.querySelector('.notes-dropdown-wrap');
+    this.trigger = this.host.querySelector('.notes-dropdown-trigger');
+    this.panel = this.host.querySelector('.notes-dropdown-panel');
+    this.summary = this.host.querySelector('.notes-dropdown-summary');
+
+    this._updateSummary();
+    this._bind();
   };
-  ChipPicker.prototype.value = function () {
-    return Object.keys(this.selected).filter(function (k) { return this.selected[k]; }, this);
-  };
-  ChipPicker.prototype.bind = function () {
+
+  DropdownMultiSelect.prototype._bind = function () {
     var self = this;
-    this.host.addEventListener('click', function (ev) {
-      var btn = ev.target.closest('[data-chip]');
-      if (!btn) return;
-      var name = btn.dataset.chip;
-      if (self.selected[name]) delete self.selected[name]; else self.selected[name] = true;
-      btn.setAttribute('aria-pressed', self.selected[name] ? 'true' : 'false');
+
+    // 点击触发按钮展开/收起
+    this.trigger.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+      self.toggle();
     });
+
+    // 面板内操作
+    this.panel.addEventListener('click', function (ev) {
+      ev.stopPropagation();
+
+      var actBtn = ev.target.closest('[data-dd-act]');
+      if (actBtn) {
+        var act = actBtn.dataset.ddAct;
+        if (act === 'all') {
+          self.options.forEach(function (opt) { self.selected[opt] = true; });
+        } else if (act === 'clear') {
+          self.selected = {};
+        }
+        self._syncOptionsUI();
+        self._updateSummary();
+        self._notifyChange();
+        return;
+      }
+
+      var optEl = ev.target.closest('.notes-dropdown-option');
+      if (optEl) {
+        var val = optEl.dataset.val;
+        if (self.selected[val]) {
+          delete self.selected[val];
+        } else {
+          self.selected[val] = true;
+        }
+        self._syncOptionItem(optEl, !!self.selected[val]);
+        self._updateSummary();
+        self._notifyChange();
+      }
+    });
+
+    // 点击全局空白处自动收起
+    document.addEventListener('click', function (ev) {
+      if (self._isOpen && !self.wrap.contains(ev.target)) {
+        self.close();
+      }
+    });
+  };
+
+  DropdownMultiSelect.prototype.toggle = function () {
+    if (this._isOpen) this.close();
+    else this.open();
+  };
+
+  DropdownMultiSelect.prototype.open = function () {
+    this._isOpen = true;
+    this.trigger.setAttribute('aria-expanded', 'true');
+    this.panel.hidden = false;
+  };
+
+  DropdownMultiSelect.prototype.close = function () {
+    this._isOpen = false;
+    this.trigger.setAttribute('aria-expanded', 'false');
+    this.panel.hidden = true;
+  };
+
+  DropdownMultiSelect.prototype._syncOptionItem = function (optEl, isSel) {
+    optEl.classList.toggle('is-selected', isSel);
+    optEl.setAttribute('aria-selected', isSel ? 'true' : 'false');
+  };
+
+  DropdownMultiSelect.prototype._syncOptionsUI = function () {
+    var self = this;
+    var items = this.panel.querySelectorAll('.notes-dropdown-option');
+    Array.prototype.forEach.call(items, function (item) {
+      var isSel = !!self.selected[item.dataset.val];
+      self._syncOptionItem(item, isSel);
+    });
+  };
+
+  DropdownMultiSelect.prototype._updateSummary = function () {
+    var vals = this.value();
+    if (!vals.length) {
+      this.summary.className = 'notes-dropdown-summary is-empty';
+      this.summary.textContent = this.placeholder;
+    } else {
+      this.summary.className = 'notes-dropdown-summary';
+      this.summary.innerHTML = '<span class="notes-dropdown-tags">' +
+        vals.map(function (name) {
+          return '<span class="ef-tag">' + esc(name) + '</span>';
+        }).join('') +
+      '</span>';
+    }
+  };
+
+  DropdownMultiSelect.prototype.value = function () {
+    var self = this;
+    return this.options.filter(function (opt) { return !!self.selected[opt]; });
+  };
+
+  DropdownMultiSelect.prototype.setSelected = function (arr) {
+    var self = this;
+    this.selected = {};
+    toArray(arr).forEach(function (v) { self.selected[v] = true; });
+    this._syncOptionsUI();
+    this._updateSummary();
+  };
+
+  DropdownMultiSelect.prototype.onChange = function (fn) {
+    if (typeof fn === 'function') this._listeners.push(fn);
+  };
+
+  DropdownMultiSelect.prototype._notifyChange = function () {
+    var vals = this.value();
+    this._listeners.forEach(function (fn) { fn(vals); });
   };
 
   /* ---------------- 存储层：本地 ---------------- */
@@ -357,7 +502,10 @@
     },
     watch: function (onChange, onError) {
       try {
-        return this._col().watch({ onChange: onChange, onError: onError });
+        return this._col().watch({
+          onChange: function (snapshot) { onChange((snapshot && snapshot.docs) || []); },
+          onError: function (err) { if (onError) onError(err); }
+        });
       } catch (e) {
         if (onError) onError(e);
         return null;
@@ -365,25 +513,21 @@
     }
   };
 
-  /* 按需加载 CloudBase Web SDK */
-  var _sdkPromise = null;
   function loadSdk() {
     if (window.cloudbase) return Promise.resolve(window.cloudbase);
-    if (_sdkPromise) return _sdkPromise;
-    _sdkPromise = new Promise(function (resolve, reject) {
+    return new Promise(function (resolve, reject) {
       var s = document.createElement('script');
       s.src = CFG.sdkUrl;
-      s.async = true;
       s.onload = function () {
-        window.cloudbase ? resolve(window.cloudbase) : reject(new Error('SDK 加载后未暴露 cloudbase'));
+        if (window.cloudbase) resolve(window.cloudbase);
+        else reject(new Error('CloudBase SDK 载入失败'));
       };
-      s.onerror = function () { reject(new Error('无法加载 CloudBase SDK：' + CFG.sdkUrl)); };
+      s.onerror = function () { reject(new Error('无法连接 CloudBase SDK CDN')); };
       document.head.appendChild(s);
     });
-    return _sdkPromise;
   }
 
-  /* ---------------- 页面状态 ---------------- */
+  /* ---------------- UI 状态与引用 ---------------- */
   var state = {
     store: null,
     notes: [],
@@ -391,39 +535,93 @@
     q: '',
     replyFor: null,
     replyDraft: {},
-    pollTimer: 0
+    pollTimer: null,
+    watchHandler: null
   };
-  var pickers = {};
-  var els = {};
 
-  /* ---------------- 渲染 ---------------- */
-  function matchHay(n, needle) {
-    if (!needle) return true;
-    var hay = (n.text || '') + '\n' + toArray(n.authors).join(' ') + '\n' + toArray(n.targets).join(' ');
-    return hay.toLowerCase().indexOf(needle) >= 0;
+  var els = {};
+  var pickers = { authors: null, targets: null };
+
+  /* ---------------- 双折叠子分区控制 ---------------- */
+  var collapseState = {
+    compose: false,
+    list: false
+  };
+
+  try {
+    var savedCollapse = localStorage.getItem('ef_notes_collapse_v1');
+    if (savedCollapse) collapseState = Object.assign(collapseState, JSON.parse(savedCollapse));
+  } catch (e) {}
+
+  function saveCollapseState() {
+    try { localStorage.setItem('ef_notes_collapse_v1', JSON.stringify(collapseState)); } catch (e) {}
   }
 
+  function updateCollapseUI() {
+    var composeSec = $('#ef-notes-compose-wrap');
+    var listSec = $('#ef-notes-list-wrap');
+    var toggleComposeBtn = $('#ef-notes-toggle-compose');
+    var toggleListBtn = $('#ef-notes-toggle-list');
+    var secComposeBtn = $('[data-toggle-sec="compose"]');
+    var secListBtn = $('[data-toggle-sec="list"]');
+
+    if (composeSec) composeSec.setAttribute('data-collapsed', collapseState.compose ? 'true' : 'false');
+    if (toggleComposeBtn) toggleComposeBtn.setAttribute('aria-expanded', collapseState.compose ? 'false' : 'true');
+    if (secComposeBtn) {
+      secComposeBtn.setAttribute('aria-expanded', collapseState.compose ? 'false' : 'true');
+      secComposeBtn.textContent = collapseState.compose ? '展开 ▾' : '收起 ▴';
+    }
+
+    if (listSec) listSec.setAttribute('data-collapsed', collapseState.list ? 'true' : 'false');
+    if (toggleListBtn) toggleListBtn.setAttribute('aria-expanded', collapseState.list ? 'false' : 'true');
+    if (secListBtn) {
+      secListBtn.setAttribute('aria-expanded', collapseState.list ? 'false' : 'true');
+      secListBtn.textContent = collapseState.list ? '展开 ▾' : '收起 ▴';
+    }
+  }
+
+  function toggleCollapse(secName) {
+    if (secName === 'compose') {
+      collapseState.compose = !collapseState.compose;
+    } else if (secName === 'list') {
+      collapseState.list = !collapseState.list;
+    }
+    saveCollapseState();
+    updateCollapseUI();
+  }
+
+  function bindCollapse() {
+    var toggleComposeBtn = $('#ef-notes-toggle-compose');
+    var toggleListBtn = $('#ef-notes-toggle-list');
+    var secComposeBtn = $('[data-toggle-sec="compose"]');
+    var secListBtn = $('[data-toggle-sec="list"]');
+
+    if (toggleComposeBtn) toggleComposeBtn.addEventListener('click', function () { toggleCollapse('compose'); });
+    if (toggleListBtn) toggleListBtn.addEventListener('click', function () { toggleCollapse('list'); });
+    if (secComposeBtn) secComposeBtn.addEventListener('click', function () { toggleCollapse('compose'); });
+    if (secListBtn) secListBtn.addEventListener('click', function () { toggleCollapse('list'); });
+
+    updateCollapseUI();
+  }
+
+  /* ---------------- UI 渲染 ---------------- */
   function visibleTops() {
-    var byId = {};
-    state.notes.forEach(function (n) { byId[n._id] = n; });
-    var repliesByParent = {};
-    state.notes.forEach(function (n) {
-      if (n.parent_id) {
-        (repliesByParent[n.parent_id] = repliesByParent[n.parent_id] || []).push(n);
-      }
-    });
-
-    var needle = (state.q || '').trim().toLowerCase();
-    var tops = state.notes.filter(function (n) { return !n.parent_id; });
-
-    return tops.filter(function (top) {
-      if (state.filter === 'open' && top.status === 'resolved') return false;
-      if (state.filter === 'resolved' && top.status !== 'resolved') return false;
-      if (!needle) return true;
-      if (matchHay(top, needle)) return true;
-      var reps = repliesByParent[top._id] || [];
-      return reps.some(function (r) { return matchHay(r, needle); });
-    });
+    var list = state.notes.filter(function (n) { return !n.parent_id; });
+    if (state.filter === 'open') {
+      list = list.filter(function (n) { return n.status !== 'resolved'; });
+    } else if (state.filter === 'resolved') {
+      list = list.filter(function (n) { return n.status === 'resolved'; });
+    }
+    if (state.q) {
+      var q = state.q.toLowerCase();
+      list = list.filter(function (n) {
+        var txt = (n.text || '').toLowerCase();
+        var authors = (n.authors || []).join(' ').toLowerCase();
+        var targets = (n.targets || []).join(' ').toLowerCase();
+        return txt.indexOf(q) >= 0 || authors.indexOf(q) >= 0 || targets.indexOf(q) >= 0;
+      });
+    }
+    return list;
   }
 
   function peopleTags(arr) {
@@ -442,8 +640,8 @@
       '<form class="notes-reply-form cut-br" data-reply-for="' + esc(parent._id) + '" ' +
         (state.replyFor === parent._id ? '' : 'hidden') + '>' +
         '<div class="notes-row">' +
-          '<label class="notes-label">回复人</label>' +
-          '<div class="notes-chips notes-reply-authors" data-reply-authors-for="' + esc(parent._id) + '"></div>' +
+          '<label class="notes-label">回复人 <i>/ 多选</i></label>' +
+          '<div data-reply-authors-for="' + esc(parent._id) + '"></div>' +
         '</div>' +
         '<div class="notes-row">' +
           '<label class="notes-label">内容 ' + targetHint + '</label>' +
@@ -540,9 +738,8 @@
 
     visible.forEach(function (top) {
       var box = els.list.querySelector('[data-reply-authors-for="' + top._id + '"]');
-      if (box) {
-        var picker = new ChipPicker(box, CFG.authors, lastAuthors());
-        picker.bind();
+      if (box && !box._picker) {
+        var picker = new DropdownMultiSelect(box, CFG.authors, lastAuthors(), '// 请选择回复人', '// REPLY AS');
         box._picker = picker;
       }
     });
@@ -560,7 +757,7 @@
   }
 
   function collectTargets() {
-    var list = pickers.targets.value();
+    var list = pickers.targets ? pickers.targets.value() : [];
     var custom = (els.customTarget ? els.customTarget.value : '').trim();
     if (custom && list.indexOf(custom) < 0) list.push(custom);
     return list;
@@ -580,7 +777,7 @@
   function submitCompose(ev) {
     if (ev) ev.preventDefault();
     showError('');
-    var authors = pickers.authors.value();
+    var authors = pickers.authors ? pickers.authors.value() : [];
     var targets = collectTargets();
     var text = (els.text.value || '').trim();
 
@@ -604,8 +801,7 @@
       rememberAuthors(authors);
       els.text.value = '';
       if (els.customTarget) els.customTarget.value = '';
-      pickers.targets.selected = {};
-      pickers.targets._render();
+      if (pickers.targets) pickers.targets.setSelected([]);
       updateCounter();
       refresh(false);
     }).catch(function (e) {
@@ -743,8 +939,8 @@
     if (els.refreshBtn) els.refreshBtn.addEventListener('click', function () { refresh(false); });
     if (els.resetBtn) els.resetBtn.addEventListener('click', function () {
       els.text.value = ''; if (els.customTarget) els.customTarget.value = '';
-      pickers.targets.selected = {}; pickers.targets._render();
-      pickers.authors.selected = {}; pickers.authors._render();
+      if (pickers.targets) pickers.targets.setSelected([]);
+      if (pickers.authors) pickers.authors.setSelected([]);
       showError(''); updateCounter();
     });
   }
@@ -811,8 +1007,8 @@
       hint: $('#ef-notes-hint'),
       error: $('#ef-notes-error'),
       form: $('#ef-notes-form'),
-      authors: $('#ef-notes-authors'),
-      targets: $('#ef-notes-targets'),
+      authorsHost: $('#ef-notes-authors-dropdown'),
+      targetsHost: $('#ef-notes-targets-dropdown'),
       customTarget: $('#ef-notes-target-custom'),
       targetOptions: $('#ef-notes-target-options'),
       text: $('#ef-notes-text'),
@@ -827,10 +1023,12 @@
     };
     if (!els.root || !els.form) return;
 
-    pickers.authors = new ChipPicker(els.authors, CFG.authors, lastAuthors());
-    pickers.targets = new ChipPicker(els.targets, CFG.targets, []);
-    pickers.authors.bind();
-    pickers.targets.bind();
+    if (els.authorsHost) {
+      pickers.authors = new DropdownMultiSelect(els.authorsHost, CFG.authors, lastAuthors(), '// 请选择填写人', '// 填写人 (多选)');
+    }
+    if (els.targetsHost) {
+      pickers.targets = new DropdownMultiSelect(els.targetsHost, CFG.targets, [], '// 请选择对接人', '// 对接人 (可选)');
+    }
 
     if (els.targetOptions) {
       els.targetOptions.innerHTML = CFG.targets.map(function (n) {
@@ -839,6 +1037,7 @@
     }
     if (els.customTarget) els.customTarget.hidden = !CFG.allowCustomTarget;
 
+    bindCollapse();
     bindCompose();
     bindToolbar();
     bindList();
