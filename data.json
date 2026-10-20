@@ -15,6 +15,13 @@
         "name": "椰椰工坊：中餐厅",
         "active": false,
         "count": 0
+      },
+      {
+        "key": "spec",
+        "name": "美术资产规范",
+        "active": false,
+        "count": "规范文档",
+        "type": "doc"
       }
     ],
     "total_entries": 191,
@@ -54,7 +61,7 @@
         "count": 2
       }
     ],
-    "last_sync_time": "2026-10-20 18:27:27"
+    "last_sync_time": "2026-10-20 20:58:58"
   },
   "entries": [
     {

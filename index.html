@@ -859,13 +859,15 @@
       }
       #overview,
       #ef-notes,
-      .ef-view {
+      .ef-view,
+      .ef-doc-sec {
         scroll-margin-top: 3.5rem;
       }
       @media (min-width: 1400px) {
         #overview,
         #ef-notes,
-        .ef-view {
+        .ef-view,
+        .ef-doc-sec {
           scroll-margin-top: 1.25rem;
         }
       }
@@ -877,6 +879,399 @@
         .ef-sidenav a {
           transition: none;
         }
+      }
+
+      /* ==========================================================================
+         规范文档资料文本阅读页（终末地工装范式 / endfield-ui Reading Mode）
+         ========================================================================== */
+      .ef-doc {
+        max-width: 68rem;
+        margin: 0 auto;
+        padding-bottom: 2rem;
+      }
+      .ef-doc-head {
+        padding-bottom: 1.75rem;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid var(--ef-rule);
+      }
+      .ef-doc-head h1 {
+        font-size: clamp(2.1rem, 4.5vw, 3rem);
+        font-weight: 900;
+        letter-spacing: 0.06em;
+        line-height: 1.2;
+        margin: 0.4rem 0 0.8rem;
+      }
+      .ef-doc-head h1 small {
+        display: block;
+        font-size: 0.82rem;
+        letter-spacing: 0.16em;
+        color: var(--ef-ink-2);
+        font-weight: 600;
+        margin-top: 0.25rem;
+      }
+      .ef-doc-meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.6rem 1rem;
+        margin-bottom: 1rem;
+      }
+      .ef-doc-meta .ef-field {
+        font-size: 0.78rem;
+      }
+      .ef-doc-meta code {
+        font-family: var(--ef-font-mono);
+        font-weight: 700;
+        color: var(--ef-ink);
+      }
+      .ef-doc-lead {
+        font-size: 0.98rem;
+        line-height: 1.82;
+        color: var(--ef-ink-2);
+        max-width: 52rem;
+        margin: 0;
+      }
+      .ef-doc-lead b {
+        color: var(--ef-ink);
+      }
+
+      /* 章节容器与标题 */
+      .ef-doc-sec {
+        margin-bottom: 2.75rem;
+        padding-top: 0.5rem;
+      }
+      .ef-doc-sectitle {
+        font-size: 1.45rem;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        margin: 0.35rem 0 0.85rem;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.6rem;
+      }
+      .ef-doc-sectitle small {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--ef-ink-2);
+        letter-spacing: 0.02em;
+      }
+
+      /* 零、铁律卡片网格 */
+      .ef-laws-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+        gap: 0.85rem;
+        margin-top: 1rem;
+      }
+      .ef-law-card {
+        display: flex;
+        gap: 0.9rem;
+        padding: 1rem 1.15rem;
+        background: var(--ef-panel);
+        border: 1px solid var(--ef-rule);
+        position: relative;
+        transition: border-color 0.16s var(--ef-ease);
+      }
+      .ef-law-card:hover {
+        border-color: var(--ef-ink);
+      }
+      .ef-law-card::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 3px;
+        background: var(--ef-rule);
+      }
+      .ef-law-card:hover::before {
+        background: var(--ef-signal);
+      }
+      .ef-law-num {
+        font-family: var(--ef-font-ui);
+        font-size: 1.5rem;
+        font-weight: 900;
+        font-stretch: var(--ef-wider);
+        color: var(--ef-ink);
+        line-height: 1;
+        opacity: 0.85;
+      }
+      .ef-law-body {
+        flex: 1;
+        min-width: 0;
+      }
+      .ef-law-body h3 {
+        font-size: 0.96rem;
+        font-weight: 700;
+        margin: 0 0 0.35rem;
+      }
+      .ef-law-body p {
+        font-size: 0.84rem;
+        line-height: 1.7;
+        color: var(--ef-ink-2);
+        margin: 0;
+      }
+      .ef-law-body code {
+        font-family: var(--ef-font-mono);
+        padding: 0.1em 0.35em;
+        background: var(--ef-chip);
+        font-size: 0.82em;
+      }
+
+      /* 功能链卡片 */
+      .ef-chain-block {
+        margin-bottom: 2rem;
+        background: var(--ef-panel);
+        border: 1px solid var(--ef-rule);
+        position: relative;
+      }
+      .ef-chain-header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 0.5rem 1rem;
+        padding: 0.85rem 1.25rem;
+        border-bottom: 1px solid var(--ef-rule);
+        background: color-mix(in srgb, var(--ef-chip) 40%, transparent);
+      }
+      .ef-chain-header .title-group {
+        display: flex;
+        align-items: baseline;
+        gap: 0.6rem;
+      }
+      .ef-chain-idx {
+        font-family: var(--ef-font-ui);
+        font-weight: 900;
+        font-stretch: var(--ef-wider);
+        font-size: 0.85rem;
+        padding: 0.1rem 0.4rem;
+        background: var(--ef-ink);
+        color: var(--ef-panel);
+      }
+      .ef-chain-h3 {
+        font-size: 1.08rem;
+        font-weight: 700;
+        margin: 0;
+      }
+      .ef-chain-scope {
+        font-size: 0.76rem;
+        font-stretch: var(--ef-wide);
+        color: var(--ef-ink-2);
+      }
+      .ef-chain-content {
+        padding: 1.15rem 1.25rem 1.35rem;
+      }
+      .ef-chain-desc {
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+        margin: 0 0 1rem;
+        padding: 0.55rem 0.85rem;
+        background: var(--ef-chip);
+        border-left: 3px solid var(--ef-signal);
+        font-size: 0.86rem;
+        color: var(--ef-ink);
+      }
+      .ef-chain-desc b {
+        font-stretch: var(--ef-wide);
+        font-size: 0.78rem;
+        color: var(--ef-ink-2);
+      }
+      .ef-chain-subhead {
+        font-size: 0.88rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        margin: 1.2rem 0 0.55rem;
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+      }
+      .ef-chain-subhead::before {
+        content: '//';
+        color: var(--ef-signal);
+        font-family: var(--ef-font-mono);
+        font-weight: 900;
+      }
+
+      /* 规范表格与高亮代码 */
+      .ef-doc-table-wrap {
+        overflow-x: auto;
+        margin: 0.5rem 0 0.85rem;
+        border: 1px solid var(--ef-rule);
+      }
+      .ef-doc-table-wrap .ef-table {
+        margin: 0;
+        width: 100%;
+      }
+      .ef-doc-table-wrap .ef-table th {
+        background: color-mix(in srgb, var(--ef-chip) 60%, transparent);
+        font-size: 0.76rem;
+        white-space: nowrap;
+      }
+      .ef-doc-table-wrap .ef-table td {
+        font-size: 0.83rem;
+        line-height: 1.55;
+      }
+      .ef-doc-code {
+        font-family: var(--ef-font-mono);
+        font-size: 0.8rem;
+        padding: 0.12em 0.4em;
+        background: var(--ef-chip);
+        border-radius: 0;
+        display: inline-block;
+      }
+      /* 仅带 data-copy 的片段可点击复制：切角悬停 = 瞬时强调 */
+      .ef-doc-code[data-copy] {
+        cursor: pointer;
+        transition: background-color 0.14s, color 0.14s;
+      }
+      .ef-doc-code[data-copy]:hover {
+        background: var(--ef-signal);
+        color: var(--ef-on-signal);
+      }
+
+      /* 骨骼树与注意卡片 */
+      .ef-bone-box {
+        margin: 0.6rem 0;
+        padding: 0.85rem 1rem;
+        background: color-mix(in srgb, var(--ef-ink) 4%, var(--ef-panel));
+        border: 1px dashed var(--ef-rule);
+        font-family: var(--ef-font-mono);
+        font-size: 0.82rem;
+        line-height: 1.65;
+        white-space: pre;
+        overflow-x: auto;
+      }
+      .ef-bone-rules {
+        margin: 0.6rem 0 0;
+        padding-left: 1.25rem;
+        font-size: 0.84rem;
+        line-height: 1.75;
+        color: var(--ef-ink);
+      }
+      .ef-bone-rules li {
+        margin-bottom: 0.35rem;
+      }
+      .ef-bone-rules b {
+        color: var(--ef-ink);
+        background: var(--ef-mark);
+        padding: 0 0.15em;
+      }
+
+      /* 自检交互清单 */
+      .ef-checklist-wrap {
+        background: var(--ef-panel);
+        border: 1px solid var(--ef-rule);
+        padding: 1.25rem;
+        margin-top: 1rem;
+      }
+      .ef-checklist-progress {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        margin-bottom: 1rem;
+        border-bottom: 1px solid var(--ef-rule);
+      }
+      .ef-checklist-progress-text {
+        font-size: 0.88rem;
+        font-weight: 700;
+        display: flex;
+        align-items: baseline;
+        gap: 0.5rem;
+      }
+      .ef-checklist-bar {
+        flex: 1;
+        max-width: 18rem;
+        height: 6px;
+        background: var(--ef-chip);
+        position: relative;
+        overflow: hidden;
+      }
+      .ef-checklist-bar-fill {
+        height: 100%;
+        background: var(--ef-signal);
+        width: 0%;
+        transition: width 0.25s var(--ef-snap);
+      }
+      .ef-checklist-items {
+        display: grid;
+        gap: 0.65rem;
+      }
+      .ef-check-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.75rem;
+        padding: 0.65rem 0.85rem;
+        background: color-mix(in srgb, var(--ef-chip) 30%, transparent);
+        border: 1px solid var(--ef-rule);
+        cursor: pointer;
+        transition: background-color 0.14s var(--ef-ease), border-color 0.14s;
+        user-select: none;
+      }
+      .ef-check-item:hover {
+        background: var(--ef-chip);
+        border-color: var(--ef-ink);
+      }
+      .ef-check-item.is-done {
+        border-color: var(--ef-rule);
+        opacity: 0.75;
+      }
+      .ef-check-item.is-done .ef-check-label {
+        text-decoration: line-through;
+        color: var(--ef-ink-2);
+      }
+      .ef-checkbox {
+        flex: none;
+        width: 1.15rem;
+        height: 1.15rem;
+        border: 1px solid var(--ef-ink);
+        background: var(--ef-panel);
+        display: grid;
+        place-items: center;
+        margin-top: 0.15rem;
+        transition: background-color 0.14s, border-color 0.14s;
+      }
+      .ef-check-item.is-done .ef-checkbox {
+        background: var(--ef-signal);
+        border-color: var(--ef-signal);
+      }
+      .ef-checkbox svg {
+        width: 0.85rem;
+        height: 0.85rem;
+        stroke: var(--ef-on-signal);
+        opacity: 0;
+        transition: opacity 0.12s;
+      }
+      .ef-check-item.is-done .ef-checkbox svg {
+        opacity: 1;
+      }
+      .ef-check-label {
+        font-size: 0.86rem;
+        line-height: 1.55;
+        flex: 1;
+      }
+      .ef-check-label b {
+        color: var(--ef-ink);
+      }
+      .ef-checklist-reset {
+        margin-top: 0.85rem;
+        display: flex;
+        justify-content: flex-end;
+      }
+      .ef-stamp-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        padding: 0.2rem 0.6rem;
+        background: var(--ef-signal);
+        color: var(--ef-on-signal);
+        font-weight: 800;
+        font-size: 0.75rem;
+        letter-spacing: 0.08em;
       }
     </style>
   </head>
@@ -898,16 +1293,24 @@
     </header>
 
     <nav class="ef-sidenav" id="ef-sidenav" aria-label="分类导航">
-      <a href="#tree" data-nav-filter="all" aria-current="true"><span class="n">00</span><span class="t">全部</span></a>
-      <a href="#tree" data-nav-filter="food"><span class="n">01</span><span class="t">食品饮料</span></a>
-      <a href="#tree" data-nav-filter="block"><span class="n">02</span><span class="t">普通方块</span></a>
-      <a href="#tree" data-nav-filter="block_entity"><span class="n">03</span><span class="t">方块实体</span></a>
-      <a href="#tree" data-nav-filter="item"><span class="n">04</span><span class="t">物品</span></a>
-      <a href="#tree" data-nav-filter="entity"><span class="n">05</span><span class="t">实体</span></a>
-      <a href="#ef-notes" data-nav-notes="1"><span class="n">06</span><span class="t">小纸条</span></a>
+      <!-- 便利店：内容分类 -->
+      <a href="#tree" data-proj-group="yybld" data-nav-filter="all" aria-current="true"><span class="n">00</span><span class="t">全部</span></a>
+      <a href="#tree" data-proj-group="yybld" data-nav-filter="food"><span class="n">01</span><span class="t">食品饮料</span></a>
+      <a href="#tree" data-proj-group="yybld" data-nav-filter="block"><span class="n">02</span><span class="t">普通方块</span></a>
+      <a href="#tree" data-proj-group="yybld" data-nav-filter="block_entity"><span class="n">03</span><span class="t">方块实体</span></a>
+      <a href="#tree" data-proj-group="yybld" data-nav-filter="item"><span class="n">04</span><span class="t">物品</span></a>
+      <a href="#tree" data-proj-group="yybld" data-nav-filter="entity"><span class="n">05</span><span class="t">实体</span></a>
+      <a href="#ef-notes" data-proj-group="yybld" data-nav-notes="1"><span class="n">06</span><span class="t">小纸条</span></a>
+      <!-- 美术资产规范：章节目录 -->
+      <a href="#doc-sec-00" data-proj-group="spec" data-nav-doc="doc-sec-00"><span class="n">00</span><span class="t">全局铁律</span></a>
+      <a href="#doc-sec-01" data-proj-group="spec" data-nav-doc="doc-sec-01"><span class="n">01</span><span class="t">资源链清单</span></a>
+      <a href="#doc-sec-02" data-proj-group="spec" data-nav-doc="doc-sec-02"><span class="n">02</span><span class="t">动画规范</span></a>
+      <a href="#doc-sec-03" data-proj-group="spec" data-nav-doc="doc-sec-03"><span class="n">03</span><span class="t">自检表</span></a>
     </nav>
 
     <main class="wrap">
+      <!-- ===== 大分类：椰椰工坊 · 便利店（美术资产对照主视图） ===== -->
+      <div class="proj-view" id="proj-view-yybld">
       <header class="ef-head ef-in-drive">
         <h1>美术资产对照索引 <small>Model / Animation / Texture / Name</small></h1>
         <p>便利店项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。</p>
@@ -1092,6 +1495,480 @@
       <noscript>
         <p class="ef-notice" data-flag="提示">本页需要启用 JavaScript 才能渲染对照树与搜索。</p>
       </noscript>
+      </div>
+      <!-- ===== /大分类：便利店 ===== -->
+
+      <!-- ===== 大分类：美术资产规范（规范文档资料文本 · 阅读视图） ===== -->
+      <section class="proj-view ef-doc" id="proj-view-spec" aria-label="美术资产命名与制作规范" hidden>
+        <header class="ef-doc-head">
+          <div class="ef-doc-meta">
+            <span class="ef-eyebrow slash">Spec / Documentation</span>
+            <span class="ef-field">图文资料</span>
+            <span class="ef-field">版本 v1.0</span>
+            <span class="ef-field">适用 <code>yyzct</code> · <code>yybld</code> · <code>yybldty</code></span>
+          </div>
+          <h1>
+            美术资产命名与制作规范
+            <small>ART ASSET NAMING &amp; DELIVERY SPECIFICATION</small>
+          </h1>
+          <p class="ef-doc-lead">
+            <b>核心导读：</b>接单制作时，直接翻到对应功能的<b>资源清单</b>与<b>美术制作要点</b>，按表交付即可。本页仅作规范资料文本查阅，不含任何资产对照数据。
+          </p>
+        </header>
+
+        <!-- 零、全局交付铁律 -->
+        <section class="ef-doc-sec" id="doc-sec-00">
+          <span class="ef-eyebrow slash">Section 00</span>
+          <h2 class="ef-doc-sectitle">全局交付铁律 <small>Global Delivery Laws · 必须遵守</small></h2>
+          <div class="ef-laws-grid">
+            <article class="ef-law-card">
+              <span class="ef-law-num">01</span>
+              <div class="ef-law-body">
+                <h3>统一前缀（防冲突）</h3>
+                <p>中餐厅 <code>yyzct_</code> · 便利店 <code>yybld_</code> · 试吃包 <code>yybldty_</code>。所有文件名、Blockbench 内部 Geometry Name、动画 Key 必须带前缀。</p>
+              </div>
+            </article>
+            <article class="ef-law-card">
+              <span class="ef-law-num">02</span>
+              <div class="ef-law-body">
+                <h3>纯小写无空格</h3>
+                <p>禁止大写字母、中文、空格、特殊符号及 <code>_v2</code> / <code>_final</code> 等临时尾缀。</p>
+              </div>
+            </article>
+            <article class="ef-law-card">
+              <span class="ef-law-num">03</span>
+              <div class="ef-law-body">
+                <h3>贴图尺寸规范</h3>
+                <p>必须是 2 的次方：<code>16/32/64/128/256/512</code>（模型贴图常用 <code>64×64</code> 或 <code>128×128</code>）。2D 物品图标统一 <code>64×64</code>。</p>
+              </div>
+            </article>
+            <article class="ef-law-card">
+              <span class="ef-law-num">04</span>
+              <div class="ef-law-body">
+                <h3>UV 边缘留白（防黑缝）</h3>
+                <p>UV 块与贴图边缘之间必须留出 1~2 像素空隙，禁止贴边，防止游戏内出现黑边黑缝。</p>
+              </div>
+            </article>
+            <article class="ef-law-card">
+              <span class="ef-law-num">05</span>
+              <div class="ef-law-body">
+                <h3>贴图透明度二值化</h3>
+                <p>透明度只能是 0（完全透明）或 255（完全不透明），严禁出现 1~254 的半透明羽化像素，防止光影反光死黑。</p>
+              </div>
+            </article>
+            <article class="ef-law-card">
+              <span class="ef-law-num">06</span>
+              <div class="ef-law-body">
+                <h3>Blockbench 导出设置</h3>
+                <p>格式选 <b>Bedrock Model</b>，版本 <code>1.12.0</code>；<code>Geometry Name</code> 必须填 <code>geometry.&lt;前缀&gt;&lt;名字&gt;</code>，严禁保留默认 <code>custom</code> / <code>unknown</code>。</p>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- 一、功能资源链清单 -->
+        <section class="ef-doc-sec" id="doc-sec-01">
+          <span class="ef-eyebrow slash">Section 01</span>
+          <h2 class="ef-doc-sectitle">功能资源链清单 <small>Functional Asset Chains · 按功能交付</small></h2>
+
+          <!-- 1 世界摆盘菜品 -->
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">01</span>
+                <h3 class="ef-chain-h3">世界摆盘菜品</h3>
+              </div>
+              <span class="ef-chain-scope">中餐厅大菜 · 摆盘方块链</span>
+            </header>
+            <div class="ef-chain-content">
+              <p class="ef-chain-desc"><b>表现</b>手持托盘，潜行可放桌上；持筷右键夹菜，吃一口肉块少一块，最后剩空盘。</p>
+              <h4 class="ef-chain-subhead">交付清单</h4>
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>资产</th><th>文件名示例</th><th>内部 Identifier / Key</th><th>美术交付要求</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>方块模型</td><td><code class="ef-doc-code" data-copy="yyzct_&lt;菜品&gt;_1.geo.json">yyzct_&lt;菜品&gt;_1.geo.json</code></td><td><code class="ef-doc-code" data-copy="geometry.yyzct_&lt;菜品&gt;_1">geometry.yyzct_&lt;菜品&gt;_1</code></td><td>摆盘模型，食材严格按规范拆骨骼</td></tr>
+                    <tr><td>手持托盘手模</td><td><code class="ef-doc-code" data-copy="yyzct_&lt;菜品&gt;_hand.geo.json">yyzct_&lt;菜品&gt;_hand.geo.json</code></td><td><code class="ef-doc-code" data-copy="geometry.yyzct_&lt;菜品&gt;_hand">geometry.yyzct_&lt;菜品&gt;_hand</code></td><td>第一人称手持托盘模型</td></tr>
+                    <tr><td>第三人称端托模</td><td><code class="ef-doc-code" data-copy="yyzct_&lt;菜品&gt;_hold.geo.json">yyzct_&lt;菜品&gt;_hold.geo.json</code></td><td><code class="ef-doc-code" data-copy="geometry.yyzct_&lt;菜品&gt;_hold">geometry.yyzct_&lt;菜品&gt;_hold</code></td><td>第三人称双手向前平托模型</td></tr>
+                    <tr><td>模型贴图</td><td><code class="ef-doc-code" data-copy="yyzct_&lt;菜品&gt;.png">yyzct_&lt;菜品&gt;.png</code></td><td>——</td><td>贴图（递减状态可给 <code>_1.png</code>~<code>_N.png</code>）</td></tr>
+                    <tr><td>物品栏图标</td><td><code class="ef-doc-code" data-copy="yyzct_&lt;菜品&gt;_1.png">yyzct_&lt;菜品&gt;_1.png</code> ~ <code>_N.png</code></td><td>——</td><td>2D 物品图标，64×64 规格</td></tr>
+                    <tr><td>进食音效</td><td><code class="ef-doc-code" data-copy="yyzct_eat_&lt;菜名&gt;.ogg">yyzct_eat_&lt;菜名&gt;.ogg</code></td><td>——</td><td>咀嚼音效（标准 OGG 格式）</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <h4 class="ef-chain-subhead">美术骨骼制作规范（★关键：直接影响程序渲染控制器控制）</h4>
+              <ul class="ef-bone-rules">
+                <li><b>食材骨骼拆分铁律（扁平化无子骨骼）</b>：食材必须按吃掉的顺序拆分为 <code class="ef-doc-code" data-copy="eat1">eat1</code>、<code class="ef-doc-code" data-copy="eat2">eat2</code>、<code class="ef-doc-code" data-copy="eat3">eat3</code>、<code class="ef-doc-code" data-copy="eat4">eat4</code> …（全小写）。</li>
+                <li><b>核心避坑</b>：每一口的所有肉块方块（cubes），必须直接放在 <code>eatN</code> 骨骼本身里面。</li>
+                <li><b>严禁嵌套子骨骼</b>：不要在 <code>eat1</code> 下面再建 <code>rou1</code>、<code>rou2</code>、<code>wanzi</code> 等子骨骼——底层渲染控制器显隐不会继承给子骨骼，嵌套会导致程序必须额外写几十行配置去单独隐藏每一块肉。</li>
+                <li><b>餐具与筷子骨骼固定命名</b>：盘子/碗底骨骼统一命名 <code class="ef-doc-code" data-copy="plate">plate</code> 或 <code class="ef-doc-code" data-copy="bowl">bowl</code>；第一人称手模筷子骨骼固定命名 <code class="ef-doc-code" data-copy="kz">kz</code>（或 <code>kz1</code>、<code>kz2</code>）；第一人称手臂骨骼命名 <code class="ef-doc-code" data-copy="arm">arm</code> 或 <code class="ef-doc-code" data-copy="rightArm">rightArm</code>。</li>
+                <li>（注：假手臂由程序自动生成，美术无需制作）</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- 2 手持即食 -->
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">02</span>
+                <h3 class="ef-chain-h3">手持即食食品 / 饮品</h3>
+              </div>
+              <span class="ef-chain-scope">便利店 · 中餐厅即食</span>
+            </header>
+            <div class="ef-chain-content">
+              <p class="ef-chain-desc"><b>表现</b>手持雪糕、烤肠、饮料等，长按直接吃 / 喝。</p>
+              <h4 class="ef-chain-subhead">交付清单</h4>
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>资产</th><th>文件名示例</th><th>内部 Identifier / Key</th><th>美术交付要求</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>手持模型</td><td><code class="ef-doc-code" data-copy="yybld_&lt;食品&gt;_hand.geo.json">yybld_&lt;食品&gt;_hand.geo.json</code></td><td><code class="ef-doc-code" data-copy="geometry.yybld_&lt;食品&gt;_hand">geometry.yybld_&lt;食品&gt;_hand</code></td><td>第一人称手模</td></tr>
+                    <tr><td>模型贴图</td><td><code class="ef-doc-code" data-copy="yybld_&lt;食品&gt;_hand.png">yybld_&lt;食品&gt;_hand.png</code></td><td>——</td><td>UV 贴图（无半透明边缘）</td></tr>
+                    <tr><td>物品栏图标</td><td><code class="ef-doc-code" data-copy="yybld_&lt;食品&gt;.png">yybld_&lt;食品&gt;.png</code></td><td>——</td><td>2D 物品图标，64×64</td></tr>
+                    <tr><td>吃 / 喝音效</td><td><code class="ef-doc-code" data-copy="yybld_&lt;食品&gt;_eat.ogg">yybld_&lt;食品&gt;_eat.ogg</code></td><td>——</td><td>咬碎或吞咽音效（标准 OGG）</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <h4 class="ef-chain-subhead">美术制作要点（标准骨骼层级）</h4>
+              <pre class="ef-bone-box">root
+└── waist
+    ├── arm           (右手臂，必须全小写拼写为 arm)
+    └── food / drink  (食物或饮料骨骼)</pre>
+            </div>
+          </article>
+
+          <!-- 3 手持逐口主食 -->
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">03</span>
+                <h3 class="ef-chain-h3">手持逐口主食（米饭双身份）</h3>
+              </div>
+              <span class="ef-chain-scope">中餐厅主食 · 状态推进</span>
+            </header>
+            <div class="ef-chain-content">
+              <p class="ef-chain-desc"><b>表现</b>平时手持是端碗姿态；长按吃一口状态推进一次（<code>_1</code> 满碗 → <code>_2</code> → <code>_3</code> → <code>_4</code> 空碗）；潜行可放桌上。</p>
+              <h4 class="ef-chain-subhead">交付清单</h4>
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>资产</th><th>文件名示例</th><th>内部 Identifier / Key</th><th>美术交付要求</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>状态方块模型</td><td><code class="ef-doc-code">yyzct_&lt;主食&gt;_1.geo.json</code> ~ <code class="ef-doc-code">_4.geo.json</code></td><td><code class="ef-doc-code">geometry.yyzct_&lt;主食&gt;_1</code> ~ <code>_4</code></td><td>世界放置形态（满碗到空碗）</td></tr>
+                    <tr><td>手持手模</td><td><code class="ef-doc-code" data-copy="yyzct_&lt;主食&gt;_hand.geo.json">yyzct_&lt;主食&gt;_hand.geo.json</code></td><td><code class="ef-doc-code" data-copy="geometry.yyzct_&lt;主食&gt;_hand">geometry.yyzct_&lt;主食&gt;_hand</code></td><td>第一人称端碗进食手模</td></tr>
+                    <tr><td>第三人称端碗模</td><td><code class="ef-doc-code" data-copy="yyzct_&lt;主食&gt;_hold.geo.json">yyzct_&lt;主食&gt;_hold.geo.json</code></td><td><code class="ef-doc-code" data-copy="geometry.yyzct_&lt;主食&gt;_hold">geometry.yyzct_&lt;主食&gt;_hold</code></td><td>第三人称端碗模型</td></tr>
+                    <tr><td>贴图</td><td><code class="ef-doc-code" data-copy="yyzct_&lt;主食&gt;.png">yyzct_&lt;主食&gt;.png</code></td><td>——</td><td>贴图（或 <code>_1.png</code>~<code>_4.png</code>）</td></tr>
+                    <tr><td>物品栏图标</td><td><code class="ef-doc-code">yyzct_&lt;主食&gt;_1.png</code> ~ <code>_4.png</code></td><td>——</td><td>满碗到空碗各一张，64×64</td></tr>
+                    <tr><td>咀嚼音效</td><td><code class="ef-doc-code">yyzct_&lt;主食&gt;_eat1.ogg</code> ~ <code>_eatN.ogg</code></td><td>——</td><td>咀嚼音效（标准 OGG）</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <h4 class="ef-chain-subhead">美术骨骼制作规范（★关键：多状态推进与空碗回收）</h4>
+              <ul class="ef-bone-rules">
+                <li><b>米饭分层骨骼（扁平化无子骨骼）</b>：食物按吃掉的层数拆分为 <code class="ef-doc-code" data-copy="rice_1">rice_1</code>、<code class="ef-doc-code" data-copy="rice_2">rice_2</code>、<code class="ef-doc-code" data-copy="rice_3">rice_3</code> …（全小写）。</li>
+                <li><b>核心避坑</b>：每一层的方块（cubes）直接放在对应的 <code>rice_N</code> 骨骼内，严禁嵌套子骨骼。</li>
+                <li><b>碗底骨骼固定命名</b>：承载空碗的骨骼统一命名 <code class="ef-doc-code" data-copy="bowl">bowl</code>；第一人称手模手臂统一命名 <code class="ef-doc-code" data-copy="arm">arm</code> 或 <code class="ef-doc-code" data-copy="rightArm">rightArm</code>。</li>
+                <li>（注：假手臂由程序自动生成，美术无需制作）</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- 4 第三人称端托 -->
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">04</span>
+                <h3 class="ef-chain-h3">第三人称双手端托与展示</h3>
+              </div>
+              <span class="ef-chain-scope">通用 · 挂载管线</span>
+            </header>
+            <div class="ef-chain-content">
+              <p class="ef-chain-desc"><b>表现</b>第三人称下，玩家双手平托物品向前，奔跑行走不甩手。</p>
+              <h4 class="ef-chain-subhead">交付清单</h4>
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>资产</th><th>文件名示例</th><th>内部 Identifier / Key</th><th>美术交付要求</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>端托几何模型</td><td><code class="ef-doc-code">&lt;ns&gt;_&lt;名称&gt;_hold.geo.json</code></td><td><code class="ef-doc-code">geometry.&lt;ns&gt;_&lt;名称&gt;_hold</code></td><td>包含人体骨骼的端托模型</td></tr>
+                    <tr><td>道具贴图</td><td><code class="ef-doc-code">&lt;ns&gt;_&lt;名称&gt;.png</code></td><td>——</td><td>贴图</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <h4 class="ef-chain-subhead">美术制作要点</h4>
+              <ul class="ef-bone-rules">
+                <li><b>人体骨骼层级完整</b>：<code>root -&gt; body -&gt; leftArm / rightArm -&gt; item</code>。</li>
+                <li><b>道具必须挂在 <code>item</code> 骨骼下</b>：托盘、大碗等必须挂在 <code>item</code> 节点下，严禁直挂 root。</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- 5 货架展柜 -->
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">05</span>
+                <h3 class="ef-chain-h3">商品陈列货架与展柜</h3>
+              </div>
+              <span class="ef-chain-scope">便利店 · 展示实体</span>
+            </header>
+            <div class="ef-chain-content">
+              <p class="ef-chain-desc"><b>表现</b>空货架放世界，潜行右键摆上展示商品，空手取回。</p>
+              <h4 class="ef-chain-subhead">交付清单</h4>
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>资产</th><th>文件名示例</th><th>内部 Identifier / Key</th><th>美术交付要求</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>货架主体模型</td><td><code class="ef-doc-code" data-copy="yybld_&lt;货架&gt;.geo.json">yybld_&lt;货架&gt;.geo.json</code></td><td><code class="ef-doc-code" data-copy="geometry.yybld_&lt;货架&gt;">geometry.yybld_&lt;货架&gt;</code></td><td>货架本体模型</td></tr>
+                    <tr><td>货架贴图</td><td><code class="ef-doc-code" data-copy="yybld_&lt;货架&gt;.png">yybld_&lt;货架&gt;.png</code></td><td>——</td><td>贴图</td></tr>
+                    <tr><td>展示商品模型</td><td><code class="ef-doc-code" data-copy="yybld_&lt;商品&gt;_display.geo.json">yybld_&lt;商品&gt;_display.geo.json</code></td><td><code class="ef-doc-code" data-copy="geometry.yybld_&lt;商品&gt;_display">geometry.yybld_&lt;商品&gt;_display</code></td><td>摆在格子里的微缩商品</td></tr>
+                    <tr><td>物品栏图标</td><td><code class="ef-doc-code" data-copy="yybld_&lt;货架&gt;.png">yybld_&lt;货架&gt;.png</code></td><td>——</td><td>64×64 图标</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <h4 class="ef-chain-subhead">美术制作要点</h4>
+              <ul class="ef-bone-rules">
+                <li><b>旋转中心轴对准正中心</b>：货架模型的旋转中心必须在 <code>(0.5, 0.5)</code> 方块正中心，严禁轴心偏向一角。</li>
+                <li><b>商品尺寸控制</b>：展示商品最大长宽高必须小于单格净空（深度通常不超过 0.35 格，防止穿透后背板）。</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- 6 自动联通装饰 -->
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">06</span>
+                <h3 class="ef-chain-h3">自动联通装饰（吸顶灯 / 管道）</h3>
+              </div>
+              <span class="ef-chain-scope">16 态 / 4 态动态模型</span>
+            </header>
+            <div class="ef-chain-content">
+              <p class="ef-chain-desc"><b>表现</b>并排连放自动变长条，拐弯变弯头，十字汇聚变中心。</p>
+              <h4 class="ef-chain-subhead">交付清单</h4>
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>资产</th><th>文件名示例</th><th>说明</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>各形态模型</td><td><code class="ef-doc-code">&lt;ns&gt;_&lt;资产名&gt;_&lt;后缀&gt;.geo.json</code></td><td>按照后缀制作全套形态</td></tr>
+                    <tr><td>共用贴图</td><td><code class="ef-doc-code">&lt;ns&gt;_&lt;资产名&gt;.png</code></td><td>所有形态共用 1 张贴图</td></tr>
+                    <tr><td>物品栏图标</td><td><code class="ef-doc-code">&lt;ns&gt;_&lt;资产名&gt;_sibian.png</code></td><td>64×64 入口图标</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <h4 class="ef-chain-subhead">形态命名后缀速查表</h4>
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>类别</th><th>形态</th><th>后缀</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td rowspan="6">标准 16 态<br><small>吸顶灯 / 地毯 / 通风管道</small></td><td>单体孤立</td><td><code class="ef-doc-code" data-copy="_sibian">_sibian</code></td></tr>
+                    <tr><td>直线直通</td><td><code class="ef-doc-code" data-copy="_shuzhong">_shuzhong</code>（竖）· <code class="ef-doc-code" data-copy="_hengzhong">_hengzhong</code>（横）</td></tr>
+                    <tr><td>直角拐角</td><td><code class="ef-doc-code" data-copy="_zuoxiajiao">_zuoxiajiao</code> · <code class="ef-doc-code" data-copy="_zuoshangjiao">_zuoshangjiao</code> · <code class="ef-doc-code" data-copy="_youxiajiao">_youxiajiao</code> · <code class="ef-doc-code" data-copy="_youshangjiao">_youshangjiao</code></td></tr>
+                    <tr><td>T 字三向</td><td><code class="ef-doc-code" data-copy="_zuosan">_zuosan</code> · <code class="ef-doc-code" data-copy="_yousan">_yousan</code> · <code class="ef-doc-code" data-copy="_xiasan">_xiasan</code> · <code class="ef-doc-code" data-copy="_shangsan">_shangsan</code></td></tr>
+                    <tr><td>十字全通</td><td><code class="ef-doc-code" data-copy="_zhongxin">_zhongxin</code></td></tr>
+                    <tr><td>单向端头</td><td><code class="ef-doc-code">_xiabian</code> · <code class="ef-doc-code">_shangbian</code> · <code class="ef-doc-code">_zuobian</code> · <code class="ef-doc-code">_youbian</code></td></tr>
+                    <tr><td>单向 4 态<br><small>直条灯带 / 单向管道</small></td><td>孤立 / 正端 / 反端 / 双通</td><td><code class="ef-doc-code" data-copy="_0">_0</code> · <code class="ef-doc-code" data-copy="_1">_1</code> · <code class="ef-doc-code" data-copy="_2">_2</code> · <code class="ef-doc-code" data-copy="_3">_3</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <!-- 7 静态家具 -->
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">07</span>
+                <h3 class="ef-chain-h3">静态家具与装饰方块</h3>
+              </div>
+              <span class="ef-chain-scope">桌子 / 椅子 / 微波炉 / 洗手池</span>
+            </header>
+            <div class="ef-chain-content">
+              <h4 class="ef-chain-subhead">交付清单</h4>
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>资产</th><th>文件名示例</th><th>说明</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>静态模型</td><td><code class="ef-doc-code">&lt;ns&gt;_&lt;家具&gt;.geo.json</code> 或 <code>.json</code></td><td>静态模型</td></tr>
+                    <tr><td>模型贴图</td><td><code class="ef-doc-code">&lt;ns&gt;_&lt;家具&gt;.png</code></td><td>严禁半透明边缘（纯 0 或 255）</td></tr>
+                    <tr><td>物品栏图标</td><td><code class="ef-doc-code">&lt;ns&gt;_&lt;家具&gt;.png</code></td><td>64×64 图标</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <h4 class="ef-chain-subhead">美术制作要点</h4>
+              <ul class="ef-bone-rules">
+                <li>椅子坐面推荐距地 <code>0.5</code> 格（8 像素高），适配玩家坐下视角。</li>
+              </ul>
+            </div>
+          </article>
+
+          <!-- 8 2D UI -->
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">08</span>
+                <h3 class="ef-chain-h3">2D 界面与 UI 切片</h3>
+              </div>
+              <span class="ef-chain-scope">点餐机 / 自动贩卖机 / 结算弹窗</span>
+            </header>
+            <div class="ef-chain-content">
+              <h4 class="ef-chain-subhead">交付清单</h4>
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>资产</th><th>文件名示例</th><th>说明</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>背景大图</td><td><code class="ef-doc-code" data-copy="bg01@3x.png">bg01@3x.png</code></td><td>带 <code>@3x</code> 后缀，九宫格设计</td></tr>
+                    <tr><td>按钮三态</td><td><code class="ef-doc-code" data-copy="btn_&lt;功能&gt;_normal@3x.png">btn_&lt;功能&gt;_normal@3x.png</code> · <code>_hover@3x.png</code> · <code>_click@3x.png</code></td><td>常态 / 悬浮 / 按下</td></tr>
+                    <tr><td>小图标</td><td><code class="ef-doc-code" data-copy="icon_&lt;含义&gt;@3x.png">icon_&lt;含义&gt;@3x.png</code></td><td>功能图标</td></tr>
+                  </tbody>
+                </table>
+              </div>
+              <h4 class="ef-chain-subhead">美术制作要点</h4>
+              <ul class="ef-bone-rules">
+                <li><b>九宫格拉伸规则</b>：四个圆角固定不拉伸；中间十字区域拉伸，纹理必须均匀，禁止在拉伸区放非对称图案或特殊渐变。</li>
+              </ul>
+            </div>
+          </article>
+        </section>
+
+        <!-- 二、动画制作专属规范 -->
+        <section class="ef-doc-sec" id="doc-sec-02">
+          <span class="ef-eyebrow slash">Section 02</span>
+          <h2 class="ef-doc-sectitle">动画制作专属规范 <small>Animation Spec · 打关键帧与命名</small></h2>
+
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">A</span>
+                <h3 class="ef-chain-h3">动画文件命名与内部 Key 格式</h3>
+              </div>
+            </header>
+            <div class="ef-chain-content">
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>项目</th><th>格式</th><th>示例</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>动画文件名</td><td><code class="ef-doc-code">&lt;ns&gt;_&lt;名称&gt;_&lt;类型&gt;.animation.json</code></td><td><code class="ef-doc-code" data-copy="yyzct_hongshaorou_hand.animation.json">yyzct_hongshaorou_hand.animation.json</code> · <code class="ef-doc-code" data-copy="yybld_kele_hand.animation.json">yybld_kele_hand.animation.json</code></td></tr>
+                    <tr><td>内部 Key 格式</td><td><code class="ef-doc-code">animation.&lt;ns&gt;_&lt;名称&gt;_&lt;类型&gt;.&lt;动作&gt;</code></td><td><code class="ef-doc-code" data-copy="animation.yyzct_hongshaorou_hand.eat">animation.yyzct_hongshaorou_hand.eat</code></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">B</span>
+                <h3 class="ef-chain-h3">手持即食类动画（单文件必须集齐五件套）</h3>
+              </div>
+              <span class="ef-chain-scope">饮料 / 雪糕 / 烤肠</span>
+            </header>
+            <div class="ef-chain-content">
+              <p class="ef-chain-desc"><b>说明</b>单个 <code>.animation.json</code> 内必须包含以下 5 个动作。</p>
+              <div class="ef-doc-table-wrap">
+                <table class="ef-table">
+                  <thead>
+                    <tr><th>动作名</th><th>含义</th><th>要求</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><code class="ef-doc-code" data-copy="first_hold">first_hold</code></td><td>第一人称手持待机姿态</td><td>勾选 Loop 循环</td></tr>
+                    <tr><td><code class="ef-doc-code" data-copy="first_scale">first_scale</code></td><td>从物品栏切出时的放大举起补间</td><td>补间动作</td></tr>
+                    <tr><td><code class="ef-doc-code" data-copy="idle">idle</code></td><td>常态呼吸微动</td><td>勾选 Loop 循环</td></tr>
+                    <tr><td><code class="ef-doc-code" data-copy="take">take</code></td><td>收回 / 切换物品时的动作</td><td>抬手收物</td></tr>
+                    <tr><td><code class="ef-doc-code" data-copy="eat">eat</code> / <code class="ef-doc-code" data-copy="drink">drink</code></td><td>长按食用 / 畅饮动作</td><td>不循环，时长建议 1.2s ~ 1.5s</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">C</span>
+                <h3 class="ef-chain-h3">摆盘菜品夹菜进食动画</h3>
+              </div>
+            </header>
+            <div class="ef-chain-content">
+              <ul class="ef-bone-rules">
+                <li><b>动作名</b>：<code class="ef-doc-code" data-copy="eat">eat</code>。</li>
+                <li><b>动作内容</b>：第一人称下筷子夹菜送入口中的完整动作。</li>
+                <li><b>关键约束</b>：时长建议在 <b>1.2s ~ 1.6s</b> 之间。</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">D</span>
+                <h3 class="ef-chain-h3">主食（米饭类）进食重播动画 · 防闪烁铁律</h3>
+              </div>
+            </header>
+            <div class="ef-chain-content">
+              <ul class="ef-bone-rules">
+                <li><b>第 0 帧必须做位姿复位</b>：动作的第 0 帧必须打上完整的旋转和位移关键帧，禁止首帧留空，否则长按启动瞬间会闪现默认 T-Pose 姿势。</li>
+              </ul>
+            </div>
+          </article>
+
+          <article class="ef-chain-block">
+            <header class="ef-chain-header">
+              <div class="title-group">
+                <span class="ef-chain-idx">E</span>
+                <h3 class="ef-chain-h3">第三人称双手端托动画 · 防滑步铁律</h3>
+              </div>
+            </header>
+            <div class="ef-chain-content">
+              <ul class="ef-bone-rules">
+                <li><b>动作名</b>：<code class="ef-doc-code" data-copy="idle">idle</code>（双手合抱平托，勾选 Loop 循环）。</li>
+                <li><b>仅手臂打帧</b>：只给 <code class="ef-doc-code">leftArm</code> 和 <code class="ef-doc-code">rightArm</code> 打端托旋转关键帧。</li>
+                <li><b>绝对禁止给腿部打帧</b>：严禁给 <code class="ef-doc-code">leftLeg</code> 和 <code class="ef-doc-code">rightLeg</code> 打任何关键帧——腿部由原版行走控制，打帧会导致玩家走路滑步、无法跑跳。</li>
+              </ul>
+            </div>
+          </article>
+        </section>
+
+        <!-- 三、交付前自检表（可勾选） -->
+        <section class="ef-doc-sec" id="doc-sec-03">
+          <span class="ef-eyebrow slash">Section 03</span>
+          <h2 class="ef-doc-sectitle">交付前 1 分钟快速自检表 <small>Pre-delivery Checklist · 可勾选</small></h2>
+          <div class="ef-checklist-wrap">
+            <div class="ef-checklist-progress">
+              <span class="ef-checklist-progress-text">
+                已完成 <b id="ef-check-count">0</b> / <span id="ef-check-total">9</span>
+                <span class="ef-stamp-badge" id="ef-check-stamp" hidden>READY</span>
+              </span>
+              <span class="ef-checklist-bar" aria-hidden="true"><i class="ef-checklist-bar-fill" id="ef-check-bar"></i></span>
+            </div>
+            <div class="ef-checklist-items" id="ef-checklist"></div>
+            <div class="ef-checklist-reset">
+              <button class="ef-btn small" type="button" id="ef-check-reset">清空勾选</button>
+            </div>
+          </div>
+        </section>
+      </section>
+      <!-- ===== /大分类：美术资产规范 ===== -->
     </main>
 
     <button class="ef-totop" id="ef-totop" type="button" aria-label="回到顶部" title="回到顶部">
@@ -1352,7 +2229,7 @@
         }
 
         /* ---------- 4. 状态 ---------- */
-        var state = { view: 'tree', filter: 'all', q: '' };
+        var state = { proj: 'yybld', view: 'tree', filter: 'all', q: '' };
         var treeEl = document.getElementById('ef-tree');
         var treeEmpty = document.getElementById('ef-tree-empty');
         var modelsBody = document.getElementById('ef-models-body');
@@ -1443,6 +2320,8 @@
           });
         }
         function setView(view) {
+          // 视图切换属于便利店资产对照范畴：若当前在规范文档大分类，先切回便利店
+          if (state.proj !== 'yybld' && typeof setProj === 'function') setProj('yybld');
           if (view === state.view) return;
           state.view = view;
           syncViewBtns();
@@ -1615,6 +2494,13 @@
 
         if (sidenavEl) {
           sidenavEl.addEventListener('click', function (ev) {
+            var docLink = ev.target.closest('[data-nav-doc]');
+            if (docLink) {
+              ev.preventDefault();
+              var sec = document.getElementById(docLink.dataset.navDoc);
+              if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              return;
+            }
             var link = ev.target.closest('[data-nav-filter]');
             if (!link) return;
             ev.preventDefault();
@@ -1648,8 +2534,27 @@
 
         function syncSidenav() {
           if (!sidenavEl) return;
+          if (state.proj === 'spec') return syncDocNav();
           Array.prototype.forEach.call(sidenavEl.querySelectorAll('[data-nav-filter]'), function (a) {
             if (a.dataset.navFilter === state.filter) a.setAttribute('aria-current', 'true');
+            else a.removeAttribute('aria-current');
+          });
+        }
+
+        // 规范文档章节：滚动位置反查当前章节并高亮
+        var docSecs = [];
+        function syncDocNav() {
+          if (!sidenavEl || state.proj !== 'spec') return;
+          if (!docSecs.length) {
+            docSecs = Array.prototype.slice.call(document.querySelectorAll('#proj-view-spec .ef-doc-sec'));
+          }
+          var probe = window.innerHeight * 0.28;
+          var activeId = docSecs.length ? docSecs[0].id : '';
+          docSecs.forEach(function (sec) {
+            if (sec.getBoundingClientRect().top <= probe) activeId = sec.id;
+          });
+          sidenavEl.querySelectorAll('[data-nav-doc]').forEach(function (a) {
+            if (a.dataset.navDoc === activeId) a.setAttribute('aria-current', 'true');
             else a.removeAttribute('aria-current');
           });
         }
@@ -1745,15 +2650,68 @@
           document.querySelectorAll(sel).forEach(function (el) { el.textContent = val; });
         }
 
-        // 8.1 项目导航（便利店激活；中餐厅等预留置灰）
-        document.getElementById('ef-projects').innerHTML = (meta.projects || []).map(function (p) {
-          if (p.active) {
-            return '<button class="ef-chip" type="button" aria-pressed="true" data-proj="' + esc(p.key) + '">' +
-              esc(p.name) + ' <span class="n">' + p.count + '</span></button>';
+        // 8.1 大分类导航（便利店 / 中餐厅预留 / 美术资产规范）
+        var PROJ_LIST = (meta.projects && meta.projects.length) ? meta.projects : [
+          { key: 'yybld', name: '椰椰工坊：便利店', active: true },
+          { key: 'yyzct', name: '椰椰工坊：中餐厅', active: false },
+          { key: 'spec', name: '美术资产规范', active: false, type: 'doc' }
+        ];
+        var projNavEl = document.getElementById('ef-projects');
+        var viewYybld = document.getElementById('proj-view-yybld');
+        var viewSpec = document.getElementById('proj-view-spec');
+        var brandEl = document.querySelector('.ef-cmdbar .brand');
+
+        projNavEl.innerHTML = PROJ_LIST.map(function (p) {
+          var isDoc = p.type === 'doc';
+          // 预留项目（如中餐厅）：置灰不可点
+          if (!p.active && !isDoc) {
+            return '<button class="ef-chip" type="button" disabled title="预留项目，暂未接入">' +
+              esc(p.name) + ' <span class="n">预留</span></button>';
           }
-          return '<button class="ef-chip" type="button" disabled title="预留项目，暂未接入">' +
-            esc(p.name) + ' <span class="n">预留</span></button>';
+          var n = isDoc ? '资料' : p.count;
+          return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="' +
+            (p.active ? 'true' : 'false') + '">' + esc(p.name) + ' <span class="n">' + n + '</span></button>';
         }).join('');
+
+        // 大分类切换：同步主视图、导航胶囊、侧边栏分组与地址栏
+        function setProj(key) {
+          key = key === 'spec' ? 'spec' : 'yybld';
+          state.proj = key;
+          var isSpec = key === 'spec';
+          if (viewYybld) viewYybld.hidden = isSpec;
+          if (viewSpec) viewSpec.hidden = !isSpec;
+          projNavEl.querySelectorAll('[data-proj]').forEach(function (b) {
+            b.setAttribute('aria-pressed', b.dataset.proj === key ? 'true' : 'false');
+          });
+          // 侧边栏联动：按分组显隐导航项
+          if (sidenavEl) {
+            sidenavEl.querySelectorAll('[data-proj-group]').forEach(function (a) {
+              a.hidden = a.dataset.projGroup !== key;
+            });
+          }
+          // 品牌标识跟随当前大分类
+          if (brandEl) {
+            brandEl.innerHTML = isSpec
+              ? '<span class="seal">Y</span>YYBLD · ASSET SPEC'
+              : '<span class="seal">Y</span>YYBLD · ASSET INDEX';
+            brandEl.setAttribute('href', isSpec ? '#spec' : '#tree');
+          }
+          if (isSpec) {
+            state.view = 'tree';
+            syncViewBtns();
+            syncDocNav();
+          } else {
+            syncSidenav();
+          }
+          if (history.replaceState) history.replaceState(null, '', '#' + (isSpec ? 'spec' : state.view));
+        }
+
+        projNavEl.addEventListener('click', function (ev) {
+          var btn = ev.target.closest('[data-proj]');
+          if (!btn || btn.disabled) return;
+          setProj(btn.dataset.proj);
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
 
         // 8.2 分类筛选 chips（全部 + 五个内容分类，含内联图标与计数）
         filtersEl.innerHTML =
@@ -1771,15 +2729,103 @@
         setText('[data-fig="anims"]', String(meta.total_animations || ANIM_ROWS.length));
         setText('#ef-stamp, #ef-stamp-2', '同步于 ' + (meta.last_sync_time || '未同步'));
 
-        /* ---------- 9. 首次渲染：支持 #models / #anims 直达 ---------- */
+        /* ---------- 9. 首次渲染：支持 #models / #anims / #spec 直达 ---------- */
         var hash = (location.hash || '').replace('#', '');
         if (hash === 'models' || hash === 'anims') state.view = hash;
         ['tree', 'models', 'anims'].forEach(function (v) {
           document.getElementById('view-' + v).hidden = v !== state.view;
         });
         syncViewBtns();
-        syncSidenav();
         render(true);
+        setProj(hash === 'spec' ? 'spec' : 'yybld');
+
+        /* ---------- 10. 规范文档：自检清单（可勾选 · 本地持久化） ---------- */
+        var CHECK_ITEMS = [
+          ['摆盘 / 主食骨骼扁平', '<code>eat1</code>~<code>eatN</code> 或 <code>rice_1</code>~<code>rice_N</code> 内部无嵌套子骨骼（所有 cubes 直挂在对应骨骼下）。'],
+          ['餐具与筷子命名固定', '盘子为 <code>plate</code> / <code>bowl</code>，筷子为 <code>kz</code>，手臂为 <code>arm</code>。'],
+          ['前缀检查', '所有文件名、内部 Identifier、动画 Key 都有 <code>&lt;ns&gt;_</code>（如 <code>yyzct_</code>）。'],
+          ['全小写无空格', '没有大写、中文、空格和 <code>_final</code> 后缀。'],
+          ['图标规格对齐', '2D 物品图标已统一为 64×64（超大图已跑压缩工具）。'],
+          ['贴图无黑缝', 'UV 选区距离贴图外边缘留有 1~2 像素间隙。'],
+          ['贴图无半透明', 'Alpha 纯透明或纯实体，无半透明杂质边缘。'],
+          ['即食动画齐备', '即食动画文件内已集齐 <code>first_hold/scale/idle/take/eat</code> 五个动作。'],
+          ['端托腿部无关键帧', '第三人称端托动画未给腿部打帧。']
+        ];
+        var CHECK_KEY = 'yybld-spec-checklist';
+
+        (function initChecklist() {
+          var listEl = document.getElementById('ef-checklist');
+          if (!listEl) return;
+          var countEl = document.getElementById('ef-check-count');
+          var totalEl = document.getElementById('ef-check-total');
+          var barEl = document.getElementById('ef-check-bar');
+          var stampEl = document.getElementById('ef-check-stamp');
+          var resetBtn = document.getElementById('ef-check-reset');
+          var done = [];
+
+          try {
+            var saved = JSON.parse(localStorage.getItem(CHECK_KEY) || '[]');
+            if (Object.prototype.toString.call(saved) === '[object Array]') done = saved;
+          } catch (e) { done = []; }
+
+          var CHECK_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12.5 9.5 18 20 6.5"/></svg>';
+          listEl.innerHTML = CHECK_ITEMS.map(function (it, i) {
+            return '<div class="ef-check-item" role="checkbox" tabindex="0" data-check="' + i + '" aria-checked="false">' +
+              '<span class="ef-checkbox">' + CHECK_SVG + '</span>' +
+              '<span class="ef-check-label"><b>' + it[0] + '</b>：' + it[1] + '</span></div>';
+          }).join('');
+
+          var items = Array.prototype.slice.call(listEl.querySelectorAll('[data-check]'));
+          totalEl.textContent = String(items.length);
+
+          function apply() {
+            var n = 0;
+            items.forEach(function (el) {
+              var on = done.indexOf(Number(el.dataset.check)) >= 0;
+              el.classList.toggle('is-done', on);
+              el.setAttribute('aria-checked', on ? 'true' : 'false');
+              if (on) n++;
+            });
+            countEl.textContent = String(n);
+            if (barEl) barEl.style.width = (items.length ? (n / items.length * 100) : 0) + '%';
+            if (stampEl) stampEl.hidden = n !== items.length;
+          }
+
+          function toggle(el) {
+            var i = Number(el.dataset.check);
+            var at = done.indexOf(i);
+            if (at >= 0) done.splice(at, 1);
+            else done.push(i);
+            try { localStorage.setItem(CHECK_KEY, JSON.stringify(done)); } catch (e) {}
+            apply();
+          }
+
+          listEl.addEventListener('click', function (ev) {
+            var el = ev.target.closest('[data-check]');
+            if (el) toggle(el);
+          });
+          listEl.addEventListener('keydown', function (ev) {
+            if (ev.key !== ' ' && ev.key !== 'Enter') return;
+            var el = ev.target.closest('[data-check]');
+            if (!el) return;
+            ev.preventDefault();
+            toggle(el);
+          });
+          resetBtn.addEventListener('click', function () {
+            done = [];
+            try { localStorage.setItem(CHECK_KEY, JSON.stringify(done)); } catch (e) {}
+            apply();
+          });
+
+          apply();
+        })();
+
+        // 规范文档：代码片段点击即复制（沿用全局 toast / copy）
+        document.addEventListener('click', function (ev) {
+          var code = ev.target.closest('#proj-view-spec .ef-doc-code[data-copy]');
+          if (!code) return;
+          copy(code.dataset.copy, '已复制：' + code.dataset.copy);
+        });
 
         /* 导出给小纸条模块联动 */
         window.YYBLD_ASSETS = {

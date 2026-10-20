@@ -692,6 +692,7 @@ meta_summary = {
     "projects": [
         {"key": "yybld", "name": "椰椰工坊：便利店", "active": True, "count": len(entry_list)},
         {"key": "yyzct", "name": "椰椰工坊：中餐厅", "active": False, "count": 0},
+        {"key": "spec", "name": "美术资产规范", "active": False, "count": "规范文档", "type": "doc"},
     ],
     "total_entries": len(entry_list),
     "total_models": len(all_models),
