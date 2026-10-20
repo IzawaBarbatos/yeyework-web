@@ -611,6 +611,7 @@
     replyFor: null,
     replyDraft: {},
     isMember: true, // 是否项目成员（仅 GitHub 模式按仓库写权限判定）
+    pending: {}, // 乐观渲染暂存：写入成功但服务端列表尚未收录的条目（id -> {note, ts}）
     pollTimer: null,
     watchHandler: null
   };
@@ -1310,6 +1311,7 @@
       attachedAssets = [];
       syncAttachedUI();
       updateCounter();
+      addPending(Object.assign({}, rec, { _id: newId })); // 本地即时上屏，不等服务端列表
       refresh(false);
       refreshMember(); // 首次录入 Token 后重新判定成员态
     }).catch(function (e) {
@@ -1343,11 +1345,12 @@
     var subBtn = form.querySelector('button[type="submit"]');
     if (subBtn) subBtn.disabled = true;
 
-    state.store.add(rec).then(function () {
+    state.store.add(rec).then(function (newId) {
       if (subBtn) subBtn.disabled = false;
       rememberAuthors(authors);
       state.replyFor = null;
       delete state.replyDraft[parentId];
+      addPending(Object.assign({}, rec, { _id: newId })); // 本地即时上屏，不等服务端列表
       refresh(false);
     }).catch(function (e) {
       if (subBtn) subBtn.disabled = false;
@@ -1376,10 +1379,34 @@
     };
   }
 
+  /* 乐观渲染：GitHub 列表接口读侧有缓存/收录延迟，写入成功后先本地落一条并暂存，
+     刷新时若服务端仍未收录则由暂存补齐，避免"提交后要等一会儿才出现" */
+  var PENDING_TTL = 180000; // 3 分钟兜底，防止异常时暂存长期驻留
+
+  function addPending(rec) {
+    var note = normalize(rec);
+    state.pending[note._id] = { note: note, ts: Date.now() };
+    state.notes.push(note);
+    render();
+    return note;
+  }
+
+  function mergePending(list) {
+    var now = Date.now();
+    Object.keys(state.pending).forEach(function (id) {
+      var p = state.pending[id];
+      if (!p || now - p.ts > PENDING_TTL) { delete state.pending[id]; return; }
+      var hit = list.some(function (n) { return n._id === id; });
+      if (hit) { delete state.pending[id]; return; } // 服务端已收录，改用权威数据
+      list.push(p.note);
+    });
+    return list;
+  }
+
   function refresh(silent) {
     if (!state.store) return Promise.resolve();
     return state.store.list().then(function (rawList) {
-      state.notes = (rawList || []).map(normalize);
+      state.notes = mergePending((rawList || []).map(normalize));
       render();
     }).catch(function (e) {
       console.warn('[小纸条] 刷新失败：', e);
