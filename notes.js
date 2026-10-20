@@ -320,7 +320,7 @@
 
         issues.forEach(function (it) {
           if (it.pull_request) return; // 排除 PR
-          var meta = { authors: [], targets: [] };
+          var meta = { authors: [], targets: [], files: [] };
           var text = it.body || '';
           var m = text.match(/<!--\s*EF_NOTE\s*([\s\S]*?)\s*-->/);
           if (m) {
@@ -334,6 +334,7 @@
             _id: id,
             authors: meta.authors || [],
             targets: meta.targets || [],
+            files: meta.files || [],
             text: text,
             status: it.state === 'closed' ? 'resolved' : 'open',
             created_at: meta.created_at || new Date(it.created_at).getTime(),
@@ -399,6 +400,7 @@
           var body = '<!--EF_NOTE\n' + JSON.stringify({
             authors: rec.authors || [],
             targets: rec.targets || [],
+            files: rec.files || [],
             created_at: rec.created_at || Date.now()
           }) + '\n-->\n' + rec.text;
 
@@ -542,22 +544,36 @@
   var els = {};
   var pickers = { authors: null, targets: null };
 
-  /* ---------------- 双折叠子分区控制 ---------------- */
+  /* ---------------- 整卡与双折叠子分区控制 ---------------- */
   var collapseState = {
+    master: false,
     compose: false,
     list: false
   };
 
   try {
-    var savedCollapse = localStorage.getItem('ef_notes_collapse_v1');
+    var savedCollapse = localStorage.getItem('ef_notes_collapse_v2');
     if (savedCollapse) collapseState = Object.assign(collapseState, JSON.parse(savedCollapse));
   } catch (e) {}
 
   function saveCollapseState() {
-    try { localStorage.setItem('ef_notes_collapse_v1', JSON.stringify(collapseState)); } catch (e) {}
+    try { localStorage.setItem('ef_notes_collapse_v2', JSON.stringify(collapseState)); } catch (e) {}
   }
 
   function updateCollapseUI() {
+    var masterWrap = $('#ef-notes-main-wrap');
+    var masterToggleBtn = $('#ef-notes-master-toggle');
+
+    if (masterWrap) {
+      masterWrap.setAttribute('data-master-collapsed', collapseState.master ? 'true' : 'false');
+    }
+    if (masterToggleBtn) {
+      masterToggleBtn.setAttribute('aria-expanded', collapseState.master ? 'false' : 'true');
+      masterToggleBtn.innerHTML = collapseState.master
+        ? '<span class="ic">▾</span> 展开留言板'
+        : '<span class="ic">▴</span> 收起留言板';
+    }
+
     var composeSec = $('#ef-notes-compose-wrap');
     var listSec = $('#ef-notes-list-wrap');
     var toggleComposeBtn = $('#ef-notes-toggle-compose');
@@ -581,7 +597,9 @@
   }
 
   function toggleCollapse(secName) {
-    if (secName === 'compose') {
+    if (secName === 'master') {
+      collapseState.master = !collapseState.master;
+    } else if (secName === 'compose') {
       collapseState.compose = !collapseState.compose;
     } else if (secName === 'list') {
       collapseState.list = !collapseState.list;
@@ -591,17 +609,261 @@
   }
 
   function bindCollapse() {
+    var masterToggleBtn = $('#ef-notes-master-toggle');
     var toggleComposeBtn = $('#ef-notes-toggle-compose');
     var toggleListBtn = $('#ef-notes-toggle-list');
     var secComposeBtn = $('[data-toggle-sec="compose"]');
     var secListBtn = $('[data-toggle-sec="list"]');
 
+    if (masterToggleBtn) masterToggleBtn.addEventListener('click', function () { toggleCollapse('master'); });
     if (toggleComposeBtn) toggleComposeBtn.addEventListener('click', function () { toggleCollapse('compose'); });
     if (toggleListBtn) toggleListBtn.addEventListener('click', function () { toggleCollapse('list'); });
     if (secComposeBtn) secComposeBtn.addEventListener('click', function () { toggleCollapse('compose'); });
     if (secListBtn) secListBtn.addEventListener('click', function () { toggleCollapse('list'); });
 
     updateCollapseUI();
+  }
+
+  /* ---------------- 贴上/关联资产多选选择器 ---------------- */
+  var attachedAssets = []; // [{ relPath, cn, name, cat }]
+  var pickerSelected = {}; // relPath -> asset item
+  var assetFilterQuery = '';
+
+  var cachedAssets = null;
+  function getFlatAssets() {
+    if (cachedAssets) return cachedAssets;
+    if (window.YYBLD_ASSETS && Array.isArray(window.YYBLD_ASSETS.FLAT)) {
+      var seen = {};
+      var list = [];
+      window.YYBLD_ASSETS.FLAT.forEach(function (f) {
+        var r = f.rel_path || f.relPath || f.path || '';
+        if (!r || seen[r]) return;
+        seen[r] = true;
+        var entry = f._entry || {};
+        var cn = entry.chinese_name || f.chinese_name || f.cn || '';
+        var name = f.file_name || f.name || r.split(/[\\/]/).pop();
+        var cat = entry.category || f.category || f._kind || 'asset';
+        list.push({
+          relPath: r,
+          name: name,
+          cn: cn,
+          cat: cat
+        });
+      });
+      cachedAssets = list;
+      return cachedAssets;
+    }
+    return [];
+  }
+
+  function syncAttachedUI() {
+    var countEl = $('#ef-notes-assets-count');
+    var listEl = $('#ef-notes-attached-list');
+    if (!listEl) return;
+
+    if (!attachedAssets.length) {
+      if (countEl) countEl.textContent = '未关联文件';
+      listEl.innerHTML = '';
+      return;
+    }
+
+    if (countEl) countEl.textContent = '已贴上 ' + attachedAssets.length + ' 个关联文件';
+
+    listEl.innerHTML = attachedAssets.map(function (item, idx) {
+      var displayName = item.cn || item.name || item.relPath;
+      return '' +
+        '<div class="notes-attached-tag cut-br" data-idx="' + idx + '">' +
+          '<span class="notes-tag-cn">' + esc(displayName) + '</span>' +
+          '<span class="notes-tag-path">' + esc(item.relPath) + '</span>' +
+          '<button type="button" class="notes-attached-tag-del" data-del-asset="' + idx + '" title="移除此文件">✕</button>' +
+        '</div>';
+    }).join('');
+  }
+
+  function renderPickerList() {
+    var listEl = $('#ef-asset-picker-list');
+    var countEl = $('#ef-asset-picker-count');
+    var totalEl = $('#ef-asset-picker-total');
+    if (!listEl) return;
+
+    var all = getFlatAssets();
+    var q = assetFilterQuery.trim().toLowerCase();
+
+    var filtered = all;
+    if (q) {
+      filtered = all.filter(function (it) {
+        var cn = (it.cn || '').toLowerCase();
+        var name = (it.name || '').toLowerCase();
+        var relPath = (it.relPath || '').toLowerCase();
+        var cat = (it.cat || '').toLowerCase();
+        return cn.indexOf(q) >= 0 || name.indexOf(q) >= 0 || relPath.indexOf(q) >= 0 || cat.indexOf(q) >= 0;
+      });
+    }
+
+    var selectedCount = Object.keys(pickerSelected).length;
+    if (countEl) countEl.textContent = '已勾选 ' + selectedCount + ' 项';
+    if (totalEl) totalEl.textContent = '检索出 ' + filtered.length + ' / ' + all.length + ' 项';
+
+    if (!filtered.length) {
+      listEl.innerHTML = '<div class="ef-asset-picker-empty">// 未找到匹配的美术资产文件</div>';
+      return;
+    }
+
+    var limit = 200;
+    var slice = filtered.slice(0, limit);
+
+    listEl.innerHTML = slice.map(function (it) {
+      var isChecked = !!pickerSelected[it.relPath];
+      var cnTitle = it.cn || it.name;
+      return '' +
+        '<div class="ef-asset-item cut-br' + (isChecked ? ' is-checked' : '') + '" data-asset-path="' + esc(it.relPath) + '">' +
+          '<div class="ef-asset-item-box" aria-hidden="true"></div>' +
+          '<div class="ef-asset-item-meta">' +
+            '<div class="ef-asset-item-cn" title="' + esc(cnTitle) + '">' + esc(cnTitle) + '</div>' +
+            '<div class="ef-asset-item-sub">' +
+              '<span class="ef-asset-item-cat">' + esc(it.cat || 'asset') + '</span>' +
+              '<span title="' + esc(it.relPath) + '">' + esc(it.name) + '</span>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+    }).join('');
+  }
+
+  function openAssetPicker() {
+    var dialog = $('#ef-asset-picker');
+    if (!dialog) return;
+
+    pickerSelected = {};
+    attachedAssets.forEach(function (it) {
+      pickerSelected[it.relPath] = it;
+    });
+
+    var searchInput = $('#ef-asset-search');
+    if (searchInput) searchInput.value = '';
+    assetFilterQuery = '';
+
+    renderPickerList();
+    if (typeof dialog.showModal === 'function') {
+      dialog.showModal();
+    } else {
+      dialog.setAttribute('open', '');
+    }
+  }
+
+  function closeAssetPicker() {
+    var dialog = $('#ef-asset-picker');
+    if (!dialog) return;
+    if (typeof dialog.close === 'function') {
+      dialog.close();
+    } else {
+      dialog.removeAttribute('open');
+    }
+  }
+
+  function bindAssetPicker() {
+    var attachBtn = $('#ef-notes-attach-btn');
+    var dialog = $('#ef-asset-picker');
+    var closeBtn = $('#ef-asset-picker-close');
+    var cancelBtn = $('#ef-asset-picker-cancel');
+    var confirmBtn = $('#ef-asset-picker-confirm');
+    var searchInput = $('#ef-asset-search');
+    var selectAllBtn = $('#ef-asset-select-all');
+    var clearAllBtn = $('#ef-asset-clear-all');
+    var listEl = $('#ef-asset-picker-list');
+    var attachedListEl = $('#ef-notes-attached-list');
+
+    if (attachBtn) attachBtn.addEventListener('click', openAssetPicker);
+    if (closeBtn) closeBtn.addEventListener('click', closeAssetPicker);
+    if (cancelBtn) cancelBtn.addEventListener('click', closeAssetPicker);
+
+    if (confirmBtn) {
+      confirmBtn.addEventListener('click', function () {
+        attachedAssets = Object.keys(pickerSelected).map(function (k) { return pickerSelected[k]; });
+        syncAttachedUI();
+        closeAssetPicker();
+      });
+    }
+
+    if (selectAllBtn) {
+      selectAllBtn.addEventListener('click', function () {
+        var all = getFlatAssets();
+        var q = assetFilterQuery.trim().toLowerCase();
+        var filtered = all;
+        if (q) {
+          filtered = all.filter(function (it) {
+            var cn = (it.cn || '').toLowerCase();
+            var name = (it.name || '').toLowerCase();
+            var relPath = (it.relPath || '').toLowerCase();
+            var cat = (it.cat || '').toLowerCase();
+            return cn.indexOf(q) >= 0 || name.indexOf(q) >= 0 || relPath.indexOf(q) >= 0 || cat.indexOf(q) >= 0;
+          });
+        }
+        filtered.forEach(function (it) {
+          pickerSelected[it.relPath] = {
+            relPath: it.relPath,
+            name: it.name,
+            cn: it.cn || it.name,
+            cat: it.cat
+          };
+        });
+        renderPickerList();
+      });
+    }
+
+    if (clearAllBtn) {
+      clearAllBtn.addEventListener('click', function () {
+        pickerSelected = {};
+        renderPickerList();
+      });
+    }
+
+    if (searchInput) {
+      var sTimer = 0;
+      searchInput.addEventListener('input', function () {
+        clearTimeout(sTimer);
+        sTimer = setTimeout(function () {
+          assetFilterQuery = searchInput.value || '';
+          renderPickerList();
+        }, 120);
+      });
+    }
+
+    if (listEl) {
+      listEl.addEventListener('click', function (ev) {
+        var itemEl = ev.target.closest('.ef-asset-item');
+        if (!itemEl) return;
+        var p = itemEl.dataset.assetPath;
+        if (!p) return;
+
+        if (pickerSelected[p]) {
+          delete pickerSelected[p];
+        } else {
+          var all = getFlatAssets();
+          var found = all.find(function (a) { return a.relPath === p; });
+          if (found) {
+            pickerSelected[p] = {
+              relPath: found.relPath,
+              name: found.name,
+              cn: found.cn || found.name,
+              cat: found.cat
+            };
+          }
+        }
+        renderPickerList();
+      });
+    }
+
+    if (attachedListEl) {
+      attachedListEl.addEventListener('click', function (ev) {
+        var delBtn = ev.target.closest('[data-del-asset]');
+        if (!delBtn) return;
+        var idx = Number(delBtn.dataset.delAsset);
+        if (!isNaN(idx) && idx >= 0 && idx < attachedAssets.length) {
+          attachedAssets.splice(idx, 1);
+          syncAttachedUI();
+        }
+      });
+    }
   }
 
   /* ---------------- UI 渲染 ---------------- */
@@ -675,6 +937,22 @@
       ? '<span class="notes-meta-sep">│</span><span class="notes-targets-label">对接 →</span> ' + peopleTags(targets)
       : '';
 
+    var assetsBlock = '';
+    var files = Array.isArray(n.files) ? n.files : [];
+    if (files.length) {
+      assetsBlock = '' +
+        '<div class="notes-card-assets">' +
+          '<span class="notes-card-assets-label">// 关联文件:</span>' +
+          files.map(function (f) {
+            var label = f.cn || f.name || f.relPath;
+            return '<button type="button" class="notes-asset-chip cut-br" data-open-asset="' + esc(f.relPath) + '" title="在网站中打开此资产详情">' +
+              '<span class="chip-cn">' + esc(label) + '</span>' +
+              '<span class="chip-path">' + esc(f.relPath) + '</span>' +
+            '</button>';
+          }).join('') +
+        '</div>';
+    }
+
     return '' +
       '<article class="notes-card" data-note-id="' + esc(n._id) + '">' +
         '<header class="notes-meta">' +
@@ -689,6 +967,7 @@
           '</div>' +
         '</header>' +
         '<div class="notes-body">' + esc(n.text) + '</div>' +
+        assetsBlock +
         '<footer class="notes-acts">' + acts.join('') + '</footer>' +
       '</article>';
   }
@@ -788,6 +1067,7 @@
     var rec = {
       authors: authors,
       targets: targets,
+      files: attachedAssets.slice(),
       text: text,
       status: 'open',
       parent_id: null,
@@ -802,6 +1082,8 @@
       els.text.value = '';
       if (els.customTarget) els.customTarget.value = '';
       if (pickers.targets) pickers.targets.setSelected([]);
+      attachedAssets = [];
+      syncAttachedUI();
       updateCounter();
       refresh(false);
     }).catch(function (e) {
@@ -859,6 +1141,7 @@
       parent_id: rec.parent_id ? String(rec.parent_id) : null,
       authors: toArray(rec.authors),
       targets: toArray(rec.targets),
+      files: Array.isArray(rec.files) ? rec.files : [],
       text: String(rec.text || ''),
       status: rec.status === 'resolved' ? 'resolved' : 'open',
       created_at: Number(rec.created_at) || Date.now(),
@@ -892,6 +1175,16 @@
 
   function bindList() {
     els.list.addEventListener('click', function (ev) {
+      var assetChip = ev.target.closest('[data-open-asset]');
+      if (assetChip) {
+        ev.preventDefault();
+        var relPath = assetChip.dataset.openAsset;
+        if (window.YYBLD_ASSETS && typeof window.YYBLD_ASSETS.openDrawerByRelPath === 'function') {
+          window.YYBLD_ASSETS.openDrawerByRelPath(relPath);
+        }
+        return;
+      }
+
       var btn = ev.target.closest('[data-act]');
       if (!btn) return;
       var act = btn.dataset.act;
@@ -941,6 +1234,8 @@
       els.text.value = ''; if (els.customTarget) els.customTarget.value = '';
       if (pickers.targets) pickers.targets.setSelected([]);
       if (pickers.authors) pickers.authors.setSelected([]);
+      attachedAssets = [];
+      syncAttachedUI();
       showError(''); updateCounter();
     });
   }
@@ -988,7 +1283,7 @@
     }
     if (els.hint) {
       if (isGithub) {
-        els.hint.innerHTML = '小纸条直接存放在 <strong>GitHub Issues</strong>，三人随时随地同步，终身 0 元。任何人打开免登录直接阅读，发帖时需录入一次个人 Token。';
+        els.hint.innerHTML = '小纸条直接存放在 <strong>GitHub Issues</strong>任何人打开免登录直接阅读，发帖时需录入一次个人 Token。';
       } else if (isCloud) {
         els.hint.innerHTML = '小纸条由三人共享，<strong>写完后其他人约半分钟内可见</strong>。';
       } else {
@@ -1038,6 +1333,8 @@
     if (els.customTarget) els.customTarget.hidden = !CFG.allowCustomTarget;
 
     bindCollapse();
+    bindAssetPicker();
+    syncAttachedUI();
     bindCompose();
     bindToolbar();
     bindList();
