@@ -263,6 +263,18 @@ def yybld_parse_authoritative(bp_dir, rp_dir, env):
         share_targets["models"].setdefault(geo_file, set()).add(item_stem)
         share_targets["textures"].setdefault(tex_base, set()).add(item_stem)
 
+    # 货架商品通用展示实体：模型/贴图分发到使用它的货架方块资源链
+    shelf_py = os.path.join(bp_dir, "yybld_scripts", "yybld", "server", "shelf_place.py")
+    if os.path.exists(shelf_py):
+        with open(shelf_py, "r", encoding="utf-8") as f:
+            shelf_src = f.read()
+        block = re.search(r"SHELF_LOCATORS\s*=\s*\{(.*?)\n\}", shelf_src, re.S)
+        if block:
+            for sid in re.findall(r'["\']yybld:([A-Za-z0-9_]+)["\']\s*:\s*\{', block.group(1)):
+                stem = group_stem(sid)
+                share_targets["models"].setdefault("yybld_display_universal", set()).add(stem)
+                share_targets["textures"].setdefault("yybld_display_universal", set()).add(stem)
+
     return food_stems, anim_use, share_targets
 
 
@@ -308,6 +320,10 @@ YYBLD_SPEC = {
     "anim_self_include": False,
     "entity_def_via_group_stem": False,
     "protected_stems": set(),
+    # 条目口径 = 创造模式物品栏可见内容：无使用者的通用动画不单独成条
+    "dissolve_anim_only": True,
+    # 通用资源已分发到使用它的资源链，自身（非创造模式物品）不再单独成条
+    "drop_stems": {"yybld_display_universal"},
     "scan_tex_dirs": ["items", "entity"],
     "def_labels": {
         "client_entity": "客户端实体定义",

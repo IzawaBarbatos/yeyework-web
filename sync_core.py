@@ -344,13 +344,31 @@ def scan_project(workspace_dir, spec):
         e["animations"] = dedup(e["animations"])
         e["textures"] = dedup(e["textures"])
 
-    # 8.6 解散纯共享模型条目（名下资源已分发完毕且自身不在真实注册表中）
+    # 8.6 解散纯共享条目（资源已分发完毕且自身不在真实注册表中）
     protected = spec["protected_stems"]
+    drop_stems = spec.get("drop_stems") or set()
     dissolved = 0
+    anim_owner = {}
+    for e in entries.values():
+        for a in e["animations"]:
+            anim_owner[a["file_stem"]] = anim_owner.get(a["file_stem"], 0) + 1
     for stem in list(entries.keys()):
-        if stem in TRUE_REG or stem in protected:
+        if stem in protected:
             continue
         e = entries[stem]
+        if stem in TRUE_REG:
+            # 真实注册项默认保留；显式 drop_stems 表示其资源已并入使用方资源链
+            if stem in drop_stems:
+                del entries[stem]
+                dissolved += 1
+            continue
+        # 无使用者的通用动画（仅自身引用）不单独成条
+        if (spec.get("dissolve_anim_only") and e["animations"]
+                and not e["models"] and not e["textures"]
+                and all(anim_owner.get(a["file_stem"], 0) <= 1 for a in e["animations"])):
+            del entries[stem]
+            dissolved += 1
+            continue
         all_m_shared = all(m[share_field] in shared_models for m in e["models"])
         all_t_shared = all(t["key"] in shared_textures for t in e["textures"])
         if (e["models"] or e["textures"]) and all_m_shared and all_t_shared:
