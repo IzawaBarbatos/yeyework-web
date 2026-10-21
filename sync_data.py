@@ -103,16 +103,22 @@ def write_outputs(page_payload):
     with open(html_path, "r", encoding="utf-8") as f:
         html = f.read()
     pattern = re.compile(r"<!--EF_DATA_START-->[\s\S]*?<!--EF_DATA_END-->")
-    if not pattern.search(html):
-        print("[!] index.html 未找到 EF_DATA 标记")
-        return
-    new_html = pattern.sub(lambda _m: placeholder, html, count=1)
+    new_html = pattern.sub(lambda _m: placeholder, html, count=1) if pattern.search(html) else html
+
+    # 4) data.js 版本指纹：托管平台（GitHub Pages / CDN）与浏览器会强缓存静态脚本，
+    #    每次同步改写入参，确保页面拿到的永远是最新数据
+    ver = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
+    new_html, hit = re.subn(r'src="data\.js(?:\?v=\d+)?"',
+                            'src="data.js?v=%s"' % ver, new_html, count=1)
+    if not hit:
+        print("[!] index.html 未找到 data.js 引用")
+
     if new_html != html:
         with open(html_path, "w", encoding="utf-8") as f:
             f.write(new_html)
-        print("[+] index.html 内联数据块已清理为占位")
+        print("[+] index.html 已更新（数据块占位 + data.js 版本指纹 %s）" % ver)
     else:
-        print("[=] index.html 数据块已是占位，无需变更")
+        print("[=] index.html 无需变更")
 
 
 if __name__ == "__main__":
