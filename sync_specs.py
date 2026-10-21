@@ -23,7 +23,7 @@ def yybld_norm_id(s):
 
 
 # 装饰性后缀（长后缀优先，避免 _hand 抢在 _small_hand 之前命中）
-YYBLD_DECOR_SUFFIXES = ("_small_hand", "_big_hand", "_hand", "_arm", "_hold", "_bind")
+YYBLD_DECOR_SUFFIXES = ("_small_hand", "_big_hand", "_hand", "_arm", "_hold", "_bind", "_icon")
 
 
 def yybld_label_group(name):
@@ -58,11 +58,13 @@ def yybld_anim_group(fname, anim_ids):
 def yybld_group_stem(name):
     """由文件名/标识符推导「条目主键 stem」（把同一内容的多套资源归到一组）。"""
     s = yybld_norm_id(name)
-    for ext in (".geo.json", ".animation.json", ".json"):
+    for ext in (".geo.json", ".animation.json", ".json", ".png"):
         if s.endswith(ext):
             s = s[: -len(ext)]
             break
     if s.endswith("_item"):
+        s = s[:-5]
+    if s.endswith("_icon"):
         s = s[:-5]
     # 通用展示实体不做前缀剥离，单独成条
     if s.startswith("yybld_display_universal"):
@@ -180,6 +182,9 @@ YYBLD_PREDEFINED_CN = {
     "yybld_niunaiyl_hezhuang": "牛奶饮料盒装（通用模型组）",
     "yybld_shupian_tongzhuang": "薯片桶装（通用模型组）",
     "yybld_yl_houjiao": "吼叫饮料（通用模型组）",
+    "yybld_mojiao_guanzhuang": "魔角饮料罐装（通用模型组）",
+    "yybld_lvdong_big": "律动大瓶（通用模型组）",
+    "yybld_lvdong_b": "律动大瓶手持（通用模型组）",
     "yybld_yuebing": "月饼（通用模型组）",
     # 面类方块模型组（与各方块状态条目区分）
     "yybld_fangbianmian_hongshaoniurou": "方便面-红烧牛肉（方块模型组）",

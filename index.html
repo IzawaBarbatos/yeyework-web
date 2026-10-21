@@ -1612,7 +1612,7 @@
           <div class="ef-doc-meta">
             <span class="ef-eyebrow slash">Spec / Documentation</span>
             <span class="ef-field">图文资料</span>
-            <span class="ef-field">版本 v1.0</span>
+            <span class="ef-field">版本 v1.23</span>
             <span class="ef-field">适用 <code>yyzct</code> · <code>yybld</code> · <code>yybldty</code></span>
           </div>
           <h1>
@@ -1669,6 +1669,13 @@
               <div class="ef-law-body">
                 <h3>Blockbench 导出设置</h3>
                 <p>格式选 <b>Bedrock Model</b>，版本 <code>1.12.0</code>；<code>Geometry Name</code> 必须填 <code>geometry.&lt;前缀&gt;&lt;名字&gt;</code>，严禁保留默认 <code>custom</code> / <code>unknown</code>。</p>
+              </div>
+            </article>
+            <article class="ef-law-card">
+              <span class="ef-law-num">07</span>
+              <div class="ef-law-body">
+                <h3>第一人称手模防花屏铁律（★64×64 强制）</h3>
+                <p>第一人称手持模型（<code>_hand</code>）贴图尺寸<b>必须强制为 64×64</b>，且<b>手臂 UV 严格保持原版不动</b>！严禁使用 16×16 或 32×32，否则游戏内原版手臂材质采样越界溢出，导致严重花屏杂色与贴图错乱。</p>
               </div>
             </article>
           </div>
@@ -1736,7 +1743,7 @@
                   </thead>
                   <tbody>
                     <tr><td>手持模型</td><td><code class="ef-doc-code" data-copy="yybld_&lt;食品&gt;_hand.geo.json">yybld_&lt;食品&gt;_hand.geo.json</code></td><td><code class="ef-doc-code" data-copy="geometry.yybld_&lt;食品&gt;_hand">geometry.yybld_&lt;食品&gt;_hand</code></td><td>第一人称手模</td></tr>
-                    <tr><td>模型贴图</td><td><code class="ef-doc-code" data-copy="yybld_&lt;食品&gt;_hand.png">yybld_&lt;食品&gt;_hand.png</code></td><td>——</td><td>UV 贴图（无半透明边缘）</td></tr>
+                    <tr><td>模型贴图</td><td><code class="ef-doc-code" data-copy="yybld_&lt;食品&gt;_hand.png">yybld_&lt;食品&gt;_hand.png</code></td><td>——</td><td><b>强制 64×64 规格</b>（UV 贴图，严禁 16×16 / 32×32，无半透明边缘）</td></tr>
                     <tr><td>物品栏图标</td><td><code class="ef-doc-code" data-copy="yybld_&lt;食品&gt;.png">yybld_&lt;食品&gt;.png</code></td><td>——</td><td>2D 物品图标，64×64</td></tr>
                     <tr><td>吃 / 喝音效</td><td><code class="ef-doc-code" data-copy="yybld_&lt;食品&gt;_eat.ogg">yybld_&lt;食品&gt;_eat.ogg</code></td><td>——</td><td>咬碎或吞咽音效（标准 OGG）</td></tr>
                   </tbody>
@@ -1747,6 +1754,13 @@
 └── waist
     ├── arm           (右手臂，必须全小写拼写为 arm)
     └── food / drink  (食物或饮料骨骼)</pre>
+              <h4 class="ef-chain-subhead">第一人称手模防花屏与 UV 制作硬性规范（★核心技术避坑）</h4>
+              <ul class="ef-bone-rules">
+                <li><b>花屏拉伸底层原理</b>：渲染控制器（<code>food_arm_&lt;N&gt;</code>）将假手臂绑定到玩家默认皮肤（<code>Texture.default</code>，固定为 <b>64×64 像素</b>），手臂骨骼使用原版硬编码 UV；当手模工程贴图为 16×16 或 32×32 时，引擎计算采样点 <code>uv * 64 / texture_width</code> 发生 <b>4 倍或 2 倍越界溢出</b>，导致手臂呈现严重拉伸杂色与贴图错乱（花屏）。</li>
+                <li><b>铁律一：工程画布强制 64×64</b>：Blockbench 工程创建贴图及导出时，分辨率必须锁定为 <b>64×64</b>，模型 JSON 必须输出 <code>"texture_width": 64, "texture_height": 64</code>。</li>
+                <li><b>铁律二：手臂 UV 严禁挪动</b>：手臂骨骼（<code>arm</code>）的 UV 选区必须严格保留在 64×64 画布的原版手臂对应位置，<b>绝对禁止缩放、挪动或重新拆分</b>。</li>
+                <li><b>铁律三：低分辨率食品像素摆放</b>：若食品需呈现 16×16 复古像素风，应在 64×64 画布的空白区域绘制，或将 16×16 贴图无损放大至 64×64 画布内，<b>严禁直接缩小整个工程画布尺寸</b>。</li>
+              </ul>
             </div>
           </article>
 
@@ -2064,7 +2078,7 @@
           <div class="ef-checklist-wrap">
             <div class="ef-checklist-progress">
               <span class="ef-checklist-progress-text">
-                已完成 <b id="ef-check-count">0</b> / <span id="ef-check-total">9</span>
+                已完成 <b id="ef-check-count">0</b> / <span id="ef-check-total">10</span>
                 <span class="ef-stamp-badge" id="ef-check-stamp" hidden>READY</span>
               </span>
               <span class="ef-checklist-bar" aria-hidden="true"><i class="ef-checklist-bar-fill" id="ef-check-bar"></i></span>
@@ -2940,6 +2954,7 @@
         var CHECK_ITEMS = [
           ['摆盘 / 主食骨骼扁平', '<code>eat1</code>~<code>eatN</code> 或 <code>rice_1</code>~<code>rice_N</code> 内部无嵌套子骨骼（所有 cubes 直挂在对应骨骼下）。'],
           ['餐具与筷子命名固定', '盘子为 <code>plate</code> / <code>bowl</code>，筷子为 <code>kz</code>，手臂为 <code>arm</code>。'],
+          ['手模防花屏（64×64）', '第一人称手模（<code>_hand</code>）贴图尺寸严格为 64×64，手臂 UV 严格保持原版不动（严禁 16×16/32×32，防止手臂材质采样越界导致严重花屏）。'],
           ['前缀检查', '所有文件名、内部 Identifier、动画 Key 都有 <code>&lt;ns&gt;_</code>（如 <code>yyzct_</code>）。'],
           ['全小写无空格', '没有大写、中文、空格和 <code>_final</code> 后缀。'],
           ['图标规格对齐', '2D 物品图标已统一为 64×64（超大图已跑压缩工具）。'],
