@@ -650,7 +650,7 @@
   var state = {
     store: null,
     notes: [],
-    filter: 'all',
+    filter: 'open', // 默认只看「待处理」（与 index.html 分段控件默认态一致）
     q: '',
     replyFor: null,
     replyDraft: {},
