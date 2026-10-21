@@ -243,7 +243,7 @@ def scan_project(workspace_dir, spec):
             all_models.append({
                 "file_name": f,
                 "file_stem": base_f,
-                "file_key": f[:-5] if f.endswith(".json") else f,
+                "file_key": base_f,   # 几何标识符口径（如 xxx.geo.json -> xxx），供共享分发匹配
                 "rel_path": rel_proj(fp),
                 "size_str": size_str(sz), "size_bytes": sz, "mtime": mtime_str(fp),
                 "geometry_ids": geo_ids,

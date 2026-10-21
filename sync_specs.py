@@ -176,27 +176,6 @@ YYBLD_PREDEFINED_CN = {
     "yybld_yl_houjiao_drink": "通用吼叫饮料饮用动画（第一人称）",
     "yybld_niunaiyl_hezhuang_hand": "通用牛奶饮料盒装手持动画（第一人称）",
     "yybld_eat": "通用食用动画（第一人称）",
-    # 共用模型组（多方块 / 多配色复用同一套几何，无独立 lang 条目）
-    "yybld_niunai_hezhuang": "牛奶盒装（通用模型组）",
-    "yybld_niunai_sanjiaohezhuang": "牛奶三角盒装（通用模型组）",
-    "yybld_niunaiyl_hezhuang": "牛奶饮料盒装（通用模型组）",
-    "yybld_shupian_tongzhuang": "薯片桶装（通用模型组）",
-    "yybld_yl_houjiao": "吼叫饮料（通用模型组）",
-    "yybld_mojiao_guanzhuang": "魔角饮料罐装（通用模型组）",
-    "yybld_lvdong_big": "律动大瓶（通用模型组）",
-    "yybld_lvdong_b": "律动大瓶手持（通用模型组）",
-    "yybld_yuebing": "月饼（通用模型组）",
-    # 面类方块模型组（与各方块状态条目区分）
-    "yybld_fangbianmian_hongshaoniurou": "方便面-红烧牛肉（方块模型组）",
-    "yybld_fangbianmian_haixian": "方便面-海鲜（方块模型组）",
-    # 饮料手持模型组（大瓶）
-    "yybld_yl_hongcha_b": "红茶饮料（大瓶模型组）",
-    "yybld_yl_kuoluo_b": "阔落饮料（大瓶模型组）",
-    "yybld_yl_leibi_b": "雷碧饮料（大瓶模型组）",
-    "yybld_yl_shuye_b": "树叶饮料（大瓶模型组）",
-    # 共用饮品/食品饮用动画（第一人称）
-    "yybld_niunaiyl_hezhuang_drink": "通用牛奶饮料盒装饮用动画（第一人称）",
-    "yybld_shupian_tongzhuang_drink": "通用薯片桶装饮用动画（第一人称）",
 }
 
 
