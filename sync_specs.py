@@ -279,7 +279,7 @@ def yybld_parse_authoritative(bp_dir, rp_dir, env):
 
 
 YYBLD_CATEGORIES = [
-    ("food", "食品饮料", "带第一人称吃喝动画的食品 / 饮品资源链（含共享模型组与通用吃喝动画）"),
+    ("food", "食品饮料", "带第一人称吃喝动画的食品 / 饮品资源链（共享几何与贴图已并入各口味条目）"),
     ("block", "普通方块", "配置了自定义模型（netease_block）的方块资源链"),
     ("block_entity", "方块实体", "配置了网易方块实体（netease:block_entity）的方块资源链"),
     ("item", "物品", "所有物品（道具 / 工具 / 手册等）资源链"),
