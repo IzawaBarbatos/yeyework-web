@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>椰椰工坊 · 便利店 美术资产对照索引</title>
+    <title>椰椰工坊 · 项目资料库</title>
     <script>
       // 主题 / 字号：优先使用上次选择，其次跟随系统；在绘制前写入，避免闪烁
       (function () {
@@ -309,7 +309,7 @@
         }
       }
 
-      /* ---------- 项目导航（便利店 / 中餐厅预留） ---------- */
+      /* ---------- 项目导航（按数据动态生成项目胶囊） ---------- */
       .ef-cmdbar .proj-nav {
         align-items: center;
         gap: 0.45rem;
@@ -1279,7 +1279,7 @@
     <div class="ef-tri ef-in-sweep" aria-hidden="true"><i></i><i></i><i></i></div>
 
     <header class="ef-cmdbar">
-      <a class="brand" href="#tree" data-view="tree"><span class="seal">Y</span>YYBLD · ASSET INDEX</a>
+      <a class="brand" href="#tree" data-view="tree"><span class="seal">Y</span>YY · PROJECT ARCHIVE</a>
       <nav class="proj-nav" id="ef-projects" aria-label="项目导航"></nav>
       <div class="util">
         <span class="ef-field" id="ef-stamp">未同步</span>
@@ -1293,27 +1293,15 @@
     </header>
 
     <nav class="ef-sidenav" id="ef-sidenav" aria-label="分类导航">
-      <!-- 便利店：内容分类 -->
-      <a href="#tree" data-proj-group="yybld" data-nav-filter="all" aria-current="true"><span class="n">00</span><span class="t">全部</span></a>
-      <a href="#tree" data-proj-group="yybld" data-nav-filter="food"><span class="n">01</span><span class="t">食品饮料</span></a>
-      <a href="#tree" data-proj-group="yybld" data-nav-filter="block"><span class="n">02</span><span class="t">普通方块</span></a>
-      <a href="#tree" data-proj-group="yybld" data-nav-filter="block_entity"><span class="n">03</span><span class="t">方块实体</span></a>
-      <a href="#tree" data-proj-group="yybld" data-nav-filter="item"><span class="n">04</span><span class="t">物品</span></a>
-      <a href="#tree" data-proj-group="yybld" data-nav-filter="entity"><span class="n">05</span><span class="t">实体</span></a>
-      <a href="#ef-notes" data-proj-group="yybld" data-nav-notes="1"><span class="n">06</span><span class="t">小纸条</span></a>
-      <!-- 美术资产规范：章节目录 -->
-      <a href="#doc-sec-00" data-proj-group="spec" data-nav-doc="doc-sec-00"><span class="n">00</span><span class="t">全局铁律</span></a>
-      <a href="#doc-sec-01" data-proj-group="spec" data-nav-doc="doc-sec-01"><span class="n">01</span><span class="t">资源链清单</span></a>
-      <a href="#doc-sec-02" data-proj-group="spec" data-nav-doc="doc-sec-02"><span class="n">02</span><span class="t">动画规范</span></a>
-      <a href="#doc-sec-03" data-proj-group="spec" data-nav-doc="doc-sec-03"><span class="n">03</span><span class="t">自检表</span></a>
+      <!-- 导航项由 main 脚本依据当前项目数据生成（内容分类 + 小纸条 + 规范文档章节目录） -->
     </nav>
 
     <main class="wrap">
-      <!-- ===== 大分类：椰椰工坊 · 便利店（美术资产对照主视图） ===== -->
-      <div class="proj-view" id="proj-view-yybld">
+      <!-- ===== 项目资料库主视图（头部 / 留言板 / 资产对照主体随当前项目切换） ===== -->
+      <div class="proj-view" id="proj-view-main">
       <header class="ef-head ef-in-drive">
-        <h1>美术资产对照索引 <small>Model / Animation / Texture / Name</small></h1>
-        <p>便利店项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。</p>
+        <h1><span id="ef-head-title">美术资产对照索引</span> <small id="ef-head-sub">Model / Animation / Texture / Name</small></h1>
+        <p id="ef-head-desc">项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。</p>
       </header>
 
       <!-- 顶置小纸条留言板：查看在上、编写在下，支持整卡一键收起与文件资产多选贴上 -->
@@ -1436,6 +1424,126 @@
         </div>
       </section>
 
+      <!-- 顶置小纸条留言板（中餐厅）：结构与便利店一致，元素 id 统一加 z- 前缀以便实例化隔离 -->
+      <section class="ef-panel cut-br notes" id="ef-z-notes" aria-labelledby="ef-z-notes-title" data-master-collapsed="false" hidden>
+        <header class="notes-header">
+          <div class="notes-header-main">
+            <h2 class="notes-title" id="ef-z-notes-title">
+              小纸条留言板
+              <small id="ef-z-notes-mode">载入中…</small>
+            </h2>
+            <p class="notes-hint ef-field" id="ef-z-notes-hint"></p>
+          </div>
+          <div class="notes-header-toggles" role="group" aria-label="小纸条开关">
+            <button class="ef-btn small cut-br" type="button" id="ef-z-notes-toggle-list" aria-expanded="true">
+              <span class="ic">☰</span> 查看纸条
+            </button>
+            <button class="ef-btn small cut-br" type="button" id="ef-z-notes-toggle-compose" aria-expanded="true">
+              <span class="ic">✎</span> 编写纸条
+            </button>
+            <button class="ef-btn small cut-br notes-master-btn" type="button" id="ef-z-notes-master-toggle" aria-expanded="true">
+              <span class="ic">▴</span> 收起留言板
+            </button>
+          </div>
+        </header>
+
+        <!-- 留言板主体容器：支持整卡一键展开/收起 -->
+        <div class="notes-main-wrap" id="ef-z-notes-main-wrap">
+          <!-- 子分区 1：查阅与处理（排在上方） -->
+          <div class="notes-collapse-sec" id="ef-z-notes-list-wrap" data-collapsed="false">
+            <div class="notes-sec-head">
+              <div class="notes-sec-title">
+                <span class="ef-mono">// 01 ARCHIVE</span>
+                <span>查看小纸条</span>
+                <span class="ef-field" id="ef-z-notes-count">—</span>
+              </div>
+              <button class="notes-collapse-btn" type="button" data-toggle-sec="list" aria-expanded="true">
+                收起 ▴
+              </button>
+            </div>
+            <div class="notes-collapse-body">
+              <div class="notes-toolbar">
+                <span class="ef-seg" id="ef-z-notes-filter" role="group" aria-label="小纸条筛选">
+                  <button type="button" data-nf="all" aria-pressed="true">全部</button>
+                  <button type="button" data-nf="open" aria-pressed="false">待处理</button>
+                  <button type="button" data-nf="resolved" aria-pressed="false">已解决</button>
+                </span>
+                <label class="ef-search notes-search">
+                  <input type="search" id="ef-z-notes-q" placeholder="搜索小纸条内容、人名或关联文件" aria-label="搜索小纸条" autocomplete="off" />
+                </label>
+                <button class="ef-btn small" type="button" id="ef-z-notes-refresh">刷新</button>
+              </div>
+
+              <ol class="notes-list" id="ef-z-notes-list"></ol>
+              <p class="ef-empty" id="ef-z-notes-empty" hidden>还没有小纸条，来写第一条吧。</p>
+            </div>
+          </div>
+
+          <!-- 子分区 2：创建与编写（排在下方） -->
+          <div class="notes-collapse-sec" id="ef-z-notes-compose-wrap" data-collapsed="false">
+            <div class="notes-sec-head">
+              <div class="notes-sec-title">
+                <span class="ef-mono">// 02 COMPOSE</span>
+                <span>编写小纸条</span>
+              </div>
+              <button class="notes-collapse-btn" type="button" data-toggle-sec="compose" aria-expanded="true">
+                收起 ▴
+              </button>
+            </div>
+            <div class="notes-collapse-body">
+              <form class="notes-compose" id="ef-z-notes-form" autocomplete="off">
+                <p class="ef-notice" id="ef-z-notes-error" hidden data-flag="提示"></p>
+
+                <div class="notes-row">
+                  <span class="notes-label">填写人 <i>/ 多选</i></span>
+                  <div id="ef-z-notes-authors-dropdown"></div>
+                </div>
+
+                <div class="notes-row">
+                  <span class="notes-label">对接人 <i>/ 可选</i></span>
+                  <div class="notes-target-wrap">
+                    <div id="ef-z-notes-targets-dropdown"></div>
+                    <input class="notes-custom" id="ef-z-notes-target-custom" type="text"
+                           list="ef-z-notes-target-options" placeholder="或自由输入对接人"
+                           maxlength="24" aria-label="自由填写对接人" />
+                    <datalist id="ef-z-notes-target-options"></datalist>
+                  </div>
+                </div>
+
+                <div class="notes-row">
+                  <span class="notes-label">关联文件 <i>/ 贴上资产</i></span>
+                  <div class="notes-assets-wrap">
+                    <div class="notes-assets-actions">
+                      <button class="ef-btn small cut-br" type="button" id="ef-z-notes-attach-btn">
+                        <span class="ic">+</span> 贴上/选择文件…
+                      </button>
+                      <span class="ef-field notes-assets-hint" id="ef-z-notes-assets-count">未关联文件</span>
+                      <span class="ef-seg notes-attached-layout-seg" id="ef-z-attached-layout" role="group" aria-label="已贴文件排列方式" style="display: none;">
+                        <button type="button" data-layout="list" class="ef-layout-btn" aria-pressed="true" title="单列详细清单：每项独立一行，完整呈现名字与路径">清单列表 ☰</button>
+                        <button type="button" data-layout="grid" class="ef-layout-btn" aria-pressed="false" title="多列平铺：自适应卡片平铺">多列平铺 ⊞</button>
+                      </span>
+                    </div>
+                    <div class="notes-attached-list" id="ef-z-notes-attached-list" data-layout="list"></div>
+                  </div>
+                </div>
+
+                <div class="notes-row">
+                  <label class="notes-label" for="ef-z-notes-text">内容 <i>/ 正文</i></label>
+                  <textarea class="notes-text" id="ef-z-notes-text" rows="3"
+                            placeholder="写点什么，例如：某张贴图需要重画 / 某个模型朝向不对…（Ctrl 或 ⌘ + Enter 提交）"></textarea>
+                </div>
+
+                <div class="ef-actions notes-actions">
+                  <button class="ef-btn" type="submit" id="ef-z-notes-submit">贴上小纸条</button>
+                  <button class="ef-btn small" type="reset" id="ef-z-notes-reset">清空</button>
+                  <span class="notes-counter ef-field" id="ef-z-notes-counter">0 / —</span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <div class="stack">
         <section class="ef-panel cut-br ef-in-power" id="overview" style="--i: 0">
           <h2>资产总览 <span class="ef-field" id="ef-stamp-2">未同步</span></h2>
@@ -1496,7 +1604,7 @@
         <p class="ef-notice" data-flag="提示">本页需要启用 JavaScript 才能渲染对照树与搜索。</p>
       </noscript>
       </div>
-      <!-- ===== /大分类：便利店 ===== -->
+      <!-- ===== /项目资料库主视图 ===== -->
 
       <!-- ===== 大分类：美术资产规范（规范文档资料文本 · 阅读视图） ===== -->
       <section class="proj-view ef-doc" id="proj-view-spec" aria-label="美术资产命名与制作规范" hidden>
@@ -2053,18 +2161,24 @@
           }
         }
         if (!RAW) {
-          RAW = { meta: {}, entries: [] };
+          RAW = { meta: {}, entries: {} };
           console.error('[资产索引] 未加载到 data.js，请先运行 sync_data.py 生成数据文件。');
         }
         var meta = RAW.meta || {};
-        var entries = RAW.entries || [];
-        var CATS = meta.categories || [];
+        var ALL_ENTRIES = RAW.entries || {};               // { yybld:[...], yyzct:[...] }（按项目分桶）
+        var PD = meta.projects_data || {};                 // 每个项目的元信息（分类 / 资源链 / 定义文案 / 头部文案）
 
         var KIND_CN = { model: '模型文件', animation: '动画文件', texture: '贴图文件' };
-        // 依赖链映射文案（抽屉里展示关联配置的用途）
-        var DEF_CN = {
-          client_entity: '客户端实体定义', block_entity: '方块实体定义',
-          block: '方块配置', item: '物品配置', food: '饮品/食品配置（动画映射）'
+        // 资源标签文案（呈现层）：按「项目 × 资源分组」决定徽标文字，与数据层解耦
+        var BADGE = {
+          yybld: {
+            block: ['普通方块', '贴图'], display: ['display', 'display贴图'],
+            hand: ['hand', 'hand贴图'], hold: ['hold', 'hold贴图']
+          },
+          yyzct: {
+            block: ['方块', '方块贴图'], hand: ['hand', 'hand贴图'],
+            hold: ['hold', 'hold贴图'], state: ['state', 'state贴图'], item: ['物品', 'items贴图']
+          }
         };
 
         // 分类内联图标（条目无游戏贴图时的兜底）
@@ -2077,37 +2191,48 @@
           entity: '<svg' + SVG + '><circle cx="12" cy="6" r="3"/><path d="M12 9v7M6 12h12M9 21l3-5 3 5"/></svg>',
           common: '<svg' + SVG + '><path d="M4 7h16M4 12h16M4 17h16"/><circle cx="8" cy="7" r="1.6"/><circle cx="16" cy="12" r="1.6"/><circle cx="8" cy="17" r="1.6"/></svg>'
         };
+        // 中餐厅新增分类的兜底图标（复用已有图形，避免重复内联 SVG）
+        CAT_ICON.dish = CAT_ICON.food;
+        CAT_ICON.staple = CAT_ICON.food;
+        CAT_ICON.furniture = CAT_ICON.block;
+        CAT_ICON.functional = CAT_ICON.block_entity;
+        CAT_ICON.tableware = '<svg' + SVG + '><path d="M4 4v16"/><path d="M7 4v6a3 3 0 0 1-6 0"/><path d="M14 20 20 4"/><path d="M16 12h4"/></svg>';
 
-        /* ---------- 1. 扁平索引与搜索语料 ---------- */
-        var FLAT = [];
+        /* ---------- 1. 扁平索引（每个项目各建一份） ---------- */
         var KEYS = [['models', 'model'], ['animations', 'animation'], ['textures', 'texture']];
-        entries.forEach(function (e, i) {
-          e._no = i + 1;
-          e.models = e.models || [];
-          e.animations = e.animations || [];
-          e.textures = e.textures || [];
-          e._nameHay = (e.chinese_name + '\n' + e.id + '\n' + e.identifier).toLowerCase();
-          var hay = [e._nameHay];
-          KEYS.forEach(function (pair) {
-            e[pair[0]].forEach(function (f) {
-              f._kind = pair[1];
-              f._entry = e;
-              f._flat = FLAT.length;
-              FLAT.push(f);
-              hay.push(String(f.file_name || f.path).toLowerCase(), String(f.rel_path).toLowerCase());
+        // 为一份条目列表构建：扁平文件索引 + 模型/动画平铺表（动画按路径去重）
+        function buildIndex(list) {
+          var flat = [];
+          list.forEach(function (e, i) {
+            e._no = i + 1;
+            e.models = e.models || [];
+            e.animations = e.animations || [];
+            e.textures = e.textures || [];
+            e._nameHay = (e.chinese_name + '\n' + e.id + '\n' + e.identifier).toLowerCase();
+            var hay = [e._nameHay];
+            KEYS.forEach(function (pair) {
+              e[pair[0]].forEach(function (f) {
+                f._kind = pair[1];
+                f._entry = e;
+                f._flat = flat.length;
+                flat.push(f);
+                hay.push(String(f.file_name || f.path).toLowerCase(), String(f.rel_path).toLowerCase());
+              });
             });
+            e._hay = hay.join('\n');
           });
-          e._hay = hay.join('\n');
-        });
-
-        // 平铺表用：按路径去重（动画/贴图可能被多个条目引用）
-        var MODEL_ROWS = FLAT.filter(function (f) { return f._kind === 'model'; });
-        var seen = Object.create(null);
-        var ANIM_ROWS = FLAT.filter(function (f) {
-          if (f._kind !== 'animation' || seen[f.rel_path]) return false;
-          seen[f.rel_path] = 1;
-          return true;
-        });
+          var modelRows = flat.filter(function (f) { return f._kind === 'model'; });
+          var seen = Object.create(null);
+          var animRows = flat.filter(function (f) {
+            if (f._kind !== 'animation' || seen[f.rel_path]) return false;
+            seen[f.rel_path] = 1;
+            return true;
+          });
+          return { FLAT: flat, MODEL_ROWS: modelRows, ANIM_ROWS: animRows };
+        }
+        // 启动时一次性为所有项目建索引，切换项目零成本
+        var INDEX = {};
+        Object.keys(ALL_ENTRIES).forEach(function (k) { INDEX[k] = buildIndex(ALL_ENTRIES[k]); });
 
         /* ---------- 2. 工具函数 ---------- */
         function esc(s) {
@@ -2124,16 +2249,13 @@
           return esc(s.slice(0, i)) + '<mark>' + esc(s.slice(i, i + q.length)) + '</mark>' + esc(s.slice(i + q.length));
         }
         function tagBadge(f) {
-          if (f._kind === 'texture') {
-            if (f.group === 'display') return '<span class="ef-field">display贴图</span>';
-            if (f.group === 'hand') return '<span class="ef-state">hand贴图</span>';
-            if (f.group === 'hold') return '<span class="ef-field">hold贴图</span>';
-            return '<span class="ef-field">贴图</span>';
-          }
-          if (f.group === 'display') return '<span class="ef-field" style="border-color:var(--ef-ink);">display</span>';
-          if (f.group === 'hand' || f.tag === 'hand') return '<span class="ef-state">hand</span>';
-          if (f.group === 'hold') return '<span class="ef-field">hold</span>';
-          return '<span class="ef-field">普通方块</span>';
+          var table = BADGE[(active && active.key) || 'yybld'] || BADGE.yybld;
+          var g = f.group || (f.tag === 'hand' ? 'hand' : 'block');
+          var pair = table[g] || table.block;
+          var label = f._kind === 'texture' ? (pair ? pair[1] : '贴图') : (pair ? pair[0] : '方块');
+          if (g === 'hand') return '<span class="ef-state">' + label + '</span>';
+          if (g === 'display') return '<span class="ef-field" style="border-color:var(--ef-ink);">' + label + '</span>';
+          return '<span class="ef-field">' + label + '</span>';
         }
         function iconHtml(e, cls) {
           var c = cls ? ' ' + cls : '';
@@ -2142,16 +2264,10 @@
         }
 
         /* ---------- 3. 对照树渲染 ---------- */
-        var FOOD_CHAINS = [
-          { key: 'block', name: '方块', en: 'Block', tag: '无标注', num: '01' },
-          { key: 'display', name: '货架上（display）', en: 'Display', tag: 'display标注', num: '02' },
-          { key: 'hand', name: '第一人称（hand）', en: 'Hand', tag: 'hand标注', num: '03' },
-          { key: 'hold', name: '第三人称（hold）', en: 'Hold', tag: 'hold标注', num: '04' }
-        ];
-
+        // 资源链渲染：链定义来自当前项目（active.CHAINS），便利店 4 链 / 中餐厅 5 链
         function renderFoodChains(e, q) {
           var html = [];
-          FOOD_CHAINS.forEach(function (ch) {
+          (active.CHAINS || []).forEach(function (ch) {
             var mList = e.models.filter(function (m) { return (m.group || 'block') === ch.key; });
             var aList = e.animations.filter(function (a) { return (a.group || 'block') === ch.key; });
             var tList = e.textures.filter(function (t) { return (t.group || 'block') === ch.key; });
@@ -2205,7 +2321,7 @@
         function nodeHtml(e, q, open, order, stagger) {
           var hasAny = e.models.length || e.animations.length || e.textures.length;
           var innerContent = '';
-          if (e.category === 'food') {
+          if (active.chainCats.indexOf(e.category) >= 0) {
             innerContent = renderFoodChains(e, q);
           } else {
             innerContent = branchHtml('模型文件', 'Models', e.models, q) +
@@ -2230,6 +2346,23 @@
 
         /* ---------- 4. 状态 ---------- */
         var state = { proj: 'yybld', view: 'tree', filter: 'all', q: '' };
+        // 当前项目运行时上下文：渲染函数统一读它，切换项目时整体替换
+        var active = null;
+        function makeActive(key) {
+          var pm = PD[key] || {};
+          var idx = INDEX[key] || { FLAT: [], MODEL_ROWS: [], ANIM_ROWS: [] };
+          return {
+            key: key,
+            meta: pm,
+            entries: ALL_ENTRIES[key] || [],
+            CATS: pm.categories || [],
+            CHAINS: pm.chains || [],
+            chainCats: pm.chain_categories || [],
+            defLabels: pm.def_labels || {},
+            head: pm.head || {},
+            FLAT: idx.FLAT, MODEL_ROWS: idx.MODEL_ROWS, ANIM_ROWS: idx.ANIM_ROWS
+          };
+        }
         var treeEl = document.getElementById('ef-tree');
         var treeEmpty = document.getElementById('ef-tree-empty');
         var modelsBody = document.getElementById('ef-models-body');
@@ -2260,7 +2393,7 @@
           var shown = 0;
           var order = 0;
           var cap = 12;
-          entries.forEach(function (e) {
+          active.entries.forEach(function (e) {
             if (state.filter !== 'all' && e.category !== state.filter) return;
             var nameHit = !q || e._nameHay.indexOf(q) >= 0;
             var childHit = q && !nameHit && e._hay.indexOf(q) >= 0;
@@ -2277,7 +2410,7 @@
         function renderTables(q) {
           var mHtml = [];
           var mShown = 0;
-          MODEL_ROWS.forEach(function (f, i) {
+          active.MODEL_ROWS.forEach(function (f, i) {
             if (!matchesRow(f, q)) return;
             mShown++;
             mHtml.push(rowHtml(f, q));
@@ -2287,7 +2420,7 @@
 
           var aHtml = [];
           var aShown = 0;
-          ANIM_ROWS.forEach(function (f) {
+          active.ANIM_ROWS.forEach(function (f) {
             if (!matchesRow(f, q)) return;
             aShown++;
             aHtml.push(rowHtml(f, q));
@@ -2299,11 +2432,11 @@
 
         function render(animate) {
           var q = state.q;
-          var counts = { models: MODEL_ROWS.length, anims: ANIM_ROWS.length };
+          var counts = { models: active.MODEL_ROWS.length, anims: active.ANIM_ROWS.length };
           var shown;
           if (state.view === 'tree') {
             shown = renderTree(q, animate);
-            countEl.textContent = '显示 ' + shown + ' / ' + entries.length + ' 条目' +
+            countEl.textContent = '显示 ' + shown + ' / ' + active.entries.length + ' 条目' +
               (q ? '　│　搜索「' + q + '」' : '') + '　│　模型 ' + counts.models + ' │ 动画 ' + counts.anims;
           } else {
             var r = renderTables(q);
@@ -2320,8 +2453,8 @@
           });
         }
         function setView(view) {
-          // 视图切换属于便利店资产对照范畴：若当前在规范文档大分类，先切回便利店
-          if (state.proj !== 'yybld' && typeof setProj === 'function') setProj('yybld');
+          // 视图切换属于资产对照范畴：若当前在规范文档大分类，先切回默认项目
+          if (state.proj === 'spec' && typeof setProj === 'function') setProj('yybld');
           if (view === state.view) return;
           state.view = view;
           syncViewBtns();
@@ -2347,7 +2480,7 @@
         var dRows = document.getElementById('ef-drawer-rows');
         var current = null;
 
-        function defLabel(key) { return DEF_CN[key] || key; }
+        function defLabel(key) { return (active.defLabels && active.defLabels[key]) || key; }
 
         function openDrawer(f) {
           current = f;
@@ -2426,7 +2559,7 @@
         treeEl.addEventListener('click', function (ev) {
           var leaf = ev.target.closest('.ef-leaf');
           if (leaf) {
-            var item = FLAT[Number(leaf.dataset.flat)];
+            var item = active.FLAT[Number(leaf.dataset.flat)];
             if (item) openDrawer(item);
             return;
           }
@@ -2443,7 +2576,7 @@
           tb.addEventListener('click', function (ev) {
             var btn = ev.target.closest('[data-flat]');
             if (!btn) return;
-            var item = FLAT[Number(btn.dataset.flat)];
+            var item = active.FLAT[Number(btn.dataset.flat)];
             if (item) openDrawer(item);
           });
         });
@@ -2650,39 +2783,115 @@
           document.querySelectorAll(sel).forEach(function (el) { el.textContent = val; });
         }
 
-        // 8.1 大分类导航（便利店 / 中餐厅预留 / 美术资产规范）
+        // 8.1 大分类导航（工程项目来自同步数据，末尾附加文档类）
         var PROJ_LIST = (meta.projects && meta.projects.length) ? meta.projects : [
-          { key: 'yybld', name: '椰椰工坊：便利店', active: true },
-          { key: 'yyzct', name: '椰椰工坊：中餐厅', active: false },
-          { key: 'spec', name: '美术资产规范', active: false, type: 'doc' }
+          { key: 'yybld', name: '椰椰工坊：便利店', count: 0 },
+          { key: 'yyzct', name: '椰椰工坊：中餐厅', count: 0 },
+          { key: 'spec', name: '美术资产规范', count: '规范文档', type: 'doc' }
         ];
+        // 参与资产对照的项目顺序（排除文档类），首个作为默认项目
+        var SPEC_KEYS = PROJ_LIST.filter(function (p) { return p.type !== 'doc'; })
+          .map(function (p) { return p.key; });
         var projNavEl = document.getElementById('ef-projects');
-        var viewYybld = document.getElementById('proj-view-yybld');
+        var viewMain = document.getElementById('proj-view-main');
         var viewSpec = document.getElementById('proj-view-spec');
         var brandEl = document.querySelector('.ef-cmdbar .brand');
+        // 各项目留言板容器（侧边栏「小纸条」跳转锚点）
+        var NOTES_IDS = { yybld: 'ef-notes', yyzct: 'ef-z-notes' };
+        // 规范文档章节目录（侧边栏 spec 分组）
+        var SIDENAV_DOC = [['doc-sec-00', '全局铁律'], ['doc-sec-01', '资源链清单'],
+          ['doc-sec-02', '动画规范'], ['doc-sec-03', '自检表']];
 
         projNavEl.innerHTML = PROJ_LIST.map(function (p) {
-          var isDoc = p.type === 'doc';
-          // 预留项目（如中餐厅）：置灰不可点
-          if (!p.active && !isDoc) {
-            return '<button class="ef-chip" type="button" disabled title="预留项目，暂未接入">' +
-              esc(p.name) + ' <span class="n">预留</span></button>';
-          }
-          var n = isDoc ? '资料' : p.count;
-          return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="' +
-            (p.active ? 'true' : 'false') + '">' + esc(p.name) + ' <span class="n">' + n + '</span></button>';
+          var n = p.type === 'doc' ? '资料' : p.count;
+          return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="false">' +
+            esc(p.name) + ' <span class="n">' + n + '</span></button>';
         }).join('');
+
+        // 侧边栏导航项：每个项目「内容分类 + 小纸条」一组，规范文档章节目录一组
+        function buildSidenav() {
+          if (!sidenavEl) return;
+          var html = [];
+          SPEC_KEYS.forEach(function (key) {
+            var cats = (PD[key] || {}).categories || [];
+            var pad = function (i) { return ('0' + i).slice(-2); };
+            html.push('<a href="#tree" data-proj-group="' + esc(key) + '" data-nav-filter="all">' +
+              '<span class="n">00</span><span class="t">全部</span></a>');
+            cats.forEach(function (c, i) {
+              html.push('<a href="#tree" data-proj-group="' + esc(key) + '" data-nav-filter="' + esc(c.key) + '">' +
+                '<span class="n">' + pad(i + 1) + '</span><span class="t">' + esc(c.name) + '</span></a>');
+            });
+            html.push('<a href="#' + NOTES_IDS[key] + '" data-proj-group="' + esc(key) + '" data-nav-notes="1">' +
+              '<span class="n">' + pad(cats.length + 1) + '</span><span class="t">小纸条</span></a>');
+          });
+          SIDENAV_DOC.forEach(function (d, i) {
+            html.push('<a href="#' + d[0] + '" data-proj-group="spec" data-nav-doc="' + d[0] + '">' +
+              '<span class="n">0' + i + '</span><span class="t">' + esc(d[1]) + '</span></a>');
+          });
+          sidenavEl.innerHTML = html.join('');
+        }
+
+        // 8.2 渲染当前项目的分类 chips（全部 + 内容分类，含内联图标与计数）
+        function renderFilters() {
+          if (!filtersEl || !active) return;
+          var allOn = state.filter === 'all';
+          filtersEl.innerHTML =
+            '<button class="ef-chip" type="button" data-filter="all" aria-pressed="' + (allOn ? 'true' : 'false') + '">' +
+            '<span class="ic">' + CAT_ICON.common + '</span>全部 <span class="n">' + active.entries.length + '</span></button>' +
+            active.CATS.map(function (c) {
+              return '<button class="ef-chip" type="button" data-filter="' + esc(c.key) + '" aria-pressed="' +
+                (state.filter === c.key ? 'true' : 'false') + '" title="' + esc(c.desc || '') + '">' +
+                '<span class="ic">' + (CAT_ICON[c.key] || CAT_ICON.common) + '</span>' +
+                esc(c.name) + ' <span class="n">' + c.count + '</span></button>';
+            }).join('');
+        }
+
+        // 8.3 头部文案与统计数字（随当前项目切换）
+        function renderHead() {
+          if (!active) return;
+          var h = active.head || {};
+          setText('#ef-head-title', h.title || '美术资产对照索引');
+          setText('#ef-head-sub', h.sub || 'Model / Animation / Texture / Name');
+          setText('#ef-head-desc', h.desc || '');
+        }
+        function renderStats() {
+          if (!active) return;
+          setText('[data-fig="entries"]', String(active.meta.total_entries || active.entries.length));
+          setText('[data-fig="models"]', String(active.meta.total_models || active.MODEL_ROWS.length));
+          setText('[data-fig="anims"]', String(active.meta.total_animations || active.ANIM_ROWS.length));
+          setText('#ef-stamp, #ef-stamp-2', '同步于 ' + (meta.last_sync_time || '未同步'));
+        }
+
+        // 8.4 切换资产项目：重置筛选/搜索，重建 chips、统计、侧边栏与主体
+        function switchProject(key) {
+          active = makeActive(key);
+          state.filter = 'all';
+          state.q = '';
+          if (input) input.value = '';
+          renderHead();
+          renderFilters();
+          renderStats();
+          buildSidenav();
+          syncViewBtns();
+          render(true);
+        }
 
         // 大分类切换：同步主视图、导航胶囊、侧边栏分组与地址栏
         function setProj(key) {
-          key = key === 'spec' ? 'spec' : 'yybld';
-          state.proj = key;
           var isSpec = key === 'spec';
-          if (viewYybld) viewYybld.hidden = isSpec;
+          if (!isSpec && SPEC_KEYS.indexOf(key) < 0) key = SPEC_KEYS[0] || 'yybld';
+          state.proj = key;
+          if (viewMain) viewMain.hidden = isSpec;
           if (viewSpec) viewSpec.hidden = !isSpec;
           projNavEl.querySelectorAll('[data-proj]').forEach(function (b) {
             b.setAttribute('aria-pressed', b.dataset.proj === key ? 'true' : 'false');
           });
+          // 各项目留言板：仅显示当前项目的留言板
+          SPEC_KEYS.forEach(function (k) {
+            var el = document.getElementById(NOTES_IDS[k] || '');
+            if (el) el.hidden = k !== key;
+          });
+          if (!isSpec && (!active || active.key !== key)) switchProject(key);
           // 侧边栏联动：按分组显隐导航项
           if (sidenavEl) {
             sidenavEl.querySelectorAll('[data-proj-group]').forEach(function (a) {
@@ -2692,9 +2901,8 @@
           // 品牌标识跟随当前大分类
           if (brandEl) {
             brandEl.innerHTML = isSpec
-              ? '<span class="seal">Y</span>YYBLD · ASSET SPEC'
-              : '<span class="seal">Y</span>YYBLD · ASSET INDEX';
-            brandEl.setAttribute('href', isSpec ? '#spec' : '#tree');
+              ? '<span class="seal">Y</span>YY · MINIAPP SPEC'
+              : '<span class="seal">Y</span>YY · PROJECT ARCHIVE';
           }
           if (isSpec) {
             state.view = 'tree';
@@ -2713,31 +2921,20 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        // 8.2 分类筛选 chips（全部 + 五个内容分类，含内联图标与计数）
-        filtersEl.innerHTML =
-          '<button class="ef-chip" type="button" data-filter="all" aria-pressed="true">' +
-          '<span class="ic">' + CAT_ICON.common + '</span>全部 <span class="n">' + (meta.total_entries || entries.length) + '</span></button>' +
-          CATS.map(function (c) {
-            return '<button class="ef-chip" type="button" data-filter="' + esc(c.key) + '" aria-pressed="false" title="' + esc(c.desc || '') + '">' +
-              '<span class="ic">' + (CAT_ICON[c.key] || CAT_ICON.common) + '</span>' +
-              esc(c.name) + ' <span class="n">' + c.count + '</span></button>';
-          }).join('');
-
-        // 8.3 统计数字
-        setText('[data-fig="entries"]', String(meta.total_entries || entries.length));
-        setText('[data-fig="models"]', String(meta.total_models || MODEL_ROWS.length));
-        setText('[data-fig="anims"]', String(meta.total_animations || ANIM_ROWS.length));
-        setText('#ef-stamp, #ef-stamp-2', '同步于 ' + (meta.last_sync_time || '未同步'));
-
-        /* ---------- 9. 首次渲染：支持 #models / #anims / #spec 直达 ---------- */
+        /* ---------- 9. 首次渲染：支持 #models / #anims / #spec / #yyzct 直达 ---------- */
         var hash = (location.hash || '').replace('#', '');
         if (hash === 'models' || hash === 'anims') state.view = hash;
         ['tree', 'models', 'anims'].forEach(function (v) {
           document.getElementById('view-' + v).hidden = v !== state.view;
         });
-        syncViewBtns();
-        render(true);
-        setProj(hash === 'spec' ? 'spec' : 'yybld');
+        setProj(hash === 'spec' ? 'spec' : (SPEC_KEYS.indexOf(hash) >= 0 ? hash : (SPEC_KEYS[0] || 'yybld')));
+
+        /* hash 直达：站内改变地址栏 hash 时同步切换项目 / 视图（整页加载已在上方处理） */
+        window.addEventListener('hashchange', function () {
+          var h = (location.hash || '').replace('#', '');
+          if (h === 'spec' || SPEC_KEYS.indexOf(h) >= 0) setProj(h);
+          else if (h === 'tree' || h === 'models' || h === 'anims') setView(h);
+        });
 
         /* ---------- 10. 规范文档：自检清单（可勾选 · 本地持久化） ---------- */
         var CHECK_ITEMS = [
@@ -2827,16 +3024,23 @@
           copy(code.dataset.copy, '已复制：' + code.dataset.copy);
         });
 
-        /* 导出给小纸条模块联动 */
-        window.YYBLD_ASSETS = {
-          FLAT: FLAT,
-          ENTRIES: entries,
-          openDrawerByRelPath: function (relPath) {
-            if (!relPath) return;
-            var target = FLAT.find(function (f) { return f.rel_path === relPath; });
-            if (target) openDrawer(target);
-          }
-        };
+        /* 导出给小纸条模块联动：每个项目一份资产访问器（切换项目后再定位文件） */
+        function makeAssets(key) {
+          var idx = INDEX[key] || { FLAT: [] };
+          return {
+            KEY: key,
+            FLAT: idx.FLAT,
+            ENTRIES: ALL_ENTRIES[key] || [],
+            openDrawerByRelPath: function (relPath) {
+              if (!relPath) return;
+              if (state.proj !== key) setProj(key);
+              var target = idx.FLAT.find(function (f) { return f.rel_path === relPath; });
+              if (target) openDrawer(target);
+            }
+          };
+        }
+        window.EF_ASSETS = {};
+        Object.keys(ALL_ENTRIES).forEach(function (k) { window.EF_ASSETS[k] = makeAssets(k); });
       })();
     </script>
 

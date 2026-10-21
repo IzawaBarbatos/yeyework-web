@@ -7,6 +7,9 @@
  *       CloudStore（腾讯云 CloudBase，按量计费）
  *       LocalStore（localStorage，单人本地兜底）
  *     上层 UI 只依赖接口，不关心底层是 GitHub、云开发还是本地。
+ *   - 多实例：整套逻辑封装为 mountNotes(INST)，由 window.EF_NOTES_INSTANCES
+ *     驱动挂载多块留言板（各项目一块）；实例私有 DOM id 按 INST.prefix 重写，
+ *     共享的资产选择弹窗（#ef-asset-*）保持全局并按「当前打开者」分发事件。
  *   - UI 组件：
  *       DropdownMultiSelect：终末地工业风下拉多选控件（切角、复选框、标签回显）
  *       双折叠子分区：支持独立展开/收起创建编写与查看列表
@@ -23,12 +26,37 @@
     sdkUrl: 'https://static.cloudbase.net/cloudbase-js-sdk/2.28.6/cloudbase.full.js'
   };
 
-  var CFG = Object.assign({}, DEFAULTS, window.EF_NOTES_CONFIG || {});
+  /* 共享资产选择弹窗当前归属的留言板实例（弹窗全局唯一，事件需按归属分发） */
+  var activePickerOwner = null;
+
+  /* ---------------- 实例挂载：同一套逻辑挂载到指定的一块留言板 ---------------- */
+  function mountNotes(INST) {
+  INST = INST || {};
+  var CFG = Object.assign({}, DEFAULTS, (window.EF_NOTES_CONFIGS || {})[INST.key] || {});
   CFG.envId = (CFG.envId || '').trim();
   CFG.github = Object.assign({}, DEFAULTS.github, CFG.github || {});
+  var ASSETS = (window.EF_ASSETS && window.EF_ASSETS[INST.key]) || INST.assets || null;
+  /* 实例根节点：把类 / 属性选择器限定在本实例内，避免多块留言板互相命中 */
+  var ROOT = INST.root || document.querySelector(INST.prefix ? '#ef-' + INST.prefix + '-notes' : '#ef-notes');
+
+  /* 实例私有的本地偏好键（避免多块留言板互相覆盖；无前缀时保持原键不变） */
+  var SUFFIX = INST.prefix ? '_' + INST.prefix : '';
+  var COLLAPSE_KEY = 'ef_notes_collapse_v2' + SUFFIX;
+  var ATTACHED_LAYOUT_KEY = 'ef_attached_layout' + SUFFIX;
+
+  /* 实例私有 id 重写：#ef-notes-x -> #ef-z-notes-x；共享弹窗（#ef-asset-*）保持全局 */
+  function resolveSel(sel) {
+    if (INST.prefix && sel.charAt(0) === '#' && sel.indexOf('#ef-asset-') !== 0) {
+      return '#ef-' + INST.prefix + '-' + sel.slice(4);
+    }
+    return sel;
+  }
 
   /* ---------------- 小工具 ---------------- */
-  function $(sel, root) { return (root || document).querySelector(sel); }
+  function $(sel, root) {
+    if (sel.charAt(0) === '#') return document.querySelector(resolveSel(sel));
+    return (root || ROOT || document).querySelector(sel);
+  }
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
       return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
@@ -363,6 +391,19 @@
 
       var h = self._headers();
 
+      // 项目隔离：按标题前缀判定归属（无前缀项目则排除其它项目前缀），避免多项目留言板串数据
+      var tp = (CFG.titlePrefix || '').trim();
+      var excludes = CFG.titleExcludePrefixes || [];
+      function ownedByProject(title) {
+        var t = String(title || '');
+        if (t.indexOf('[小纸条]') !== 0) return false;
+        if (tp) return t.indexOf('[小纸条] ' + tp) === 0;
+        for (var i = 0; i < excludes.length; i++) {
+          if (t.indexOf('[小纸条] ' + excludes[i]) === 0) return false;
+        }
+        return true;
+      }
+
       function fetchIssues() {
         // no-store：GitHub 列表响应带 max-age=60 缓存头，写入后立即重读会命中旧缓存导致新纸条不显示
         return fetch(issuesUrl, { headers: self._headers(), cache: 'no-store' }).then(function (r) {
@@ -393,6 +434,7 @@
 
         issues.forEach(function (it) {
           if (it.pull_request) return; // 排除 PR
+          if (!ownedByProject(it.title)) return; // 排除其它项目的纸条
           var meta = { authors: [], targets: [], files: [] };
           var text = it.body || '';
           var m = text.match(/<!--\s*EF_NOTE\s*([\s\S]*?)\s*-->/);
@@ -468,8 +510,10 @@
             return 'c_' + res.id;
           });
         } else {
-          // 发起主贴 Issue
-          var title = '[小纸条] ' + (rec.text.slice(0, 26).replace(/\n/g, ' ') || '无标题');
+          // 发起主贴 Issue：标题带项目前缀，便于多项目留言板在同一仓库内相互隔离
+          var tp = (CFG.titlePrefix || '').trim();
+          var title = '[小纸条] ' + (tp ? tp + ' · ' : '') +
+            (rec.text.slice(0, 26).replace(/\n/g, ' ') || '无标题');
           var body = '<!--EF_NOTE\n' + JSON.stringify({
             authors: rec.authors || [],
             targets: rec.targets || [],
@@ -629,12 +673,12 @@
   };
 
   try {
-    var savedCollapse = localStorage.getItem('ef_notes_collapse_v2');
+    var savedCollapse = localStorage.getItem(COLLAPSE_KEY);
     if (savedCollapse) collapseState = Object.assign(collapseState, JSON.parse(savedCollapse));
   } catch (e) {}
 
   function saveCollapseState() {
-    try { localStorage.setItem('ef_notes_collapse_v2', JSON.stringify(collapseState)); } catch (e) {}
+    try { localStorage.setItem(COLLAPSE_KEY, JSON.stringify(collapseState)); } catch (e) {}
   }
 
   function updateCollapseUI() {
@@ -709,13 +753,13 @@
   var attachedLayout = 'list';
   var pickerLayout = 'list';
   try {
-    attachedLayout = localStorage.getItem('ef_attached_layout') || 'list';
+    attachedLayout = localStorage.getItem(ATTACHED_LAYOUT_KEY) || 'list';
     pickerLayout = localStorage.getItem('ef_picker_layout') || 'list';
   } catch (e) {}
 
   function setAttachedLayout(mode) {
     attachedLayout = mode === 'grid' ? 'grid' : 'list';
-    try { localStorage.setItem('ef_attached_layout', attachedLayout); } catch (e) {}
+    try { localStorage.setItem(ATTACHED_LAYOUT_KEY, attachedLayout); } catch (e) {}
     var listEl = $('#ef-notes-attached-list');
     var segEl = $('#ef-attached-layout');
     if (listEl) listEl.setAttribute('data-layout', attachedLayout);
@@ -746,7 +790,7 @@
   var cachedAssets = null;
   function getFlatAssets() {
     if (cachedAssets) return cachedAssets;
-    if (window.YYBLD_ASSETS && Array.isArray(window.YYBLD_ASSETS.FLAT)) {
+    if (ASSETS && Array.isArray(ASSETS.FLAT)) {
       var seen = {};
       var list = [];
       var kindMap = {
@@ -754,7 +798,7 @@
         animation: '动画',
         texture: '贴图'
       };
-      window.YYBLD_ASSETS.FLAT.forEach(function (f) {
+      ASSETS.FLAT.forEach(function (f) {
         var r = f.rel_path || f.relPath || f.path || '';
         if (!r || seen[r]) return;
         seen[r] = true;
@@ -896,6 +940,7 @@
     var dialog = $('#ef-asset-picker');
     if (!dialog) return;
 
+    activePickerOwner = INST; // 弹窗全局唯一，登记归属实例
     pickerSelected = {};
     attachedAssets.forEach(function (it) {
       pickerSelected[it.relPath] = it;
@@ -916,6 +961,7 @@
   function closeAssetPicker() {
     var dialog = $('#ef-asset-picker');
     if (!dialog) return;
+    if (activePickerOwner === INST) activePickerOwner = null;
     if (typeof dialog.close === 'function') {
       dialog.close();
     } else {
@@ -936,11 +982,19 @@
     var attachedListEl = $('#ef-notes-attached-list');
 
     if (attachBtn) attachBtn.addEventListener('click', openAssetPicker);
-    if (closeBtn) closeBtn.addEventListener('click', closeAssetPicker);
-    if (cancelBtn) cancelBtn.addEventListener('click', closeAssetPicker);
+    // 以下元素属于全局共享弹窗：仅当本实例是弹窗当前归属者时才响应，避免多块留言板串写
+    if (closeBtn) closeBtn.addEventListener('click', function () {
+      if (activePickerOwner !== INST) return;
+      closeAssetPicker();
+    });
+    if (cancelBtn) cancelBtn.addEventListener('click', function () {
+      if (activePickerOwner !== INST) return;
+      closeAssetPicker();
+    });
 
     if (confirmBtn) {
       confirmBtn.addEventListener('click', function () {
+        if (activePickerOwner !== INST) return;
         attachedAssets = Object.keys(pickerSelected).map(function (k) { return pickerSelected[k]; });
         syncAttachedUI();
         closeAssetPicker();
@@ -949,6 +1003,7 @@
 
     if (selectAllBtn) {
       selectAllBtn.addEventListener('click', function () {
+        if (activePickerOwner !== INST) return;
         var all = getFlatAssets();
         var q = assetFilterQuery.trim().toLowerCase();
         var filtered = all;
@@ -983,6 +1038,7 @@
 
     if (clearAllBtn) {
       clearAllBtn.addEventListener('click', function () {
+        if (activePickerOwner !== INST) return;
         pickerSelected = {};
         renderPickerList();
       });
@@ -991,6 +1047,7 @@
     if (searchInput) {
       var sTimer = 0;
       searchInput.addEventListener('input', function () {
+        if (activePickerOwner !== INST) return;
         clearTimeout(sTimer);
         sTimer = setTimeout(function () {
           assetFilterQuery = searchInput.value || '';
@@ -1003,6 +1060,7 @@
     var pickerLayoutSeg = $('#ef-asset-picker-layout');
     if (pickerLayoutSeg) {
       pickerLayoutSeg.addEventListener('click', function (ev) {
+        if (activePickerOwner !== INST) return;
         var btn = ev.target.closest('.ef-layout-btn');
         if (!btn) return;
         var mode = btn.dataset.layout;
@@ -1023,6 +1081,7 @@
 
     if (listEl) {
       listEl.addEventListener('click', function (ev) {
+        if (activePickerOwner !== INST) return;
         var itemEl = ev.target.closest('.ef-asset-item');
         if (!itemEl) return;
         var p = itemEl.dataset.assetPath;
@@ -1064,8 +1123,8 @@
         var viewBtn = ev.target.closest('[data-view-asset]');
         if (viewBtn) {
           var relPath = viewBtn.dataset.viewAsset;
-          if (window.YYBLD_ASSETS && typeof window.YYBLD_ASSETS.openDrawerByRelPath === 'function') {
-            window.YYBLD_ASSETS.openDrawerByRelPath(relPath);
+          if (ASSETS && typeof ASSETS.openDrawerByRelPath === 'function') {
+            ASSETS.openDrawerByRelPath(relPath);
           }
         }
       });
@@ -1493,8 +1552,8 @@
       if (assetChip) {
         ev.preventDefault();
         var relPath = assetChip.dataset.openAsset;
-        if (window.YYBLD_ASSETS && typeof window.YYBLD_ASSETS.openDrawerByRelPath === 'function') {
-          window.YYBLD_ASSETS.openDrawerByRelPath(relPath);
+        if (ASSETS && typeof ASSETS.openDrawerByRelPath === 'function') {
+          ASSETS.openDrawerByRelPath(relPath);
         }
         return;
       }
@@ -1695,9 +1754,21 @@
     });
   }
 
+  /* 挂载即启动本实例（原单实例版在模块底部调用 boot，工厂化后归属各实例） */
+  boot();
+
+  } /* ===== mountNotes 结束（函数体沿用原缩进） ===== */
+
+  /* ================= 以下为模块级启动 ================= */
+
+  /* ---------------- 启动：逐个挂载留言板实例 ---------------- */
+  function mountAll() {
+    (window.EF_NOTES_INSTANCES || []).forEach(function (inst) { mountNotes(inst); });
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', boot);
+    document.addEventListener('DOMContentLoaded', mountAll);
   } else {
-    boot();
+    mountAll();
   }
 })();
