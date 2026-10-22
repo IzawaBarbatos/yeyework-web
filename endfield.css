@@ -1140,10 +1140,10 @@ a.ef-record:is(:hover, :focus-visible) > * {
     linear-gradient(var(--ef-ink), var(--ef-ink)) left center / 7px 7px no-repeat;
 }
 
-/* Big figures, three to a panel. Pointing at one drives yellow under it. */
+/* Big figures, four to a panel. Pointing at one drives yellow under it. */
 .ef-figs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.75rem;
   padding-top: 0.7rem;
   border-top: 1px solid var(--ef-rule);

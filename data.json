@@ -5,7 +5,7 @@
       {
         "key": "yybld",
         "name": "椰椰工坊：便利店",
-        "count": 184
+        "count": 185
       },
       {
         "key": "yyzct",
@@ -24,11 +24,11 @@
         "project_key": "yybld",
         "project_name": "椰椰工坊：便利店",
         "project_rel_path": "QuModProject/椰椰工坊：便利店",
-        "total_entries": 184,
+        "total_entries": 185,
         "total_models": 257,
         "total_animations": 36,
-        "total_textures": 295,
-        "icon_hit": 122,
+        "total_textures": 296,
+        "icon_hit": 123,
         "categories": [
           {
             "key": "food",
@@ -52,7 +52,7 @@
             "key": "item",
             "name": "物品",
             "desc": "所有物品（道具 / 工具 / 手册等）资源链",
-            "count": 4
+            "count": 5
           },
           {
             "key": "entity",
@@ -209,7 +209,7 @@
         }
       }
     },
-    "last_sync_time": "2026-10-22 19:44:00"
+    "last_sync_time": "2026-10-22 21:42:22"
   },
   "entries": {
     "yybld": [
@@ -9601,7 +9601,7 @@
             "rel_path": "\\resource_pack\\models\\entity\\yybld_display_binggun_dongbei.json",
             "size_str": "7.8 KB",
             "size_bytes": 8005,
-            "mtime": "2026-10-22 19:40:36",
+            "mtime": "2026-10-22 20:20:41",
             "geometry_ids": [
               "geometry.yybld_display_binggun_dongbei"
             ],
@@ -12424,7 +12424,7 @@
             "rel_path": "\\resource_pack\\models\\entity\\yybld_display_tiantong_lanse.json",
             "size_str": "4.0 KB",
             "size_bytes": 4104,
-            "mtime": "2026-10-22 19:40:54",
+            "mtime": "2026-10-22 20:20:41",
             "geometry_ids": [
               "geometry.yybld_display_tiantong_lanse"
             ],
@@ -17050,6 +17050,43 @@
         "anim_count": 0,
         "texture_count": 1,
         "icon": "data:image/png;base64,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"
+      },
+      {
+        "id": "yybld_calibration_stick",
+        "identifier": "yybld:yybld_calibration_stick",
+        "chinese_name": "校准棒",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yybld_huojiatiaojiaobang",
+            "identifier": "yybld:yybld_calibration_stick_item",
+            "path": "textures/items/yybld_huojiatiaojiaobang",
+            "file_name": "yybld_huojiatiaojiaobang.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_huojiatiaojiaobang.png",
+            "size_str": "370 B",
+            "size_bytes": 370,
+            "mtime": "2026-10-17 23:55:38",
+            "exists": true,
+            "thumb": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABOUlEQVQ4jaWRP0hCURTGfzecjDIQh4QWhTKEZgubXB5O1uBSDS4tujzbAiEInPqzvJaWhrYGxxDhbUEP+jO0SO3xIHnh5Hoa6j0U7yOzb7lw7v1+9zvngEYXhZzo6jrN6Mw7hfWJIWMArzcglknj9QYjdXFutcDI8M9eb0DjaB+SKSr5LIDEE1GqtqNUrqhCAX7sWCYNyVRw+QMBkKrtaAFB0U9QyWdxvU8A2l0XP0HYDIIWhh6JsbpIu+uyVDvh5fUNbCfMPz7EeCI6cq6tLGMeWBOvNWgHwCjV5eqyI093z/JniC8fcm8//h+iSxIJt31LWpao7ZoCBAx2tzYAS85Pa+pXgLQsIZmi3zRl4fBMzc/NCmxSLuZ4/2jIzfVx6HoD9ZvmSOTyXkParYfp5+FDjFJ9esCwvgA3LoeU9OVhRAAAAABJRU5ErkJggg==",
+            "source": "item",
+            "stem": "yybld_calibration_stick",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": false,
+          "item": true,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAABOUlEQVQ4jaWRP0hCURTGfzecjDIQh4QWhTKEZgubXB5O1uBSDS4tujzbAiEInPqzvJaWhrYGxxDhbUEP+jO0SO3xIHnh5Hoa6j0U7yOzb7lw7v1+9zvngEYXhZzo6jrN6Mw7hfWJIWMArzcglknj9QYjdXFutcDI8M9eb0DjaB+SKSr5LIDEE1GqtqNUrqhCAX7sWCYNyVRw+QMBkKrtaAFB0U9QyWdxvU8A2l0XP0HYDIIWhh6JsbpIu+uyVDvh5fUNbCfMPz7EeCI6cq6tLGMeWBOvNWgHwCjV5eqyI093z/JniC8fcm8//h+iSxIJt31LWpao7ZoCBAx2tzYAS85Pa+pXgLQsIZmi3zRl4fBMzc/NCmxSLuZ4/2jIzfVx6HoD9ZvmSOTyXkParYfp5+FDjFJ9esCwvgA3LoeU9OVhRAAAAABJRU5ErkJggg=="
       },
       {
         "id": "yybld_instbook",

@@ -667,9 +667,6 @@
         .ef-figs {
           grid-template-columns: 1fr 1fr;
         }
-        .ef-figs > :last-child {
-          grid-column: 1 / -1;
-        }
         .filters {
           gap: 0.4rem;
         }
@@ -1550,6 +1547,7 @@
           <div class="ef-figs">
             <a href="#tree" data-view="tree"><b data-fig="entries">--</b><span>中文名条目</span></a>
             <a href="#models" data-view="models"><b data-fig="models">--</b><span>模型文件</span></a>
+            <div><b data-fig="textures">--</b><span>贴图文件</span></div>
             <a href="#anims" data-view="anims"><b data-fig="anims">--</b><span>动画文件</span></a>
           </div>
         </section>
@@ -2159,7 +2157,7 @@
     <!--EF_DATA_END-->
 
     <!-- 资产数据外链：由 sync_data.py 生成的 data.js 注入 window.EF_DATA -->
-    <script src="data.js?v=20261022194400"></script>
+    <script src="data.js?v=20261022214222"></script>
 
     <script>
       (function () {
@@ -2242,7 +2240,14 @@
             seen[f.rel_path] = 1;
             return true;
           });
-          return { FLAT: flat, MODEL_ROWS: modelRows, ANIM_ROWS: animRows };
+          // 贴图在共享条目间会重复出现，按路径去重后才是文件总数
+          var seenTex = Object.create(null);
+          var texRows = flat.filter(function (f) {
+            if (f._kind !== 'texture' || seenTex[f.rel_path]) return false;
+            seenTex[f.rel_path] = 1;
+            return true;
+          });
+          return { FLAT: flat, MODEL_ROWS: modelRows, ANIM_ROWS: animRows, TEX_ROWS: texRows };
         }
         // 启动时一次性为所有项目建索引，切换项目零成本
         var INDEX = {};
@@ -2353,7 +2358,7 @@
             iconHtml(e) +
             '<span class="ef-node-id">' + hl(e.identifier, q) + '</span>' +
             '<span class="ef-cat" data-cat="' + esc(e.category) + '">' + esc(e.category_name) + '</span>' +
-            '<span class="ef-node-fields ef-field">模型 ' + e.model_count + ' │ 动画 ' + e.anim_count + ' │ 贴图 ' + e.texture_count + '</span>' +
+            '<span class="ef-node-fields ef-field">模型 ' + e.model_count + ' │ 贴图 ' + e.texture_count + ' │ 动画 ' + e.anim_count + '</span>' +
             '<span class="ef-caret" aria-hidden="true"></span>' +
             '</button>' + body + '</li>';
         }
@@ -2364,7 +2369,7 @@
         var active = null;
         function makeActive(key) {
           var pm = PD[key] || {};
-          var idx = INDEX[key] || { FLAT: [], MODEL_ROWS: [], ANIM_ROWS: [] };
+          var idx = INDEX[key] || { FLAT: [], MODEL_ROWS: [], ANIM_ROWS: [], TEX_ROWS: [] };
           return {
             key: key,
             meta: pm,
@@ -2374,7 +2379,7 @@
             chainCats: pm.chain_categories || [],
             defLabels: pm.def_labels || {},
             head: pm.head || {},
-            FLAT: idx.FLAT, MODEL_ROWS: idx.MODEL_ROWS, ANIM_ROWS: idx.ANIM_ROWS
+            FLAT: idx.FLAT, MODEL_ROWS: idx.MODEL_ROWS, ANIM_ROWS: idx.ANIM_ROWS, TEX_ROWS: idx.TEX_ROWS
           };
         }
         var treeEl = document.getElementById('ef-tree');
@@ -2446,12 +2451,12 @@
 
         function render(animate) {
           var q = state.q;
-          var counts = { models: active.MODEL_ROWS.length, anims: active.ANIM_ROWS.length };
+          var counts = { models: active.MODEL_ROWS.length, anims: active.ANIM_ROWS.length, textures: active.TEX_ROWS.length };
           var shown;
           if (state.view === 'tree') {
             shown = renderTree(q, animate);
             countEl.textContent = '显示 ' + shown + ' / ' + active.entries.length + ' 条目' +
-              (q ? '　│　搜索「' + q + '」' : '') + '　│　模型 ' + counts.models + ' │ 动画 ' + counts.anims;
+              (q ? '　│　搜索「' + q + '」' : '') + '　│　模型 ' + counts.models + ' │ 贴图 ' + counts.textures + ' │ 动画 ' + counts.anims;
           } else {
             var r = renderTables(q);
             shown = state.view === 'models' ? r.models : r.anims;
@@ -2872,6 +2877,7 @@
           if (!active) return;
           setText('[data-fig="entries"]', String(active.meta.total_entries || active.entries.length));
           setText('[data-fig="models"]', String(active.meta.total_models || active.MODEL_ROWS.length));
+          setText('[data-fig="textures"]', String(active.meta.total_textures || active.TEX_ROWS.length));
           setText('[data-fig="anims"]', String(active.meta.total_animations || active.ANIM_ROWS.length));
           setText('#ef-stamp, #ef-stamp-2', '同步于 ' + (meta.last_sync_time || '未同步'));
         }
