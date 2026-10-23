@@ -693,23 +693,25 @@ def yycore_parse_authoritative(bp_dir, rp_dir, env):
 
 
 def yycore_tex_group(tpath):
-    """贴图按目录归属资源链：items -> 物品链；entity -> 方块实体链。"""
-    p = str(tpath).replace("\\", "/").lower()
-    if p.startswith("textures/items/"):
-        return "item"
+    """贴图按目录归属资源链，与便利店一致：前置库资源均为方块形态。"""
     return "block"
 
 
+# 分类口径完全沿用便利店（五分类 + 注册表优先归类），保证同一资产在三个项目里叫法一致
 YYCORE_CATEGORIES = [
-    ("functional", "功能", "功能类资源链（统一币等）"),
-    ("item", "物品", "其余物品资源链"),
+    ("food", "食品饮料", "带第一人称吃喝动画的食品 / 饮品资源链"),
+    ("block", "普通方块", "配置了自定义模型（netease_block）的方块资源链"),
+    ("block_entity", "方块实体", "配置了网易方块实体（netease:block_entity）的方块资源链"),
+    ("item", "物品", "所有物品（道具 / 工具 / 手册等）资源链"),
+    ("entity", "实体", "独立实体资源链"),
 ]
 
 
 def yycore_classify(stem, ctx):
-    s = stem[len("yycore_"):] if stem.startswith("yycore_") else stem
-    if "coin" in s:
-        return "functional"
+    """与便利店同一优先级：食品 > 方块实体 > 普通方块 > 物品 > 实体。"""
+    for key in ("food", "block_entity", "block", "item", "entity"):
+        if stem in ctx[key]:
+            return key
     return "item"
 
 
@@ -741,11 +743,14 @@ YYCORE_SPEC = {
     "head": {
         "title": "美术资产对照索引",
         "sub": "Model / Animation / Texture / Name",
-        "desc": "前置库项目内全部已实装的模型与贴图资源（统一币），按「暴露给玩家的内容」归纳为中文名条目并分类。",
+        "desc": "前置库项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目；"
+                "分类口径与便利店一致（食品饮料 / 普通方块 / 方块实体 / 物品 / 实体）。",
     },
     "chains": [
         {"key": "block", "name": "方块", "en": "Block", "tag": "无标注", "num": "01"},
-        {"key": "item", "name": "物品", "en": "Item", "tag": "items贴图", "num": "02"},
+        {"key": "display", "name": "货架上（display）", "en": "Display", "tag": "display标注", "num": "02"},
+        {"key": "hand", "name": "第一人称（hand）", "en": "Hand", "tag": "hand标注", "num": "03"},
+        {"key": "hold", "name": "第三人称（hold）", "en": "Hold", "tag": "hold标注", "num": "04"},
     ],
     "chain_categories": [],
 }

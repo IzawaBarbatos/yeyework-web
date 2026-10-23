@@ -224,15 +224,33 @@
         "icon_hit": 1,
         "categories": [
           {
-            "key": "functional",
-            "name": "功能",
-            "desc": "功能类资源链（统一币等）",
+            "key": "food",
+            "name": "食品饮料",
+            "desc": "带第一人称吃喝动画的食品 / 饮品资源链",
+            "count": 0
+          },
+          {
+            "key": "block",
+            "name": "普通方块",
+            "desc": "配置了自定义模型（netease_block）的方块资源链",
+            "count": 0
+          },
+          {
+            "key": "block_entity",
+            "name": "方块实体",
+            "desc": "配置了网易方块实体（netease:block_entity）的方块资源链",
             "count": 1
           },
           {
             "key": "item",
             "name": "物品",
-            "desc": "其余物品资源链",
+            "desc": "所有物品（道具 / 工具 / 手册等）资源链",
+            "count": 0
+          },
+          {
+            "key": "entity",
+            "name": "实体",
+            "desc": "独立实体资源链",
             "count": 0
           }
         ],
@@ -245,11 +263,25 @@
             "num": "01"
           },
           {
-            "key": "item",
-            "name": "物品",
-            "en": "Item",
-            "tag": "items贴图",
+            "key": "display",
+            "name": "货架上（display）",
+            "en": "Display",
+            "tag": "display标注",
             "num": "02"
+          },
+          {
+            "key": "hand",
+            "name": "第一人称（hand）",
+            "en": "Hand",
+            "tag": "hand标注",
+            "num": "03"
+          },
+          {
+            "key": "hold",
+            "name": "第三人称（hold）",
+            "en": "Hold",
+            "tag": "hold标注",
+            "num": "04"
           }
         ],
         "chain_categories": [],
@@ -262,11 +294,11 @@
         "head": {
           "title": "美术资产对照索引",
           "sub": "Model / Animation / Texture / Name",
-          "desc": "前置库项目内全部已实装的模型与贴图资源（统一币），按「暴露给玩家的内容」归纳为中文名条目并分类。"
+          "desc": "前置库项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目；分类口径与便利店一致（食品饮料 / 普通方块 / 方块实体 / 物品 / 实体）。"
         }
       }
     },
-    "last_sync_time": "2026-10-24 02:22:07"
+    "last_sync_time": "2026-10-24 03:51:03"
   },
   "entries": {
     "yybld": [
@@ -22189,7 +22221,7 @@
             "thumb": "data:image/png;base64,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",
             "source": "item",
             "stem": "yycore_coin",
-            "group": "item"
+            "group": "block"
           },
           {
             "key": "yycore_coin",
@@ -22214,8 +22246,8 @@
           "item": false,
           "food": false
         },
-        "category": "functional",
-        "category_name": "功能",
+        "category": "block_entity",
+        "category_name": "方块实体",
         "model_count": 1,
         "anim_count": 0,
         "texture_count": 2,

@@ -2157,7 +2157,7 @@
     <!--EF_DATA_END-->
 
     <!-- 资产数据外链：由 sync_data.py 生成的 data.js 注入 window.EF_DATA -->
-    <script src="data.js?v=20261024022207"></script>
+    <script src="data.js?v=20261024035103"></script>
 
     <script>
       (function () {
@@ -2192,6 +2192,8 @@
             hold: ['hold', 'hold贴图'], state: ['state', 'state贴图'], item: ['物品', 'items贴图']
           }
         };
+        // 前置库分类口径与便利店一致，资源徽标直接复用便利店文案
+        BADGE.yycore = BADGE.yybld;
 
         // 分类内联图标（条目无游戏贴图时的兜底）
         var SVG = ' viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linejoin="round" stroke-linecap="round"';
@@ -2840,8 +2842,11 @@
               html.push('<a href="#tree" data-proj-group="' + esc(key) + '" data-nav-filter="' + esc(c.key) + '">' +
                 '<span class="n">' + pad(i + 1) + '</span><span class="t">' + esc(c.name) + '</span></a>');
             });
-            html.push('<a href="#' + NOTES_IDS[key] + '" data-proj-group="' + esc(key) + '" data-nav-notes="1">' +
-              '<span class="n">' + pad(cats.length + 1) + '</span><span class="t">小纸条</span></a>');
+            // 无留言板实例的项目（如前置库）不生成小纸条导航，避免空锚点
+            if (NOTES_IDS[key]) {
+              html.push('<a href="#' + NOTES_IDS[key] + '" data-proj-group="' + esc(key) + '" data-nav-notes="1">' +
+                '<span class="n">' + pad(cats.length + 1) + '</span><span class="t">小纸条</span></a>');
+            }
           });
           SIDENAV_DOC.forEach(function (d, i) {
             html.push('<a href="#' + d[0] + '" data-proj-group="spec" data-nav-doc="' + d[0] + '">' +
