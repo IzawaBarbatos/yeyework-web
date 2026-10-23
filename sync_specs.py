@@ -141,7 +141,7 @@ YYBLD_PREDEFINED_CN = {
     "yybld_shuibei_small": "小号纸杯",
     "yybld_canpan_big": "大号快餐托盘",
     "yybld_canpan_small": "小号快餐托盘",
-    "yybld_coin_golden_0": "便利店金币（面额 0）",
+    "yybld_coin_golden_0": "椰椰便利店-纪念币",
     "yybld_denglong_zhongqiu_chang": "中秋装饰长形纸灯笼",
     "yybld_denglong_zhongqiu_yuan": "中秋装饰圆形纸灯笼",
     "yybld_bingguihuojia": "冷藏风幕柜置物搁架",
@@ -631,5 +631,125 @@ YYZCT_SPEC = {
 }
 
 
+# ══════════════════════════════════════════════════════════════════════════
+#  三、椰椰工坊：前置库（yycore）
+# ══════════════════════════════════════════════════════════════════════════
+
+def yycore_norm_id(s):
+    """统一小写、去命名空间前缀、合并重复 yycore_ 前缀。"""
+    s = str(s).strip().lower()
+    s = re.sub(r"^(?:yycore|minecraft):", "", s)
+    s = s.replace("yycore_yycore_", "yycore_")
+    return s
+
+
+def yycore_label_group(name):
+    """前置库资源只有方块形态。"""
+    return "block"
+
+
+def yycore_anim_group(fname, anim_ids):
+    return "block"
+
+
+def yycore_group_stem(name):
+    """由文件名/标识符推导「条目主键 stem」。"""
+    s = yycore_norm_id(name)
+    for ext in (".geo.json", ".animation.json", ".json"):
+        if s.endswith(ext):
+            s = s[: -len(ext)]
+            break
+    return s
+
+
+YYCORE_PREDEFINED_CN = {
+    "yycore_coin": "椰椰金币",
+}
+
+
+def yycore_build_stem_cn(rp_dir):
+    """构建 stem -> 中文名 池（语言包严格校验前缀，过滤 action.* 等交互提示键）。"""
+    key_to_cn = {}
+    lang_file = os.path.join(rp_dir, "texts", "zh_CN.lang")
+    if os.path.exists(lang_file):
+        with open(lang_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                k, v = line.split("=", 1)
+                m = re.match(r"^(?:tile|item|entity)\.(?:[a-z_]+:)?(.+?)\.name$", k.strip())
+                if not m:
+                    continue
+                key_to_cn[yycore_norm_id(m.group(1))] = re.sub(r"§[0-9a-fk-or]", "", v.strip())
+    for k, v in YYCORE_PREDEFINED_CN.items():
+        key_to_cn.setdefault(yycore_norm_id(k), v)
+    return key_to_cn
+
+
+def yycore_parse_authoritative(bp_dir, rp_dir, env):
+    """前置库无脚本级资源映射，返回空权威表。"""
+    return set(), {}, {"models": {}, "textures": {}}
+
+
+def yycore_tex_group(tpath):
+    """贴图按目录归属资源链：items -> 物品链；entity -> 方块实体链。"""
+    p = str(tpath).replace("\\", "/").lower()
+    if p.startswith("textures/items/"):
+        return "item"
+    return "block"
+
+
+YYCORE_CATEGORIES = [
+    ("functional", "功能", "功能类资源链（统一币等）"),
+    ("item", "物品", "其余物品资源链"),
+]
+
+
+def yycore_classify(stem, ctx):
+    s = stem[len("yycore_"):] if stem.startswith("yycore_") else stem
+    if "coin" in s:
+        return "functional"
+    return "item"
+
+
+YYCORE_SPEC = {
+    "key": "yycore",
+    "name": "椰椰工坊：前置库",
+    "rel_dir": r"QuModProject\椰椰工坊：前置库",
+    "norm_id": yycore_norm_id,
+    "label_group": yycore_label_group,
+    "anim_group": yycore_anim_group,
+    "group_stem": yycore_group_stem,
+    "tex_group": yycore_tex_group,
+    "build_stem_cn": yycore_build_stem_cn,
+    "parse_authoritative": yycore_parse_authoritative,
+    "categories": YYCORE_CATEGORIES,
+    "classify": yycore_classify,
+    "cn_fallback": "前置库资产-",
+    "share_model_field": "file_stem",
+    "anim_self_include": True,
+    "entity_def_via_group_stem": True,
+    "protected_stems": {"yycore_coin"},
+    "scan_tex_dirs": ["items", "entity"],
+    "def_labels": {
+        "client_entity": "客户端实体定义",
+        "block_entity": "方块实体定义",
+        "block": "方块配置",
+        "item": "物品配置",
+    },
+    "head": {
+        "title": "美术资产对照索引",
+        "sub": "Model / Animation / Texture / Name",
+        "desc": "前置库项目内全部已实装的模型与贴图资源（统一币），按「暴露给玩家的内容」归纳为中文名条目并分类。",
+    },
+    "chains": [
+        {"key": "block", "name": "方块", "en": "Block", "tag": "无标注", "num": "01"},
+        {"key": "item", "name": "物品", "en": "Item", "tag": "items贴图", "num": "02"},
+    ],
+    "chain_categories": [],
+}
+
+
 # 全部项目规格（顺序即页面项目列表顺序）
-SPECS = [YYBLD_SPEC, YYZCT_SPEC]
+SPECS = [YYBLD_SPEC, YYZCT_SPEC, YYCORE_SPEC]
