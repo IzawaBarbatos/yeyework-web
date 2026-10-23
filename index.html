@@ -635,6 +635,32 @@
         font-size: 0.8rem;
         letter-spacing: 0.18em;
       }
+      /* 标题上方信息行：与「版本里程碑 / 美术资产规范」页头同款（英文眉标 + 字段） */
+      .ef-head-meta {
+        grid-column: 1 / -1;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.6rem 1rem;
+        margin-bottom: 0.15rem;
+      }
+      .ef-head-meta .ef-field {
+        font-size: 0.78rem;
+      }
+      .ef-head.has-meta {
+        align-items: start;
+      }
+      .ef-head.has-meta h1 {
+        grid-row: 2;
+        grid-column: 1;
+      }
+      .ef-head.has-meta::after {
+        grid-row: 2;
+        align-self: center;
+      }
+      .ef-head.has-meta p {
+        grid-row: 3;
+      }
 
       /* ---------- 响应式：适配平板 / 移动端 ---------- */
       @media (max-width: 1100px) {
@@ -1558,7 +1584,13 @@
     <main class="wrap">
       <!-- ===== 项目资料库主视图（头部 / 留言板 / 资产对照主体随当前项目切换） ===== -->
       <div class="proj-view" id="proj-view-main">
-      <header class="ef-head ef-in-drive">
+      <header class="ef-head ef-in-drive has-meta">
+        <div class="ef-head-meta">
+          <span class="ef-eyebrow slash" id="ef-head-en">Project Archive</span>
+          <span class="ef-field">美术资产对照</span>
+          <span class="ef-field" id="ef-head-ns">命名空间 yybld</span>
+          <span class="ef-field" id="ef-head-sync">同步于 —</span>
+        </div>
         <h1><span id="ef-head-title">美术资产对照索引</span> <small id="ef-head-sub">Model / Animation / Texture / Name</small></h1>
         <p id="ef-head-desc">项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。</p>
       </header>
@@ -1868,7 +1900,7 @@
 
       <!-- ===== 大分类：版本里程碑（已结项版本公告 · 阅读视图） ===== -->
       <section class="proj-view ef-doc" id="proj-view-milestones" aria-label="版本里程碑" hidden>
-        <header class="ef-doc-head">
+        <header class="ef-doc-head ef-in-drive">
           <div class="ef-doc-meta">
             <span class="ef-eyebrow slash">Version Milestones</span>
             <span class="ef-field">已结项版本公告</span>
@@ -1888,7 +1920,7 @@
 
       <!-- ===== 大分类：美术资产规范（规范文档资料文本 · 阅读视图） ===== -->
       <section class="proj-view ef-doc" id="proj-view-spec" aria-label="美术资产命名与制作规范" hidden>
-        <header class="ef-doc-head">
+        <header class="ef-doc-head ef-in-drive">
           <div class="ef-doc-meta">
             <span class="ef-eyebrow slash">Spec / Documentation</span>
             <span class="ef-field">图文资料</span>
@@ -2441,7 +2473,7 @@
     <!-- 资产数据外链：由 sync_data.py 生成的 data.js 注入 window.EF_DATA -->
     <script src="data.js?v=20261024035103"></script>
     <!-- 版本里程碑：已结项版本公告数据与渲染（手写维护；带版本指纹避免旧缓存） -->
-    <script src="milestones.js?v=20261024"></script>
+    <script src="milestones.js?v=202610241300"></script>
 
     <script>
       (function () {
@@ -2767,14 +2799,19 @@
           ['tree', 'models', 'anims'].forEach(function (v) {
             document.getElementById('view-' + v).hidden = v !== view;
           });
-          // 视图切换动效：表格类视图从左擦入，对照树用节点错峰入场
+          // 视图切换动效：表格类视图从左擦入，对照树用节点错峰入场（仅视窗内节点播放）
           var active = document.getElementById('view-' + view);
           if (active && view !== 'tree') {
             active.classList.remove('ef-in-wipe');
             void active.offsetWidth;
             active.classList.add('ef-in-wipe');
           }
-          render(true);
+          if (view === 'tree') {
+            render(false);
+            enterViewport([{ els: document.querySelectorAll('#view-tree .ef-node'), cls: 'ef-in-come', cap: 12 }]);
+          } else {
+            render(true);
+          }
           if (history.replaceState) history.replaceState(null, '', '#' + view);
         }
 
@@ -3189,12 +3226,15 @@
         }
 
         // 8.3 头部文案与统计数字（随当前项目切换）
+        var PROJ_EN = { yybld: 'Convenience Store', yyzct: 'Chinese Restaurant', yycore: 'Core Library' };
         function renderHead() {
           if (!active) return;
           var h = active.head || {};
           setText('#ef-head-title', h.title || '美术资产对照索引');
           setText('#ef-head-sub', h.sub || 'Model / Animation / Texture / Name');
           setText('#ef-head-desc', h.desc || '');
+          setText('#ef-head-en', PROJ_EN[active.key] || 'Project Archive');
+          setText('#ef-head-ns', '命名空间 ' + active.key);
         }
         function renderStats() {
           if (!active) return;
@@ -3203,6 +3243,7 @@
           setText('[data-fig="textures"]', String(active.meta.total_textures || active.TEX_ROWS.length));
           setText('[data-fig="anims"]', String(active.meta.total_animations || active.ANIM_ROWS.length));
           setText('#ef-stamp, #ef-stamp-2', '同步于 ' + (meta.last_sync_time || '未同步'));
+          setText('#ef-head-sync', '同步于 ' + (meta.last_sync_time || '未同步'));
         }
 
         // 8.4 切换资产项目：重置筛选/搜索，重建 chips、统计、侧边栏与主体
@@ -3217,6 +3258,75 @@
           buildSidenav();
           syncViewBtns();
           render(true);
+        }
+
+        /* ---------- 入场动效重放：切栏时复现首次进入的展开效果 ---------- */
+        var reduceMotion = window.matchMedia ? window.matchMedia('(prefers-reduced-motion: reduce)') : null;
+        var enterIO = null;
+
+        // 视窗内才播放：先摘掉动画类，视窗内的元素立即补回（零帧延迟），
+        // 屏幕外的交给 IntersectionObserver，滚动进入时再播放。
+        function enterViewport(groups) {
+          var pending = [];
+          groups.forEach(function (g) {
+            Array.prototype.forEach.call(g.els || [], function (el, i) {
+              el.classList.remove(g.cls);
+              pending.push({ el: el, cls: g.cls, i: g.cap != null ? Math.min(i, g.cap) : null });
+            });
+          });
+          if (!pending.length) return;
+          function apply(p) {
+            if (p.i != null) p.el.style.setProperty('--i', p.i);
+            p.el.classList.add(p.cls);
+          }
+          function inView(el) {
+            var r = el.getBoundingClientRect();
+            return r.width > 0 && r.height > 0 && r.bottom > 0 && r.right > 0 &&
+              r.top < (window.innerHeight || document.documentElement.clientHeight) &&
+              r.left < (window.innerWidth || document.documentElement.clientWidth);
+          }
+          var deferred = [];
+          pending.forEach(function (p) {
+            if (inView(p.el)) apply(p);
+            else deferred.push(p);
+          });
+          if (!deferred.length || !('IntersectionObserver' in window)) {
+            deferred.forEach(apply);
+            return;
+          }
+          if (enterIO) enterIO.disconnect();
+          enterIO = new IntersectionObserver(function (entries) {
+            entries.forEach(function (entry) {
+              if (!entry.isIntersecting) return;
+              var p = entry.target.__enter;
+              if (!p) return;
+              apply(p);
+              delete entry.target.__enter;
+              enterIO.unobserve(entry.target);
+            });
+          }, { threshold: 0.01 });
+          deferred.forEach(function (p) {
+            p.el.__enter = p;
+            enterIO.observe(p.el);
+          });
+        }
+
+        function playEnter(key) {
+          if (reduceMotion && reduceMotion.matches) return;
+          var groups = [{ els: [document.querySelector('.ef-tri')], cls: 'ef-in-sweep' }];
+          if (key === 'milestones') {
+            groups.push({ els: viewMs.querySelectorAll('.ef-doc-head'), cls: 'ef-in-drive' });
+            groups.push({ els: viewMs.querySelectorAll('.ms-item'), cls: 'ef-in-come', cap: 8 });
+          } else if (key === 'spec') {
+            groups.push({ els: viewSpec.querySelectorAll('.ef-doc-head'), cls: 'ef-in-drive' });
+            groups.push({ els: viewSpec.querySelectorAll('.ef-doc-sec'), cls: 'ef-in-come', cap: 6 });
+          } else {
+            // 资产项目栏：标题擦入 → 总览通电 → 条目错峰入场（与首屏一致）
+            groups.push({ els: viewMain.querySelectorAll('.ef-head'), cls: 'ef-in-drive' });
+            groups.push({ els: [document.getElementById('overview')], cls: 'ef-in-power', cap: 0 });
+            groups.push({ els: viewMain.querySelectorAll('.ef-node'), cls: 'ef-in-come', cap: 12 });
+          }
+          enterViewport(groups);
         }
 
         // 大分类切换：同步主视图、导航胶囊、侧边栏分组与地址栏
@@ -3267,6 +3377,8 @@
           if (history.replaceState) {
             history.replaceState(null, '', '#' + (isSpec ? 'spec' : isMs ? 'milestones' : state.view));
           }
+          // 切栏重放入场动效（首次进入也走这里，保证文档栏同样有展开效果）
+          playEnter(key);
         }
 
         projNavEl.addEventListener('click', function (ev) {
