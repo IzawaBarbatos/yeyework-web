@@ -35,8 +35,8 @@ window.EF_NOTES_CONFIGS = {
     /* 单条小纸条字数上限（GitHub Issue 正文硬上限 65536，留足 JSON 转义余量） */
     maxLength: 20000,
 
-    /* 自动刷新间隔（毫秒），30 秒刷新一次 */
-    pollInterval: 30000,
+    /* 自动刷新间隔（毫秒）：只轮询当前可见的板，3 分钟一次可把匿名 API 消耗控制在 60 次/小时以内 */
+    pollInterval: 180000,
 
     /* 本地存储回退键 */
     localKey: "ef_notes_local_v1",
@@ -44,6 +44,9 @@ window.EF_NOTES_CONFIGS = {
     /* 后端隔离：便利店标题不带前缀，读取时排除其它项目的标题前缀 */
     titlePrefix: "",
     titleExcludePrefixes: ["中餐厅"],
+
+    /* 板标题上显示的项目名，避免成员在默认板里写另一个项目的纸条 */
+    boardName: "便利店",
 
     /* 腾讯云 CloudBase（备用） */
     envId: "",
@@ -64,13 +67,16 @@ window.EF_NOTES_CONFIGS = {
     targets: ["伊茶Izawa", "Maks怜悯", "YK"],
     allowCustomTarget: true,
     maxLength: 20000,
-    pollInterval: 30000,
+    pollInterval: 180000,
 
     /* 独立本地存储键，避免与便利店留言板互相覆盖 */
     localKey: "ef_notes_local_yyzct_v1",
 
     /* 标题加项目前缀，与便利店留言板在 GitHub Issues 上相互隔离 */
     titlePrefix: "中餐厅",
+
+    /* 板标题上显示的项目名，避免成员在默认板里写另一个项目的纸条 */
+    boardName: "中餐厅",
 
     envId: "",
     region: "ap-shanghai",

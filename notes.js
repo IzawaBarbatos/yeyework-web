@@ -381,12 +381,23 @@
       if (t) h['Authorization'] = 'Bearer ' + t;
       return h;
     },
+    // 记录匿名调用配额：配额见底时暂停轮询，等到重置时间再继续，避免"静默失败导致新纸条永远不出现"
+    _recordQuota: function (r) {
+      try {
+        var rem = parseInt(r.headers.get('x-ratelimit-remaining'), 10);
+        var reset = parseInt(r.headers.get('x-ratelimit-reset'), 10);
+        if (!isNaN(rem)) state.quotaLeft = rem;
+        if (!isNaN(reset)) state.quotaResetAt = reset * 1000;
+      } catch (e) {}
+    },
     init: function () { return Promise.resolve(); },
     list: function () {
       var self = this;
       var gh = CFG.github;
       var base = 'https://api.github.com/repos/' + gh.owner + '/' + gh.repo;
-      var issuesUrl = base + '/issues?state=all&labels=' + encodeURIComponent(gh.issueLabel) + '&per_page=100';
+      // 读取不再依赖 ef-note 标签：成员若没有仓库写权限，GitHub 会静默丢弃 labels，
+      // 纸条虽创建成功却永远进不了列表；项目归属只按标题前缀判定即可。
+      var issuesUrl = base + '/issues?state=all&per_page=100';
       var commentsUrl = base + '/issues/comments?per_page=100';
 
       var h = self._headers();
@@ -407,10 +418,14 @@
       function fetchIssues() {
         // no-store：GitHub 列表响应带 max-age=60 缓存头，写入后立即重读会命中旧缓存导致新纸条不显示
         return fetch(issuesUrl, { headers: self._headers(), cache: 'no-store' }).then(function (r) {
+          self._recordQuota(r);
           if (r.status === 401 && self.getToken()) {
             // 本地残留的失效 Token 会阻断公开读取，清除后匿名重试一次
             self.setToken('');
-            return fetch(issuesUrl, { headers: self._headers(), cache: 'no-store' });
+            return fetch(issuesUrl, { headers: self._headers(), cache: 'no-store' }).then(function (r2) {
+              self._recordQuota(r2);
+              return r2;
+            });
           }
           return r;
         }).then(function (r) {
@@ -422,6 +437,7 @@
       return Promise.all([
         fetchIssues(),
         fetch(commentsUrl, { headers: h, cache: 'no-store' }).then(function (r) {
+          self._recordQuota(r);
           if (!r.ok) return []; // comments 拉取失败时不阻断主帖呈现
           return r.json();
         }).catch(function () { return []; })
@@ -434,6 +450,9 @@
 
         issues.forEach(function (it) {
           if (it.pull_request) return; // 排除 PR
+          // 站内删除 = 关闭 issue 并标记 not_planned（同时去标签）；仅按此标记过滤，
+          // 未关闭的即使缺 ef-note 标签（成员无仓库写权限时 GitHub 会丢弃 labels）也要展示。
+          if (it.state === 'closed' && it.state_reason === 'not_planned') return;
           if (!ownedByProject(it.title)) return; // 排除其它项目的纸条
           var meta = { authors: [], targets: [], files: [] };
           var text = it.body || '';
@@ -659,7 +678,11 @@
     gone: {}, // 删除墓碑：本地已删除但服务端缓存仍可能返回的条目（id -> ts）
     statusOverride: {}, // 状态覆盖：本地已改、服务端尚未同步的状态（id -> {status, ts}）
     pollTimer: null,
-    watchHandler: null
+    watchHandler: null,
+    boardActive: false, // 本板当前是否可见（隐藏的项目板不轮询，节省匿名 API 配额）
+    quotaLeft: null, // GitHub 匿名配额剩余
+    quotaResetAt: 0, // 配额重置时间（毫秒时间戳）
+    syncWarned: false // 轮询受限提示只提示一次
   };
 
   var els = {};
@@ -1525,11 +1548,20 @@
   function refresh(silent) {
     if (!state.store) return Promise.resolve();
     return state.store.list().then(function (rawList) {
+      state.syncWarned = false;
       state.notes = applyOverlay((rawList || []).map(normalize));
       render();
     }).catch(function (e) {
       console.warn('[小纸条] 刷新失败：', e);
-      if (!silent) showError('加载失败：' + (e && e.message ? e.message : e));
+      if (!silent) {
+        showError('加载失败：' + (e && e.message ? e.message : e));
+        return;
+      }
+      // 轮询静默失败时给出可见提示，否则会表现为"别人提交的纸条永远不出现"
+      if (!state.syncWarned && /\((403|429)\)/.test((e && e.message) || '')) {
+        state.syncWarned = true;
+        if (els.count) els.count.textContent += ' │ 同步受限，稍后自动重试';
+      }
     });
   }
 
@@ -1538,11 +1570,22 @@
     startPolling();
   }
 
+  // 本板是否可见：隐藏的项目板不拉取数据，避免两块板把匿名配额翻倍消耗
+  function boardActive() {
+    return !!(ROOT && !ROOT.hidden && ROOT.getClientRects().length);
+  }
+
   function startPolling() {
     if (state.pollTimer) clearInterval(state.pollTimer);
     if (!CFG.pollInterval || CFG.pollInterval <= 0) return;
+    state.boardActive = boardActive();
     state.pollTimer = setInterval(function () {
-      if (document.visibilityState === 'visible') refresh(true);
+      if (document.visibilityState !== 'visible') return;
+      if (!boardActive()) { state.boardActive = false; return; }
+      if (!state.boardActive) { state.boardActive = true; refresh(true); return; } // 切回本项目先补一次
+      // 配额见底时停止请求，等重置时间后再继续，避免持续 403
+      if (state.quotaLeft !== null && state.quotaLeft <= 6 && Date.now() < state.quotaResetAt) return;
+      refresh(true);
     }, CFG.pollInterval);
   }
 
@@ -1685,13 +1728,16 @@
     }
     state.isMember = isGithub ? GithubStore.isMember() : true;
     render();
-    refresh(false).then(startSync, startSync);
+    // 隐藏的项目板先不拉取，等切换到该项目时再同步，避免浪费匿名配额
+    if (boardActive()) refresh(false).then(startSync, startSync);
+    else startSync();
     refreshMember();
   }
 
   function boot() {
     els = {
       root: $('#ef-notes'),
+      title: $('#ef-notes-title'),
       mode: $('#ef-notes-mode'),
       count: $('#ef-notes-count'),
       hint: $('#ef-notes-hint'),
@@ -1712,6 +1758,11 @@
       empty: $('#ef-notes-empty')
     };
     if (!els.root || !els.form) return;
+
+    // 板标题标注所属项目：两块板标题原本一模一样，成员容易把纸条写到另一个项目的板里
+    if (els.title && CFG.boardName && els.title.firstChild) {
+      els.title.firstChild.nodeValue = '小纸条留言板 · ' + CFG.boardName;
+    }
 
     if (els.authorsHost) {
       pickers.authors = new DropdownMultiSelect(els.authorsHost, CFG.authors, lastAuthors(), '// 请选择填写人', '// 填写人 (多选)');
@@ -1752,6 +1803,15 @@
     window.addEventListener('storage', function (ev) {
       if (ev.key === CFG.localKey && state.store && state.store.mode === 'local') refresh(true);
     });
+
+    // 项目切换只改 DOM hidden，没有事件可监听：点击后补一次可见性检查，切回本项目时立即同步
+    document.addEventListener('click', function () {
+      setTimeout(function () {
+        var nowActive = boardActive();
+        if (nowActive && !state.boardActive) { state.boardActive = true; refresh(true); }
+        else if (!nowActive) state.boardActive = false;
+      }, 0);
+    }, true);
   }
 
   /* 挂载即启动本实例（原单实例版在模块底部调用 boot，工厂化后归属各实例） */
