@@ -722,6 +722,8 @@
         font-stretch: var(--ef-wider);
         letter-spacing: 0.12em;
         opacity: 0.7;
+        /* 等宽数字：否则“01”比“02”窄 3px，后面的标题会跟着左右错位 */
+        font-variant-numeric: tabular-nums;
       }
       .ef-sidenav a .t {
         font-size: 0.85rem;
@@ -1270,6 +1272,266 @@
         font-size: 0.75rem;
         letter-spacing: 0.08em;
       }
+
+      /* ==========================================================================
+         版本里程碑（已结项版本公告 · 阅读视图）
+         ========================================================================== */
+      .ms-tabs {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 0.9rem;
+      }
+      .ms-lede {
+        margin: 0 0 1.6rem;
+      }
+      .ms-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border-top: 1px solid var(--ef-rule);
+      }
+      .ms-item {
+        padding: 1.4rem 0 1.6rem;
+        border-bottom: 1px solid var(--ef-rule);
+        scroll-margin-top: 3.5rem;
+      }
+      .ms-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.45rem 0.85rem;
+      }
+      .ms-no {
+        font-weight: 800;
+        letter-spacing: 0.06em;
+      }
+      .ms-ver {
+        font-size: 1.4rem;
+        font-weight: 900;
+        font-stretch: var(--ef-wider);
+        letter-spacing: 0.03em;
+        font-variant-numeric: tabular-nums;
+      }
+      .ms-state {
+        font-size: 0.68rem;
+      }
+      .ms-theme {
+        margin: 0.5rem 0 1rem;
+        font-size: 1.1rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
+      }
+      /* 新互动流程：置顶强调块（黄色旗标，只标“这一版新增了怎么玩”） */
+      .ms-flows {
+        align-items: flex-start;
+        max-width: var(--ef-measure);
+        margin: 0 0 1.2rem;
+        padding: 0.6rem 0.85rem;
+      }
+      .ms-flows ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+      .ms-flows li {
+        font-size: 0.9rem;
+        line-height: 1.72;
+      }
+      .ms-flows li + li {
+        margin-top: 0.15rem;
+      }
+      .ms-sum-wrap {
+        display: grid;
+        gap: 0.3rem;
+      }
+      .ms-sum {
+        counter-reset: ms;
+        max-width: var(--ef-measure);
+        margin: 0 0 1.15rem;
+        padding: 0;
+        list-style: none;
+      }
+      .ms-sum > li {
+        position: relative;
+        padding: 0.34rem 0 0.34rem 2.35rem;
+        font-size: 0.95rem;
+        line-height: 1.72;
+        counter-increment: ms;
+      }
+      .ms-sum > li + li {
+        border-top: 1px solid var(--ef-rule);
+      }
+      .ms-sum > li::before {
+        content: counter(ms, decimal-leading-zero);
+        position: absolute;
+        left: 0;
+        top: 0.44rem;
+        color: var(--ef-ink-2);
+        font-size: 0.72rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.04em;
+      }
+      .ms-folds {
+        display: grid;
+      }
+      .ms-fold {
+        border-top: 1px solid var(--ef-rule);
+      }
+      .ms-fold:last-child {
+        border-bottom: 1px solid var(--ef-rule);
+      }
+      .ms-fold-head {
+        width: 100%;
+        justify-content: flex-start;
+        gap: 0.7rem;
+        padding: 0.66rem 0.6rem 0.66rem 0.75rem;
+        --fill: transparent;
+        text-align: left;
+      }
+      .ms-fold-head .ef-mono {
+        flex: none;
+        color: var(--ef-ink-2);
+        font-family: var(--ef-font-ui);
+        font-size: 0.68rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .ms-fold-head .ef-mono::before {
+        content: '// ';
+        letter-spacing: 0;
+      }
+      .ms-fold-head:hover .ef-mono {
+        color: var(--ef-on-signal);
+      }
+      .ms-fold-t {
+        font-weight: 800;
+      }
+      .ms-count {
+        margin-left: auto;
+        padding-left: 0.8rem;
+        color: var(--ef-ink-2);
+        font-size: 0.75rem;
+        font-weight: 500;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
+      }
+      .ms-fold-head:hover .ms-count {
+        color: var(--ef-on-signal);
+      }
+      .ms-caret {
+        flex: none;
+        width: 8px;
+        height: 8px;
+        margin-right: calc(var(--ef-cut) + 0.2rem);
+        border-right: 2px solid currentColor;
+        border-bottom: 2px solid currentColor;
+        transform: rotate(45deg);
+        transition: transform 0.24s var(--ef-mech);
+      }
+      .ms-fold.is-open .ms-caret {
+        transform: rotate(-135deg);
+      }
+      .ms-fold-body {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.3s var(--ef-mech);
+      }
+      .ms-fold.is-open .ms-fold-body {
+        grid-template-rows: 1fr;
+      }
+      .ms-fold-inner {
+        min-height: 0;
+        overflow: hidden;
+      }
+      .ms-add {
+        padding: 0.75rem 0.75rem 0.85rem;
+        border-top: 1px solid var(--ef-rule);
+      }
+      .ms-add-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.55rem;
+        margin-bottom: 0.3rem;
+      }
+      .ms-add-name {
+        font-weight: 800;
+        font-size: 0.9rem;
+      }
+      .ms-add-items {
+        margin: 0;
+        color: var(--ef-ink-2);
+        font-size: 0.88rem;
+        line-height: 1.85;
+      }
+      .ms-item-name {
+        color: var(--ef-ink);
+      }
+      .ms-item-name + .ms-item-name::before {
+        content: ' / ';
+        margin: 0 0.2rem;
+        color: var(--ef-ink-2);
+      }
+      .ms-points {
+        margin: 0;
+        padding: 0.7rem 0.75rem 0.85rem;
+        list-style: none;
+      }
+      .ms-points > li {
+        position: relative;
+        padding: 0.22rem 0 0.22rem 1rem;
+        font-size: 0.88rem;
+        line-height: 1.7;
+        break-inside: avoid;
+      }
+      .ms-points > li::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0.78rem;
+        width: 6px;
+        height: 1px;
+        background: var(--ef-ink);
+      }
+      .ms-note,
+      .ms-empty {
+        margin: 0.4rem 0.75rem 0.7rem;
+        color: var(--ef-ink-2);
+        font-size: 0.85rem;
+        line-height: 1.7;
+      }
+      .ms-empty {
+        margin: 0;
+        padding: 0.7rem 0.75rem 0.85rem;
+      }
+      .ms-fold-inner > .ms-note {
+        margin: 0.2rem 0.75rem 0.75rem;
+      }
+      @media (min-width: 900px) {
+        .ms-points {
+          columns: 2;
+          column-gap: 2.4rem;
+        }
+      }
+      @media (max-width: 560px) {
+        .ms-ver {
+          font-size: 1.2rem;
+        }
+        .ms-sum > li {
+          padding-left: 1.9rem;
+          font-size: 0.92rem;
+        }
+        .ms-fold-head {
+          gap: 0.5rem;
+        }
+        .ms-fold-head .ef-mono {
+          display: none;
+        }
+      }
     </style>
   </head>
   <body class="ef ef-contours">
@@ -1603,6 +1865,26 @@
       </noscript>
       </div>
       <!-- ===== /项目资料库主视图 ===== -->
+
+      <!-- ===== 大分类：版本里程碑（已结项版本公告 · 阅读视图） ===== -->
+      <section class="proj-view ef-doc" id="proj-view-milestones" aria-label="版本里程碑" hidden>
+        <header class="ef-doc-head">
+          <div class="ef-doc-meta">
+            <span class="ef-eyebrow slash">Version Milestones</span>
+            <span class="ef-field">已结项版本公告</span>
+            <span class="ef-field" id="ef-ms-updated">数据更新于 2026.10.24</span>
+          </div>
+          <h1>
+            版本里程碑
+            <small>UPDATES &amp; FIXES BY RELEASE</small>
+          </h1>
+          <p class="ef-doc-lead">
+            <b>读法：</b>先看每个版本的<b>更新重点</b>；想知道细改了哪些地方，再展开「新增内容」「性能与体验优化」「问题修复」。本栏只列已结项版本，制作中的版本不在此处。
+          </p>
+        </header>
+        <div id="ef-ms-root"></div>
+      </section>
+      <!-- ===== /大分类：版本里程碑 ===== -->
 
       <!-- ===== 大分类：美术资产规范（规范文档资料文本 · 阅读视图） ===== -->
       <section class="proj-view ef-doc" id="proj-view-spec" aria-label="美术资产命名与制作规范" hidden>
@@ -2158,6 +2440,8 @@
 
     <!-- 资产数据外链：由 sync_data.py 生成的 data.js 注入 window.EF_DATA -->
     <script src="data.js?v=20261024035103"></script>
+    <!-- 版本里程碑：已结项版本公告数据与渲染（手写维护；带版本指纹避免旧缓存） -->
+    <script src="milestones.js?v=20261024"></script>
 
     <script>
       (function () {
@@ -2810,12 +3094,22 @@
           { key: 'yyzct', name: '椰椰工坊：中餐厅', count: 0 },
           { key: 'spec', name: '美术资产规范', count: '规范文档', type: 'doc' }
         ];
+        // 版本里程碑：与项目同级的大分类，插在文档类之前
+        var MS_VIEW = window.EF_MILESTONES_VIEW || null;
+        var MS_ENTRY = { key: 'milestones', name: '版本里程碑', count: MS_VIEW ? MS_VIEW.count() : 0, type: 'doc' };
+        (function () {
+          var specIdx = -1;
+          PROJ_LIST.forEach(function (p, i) { if (p.key === 'spec') specIdx = i; });
+          if (specIdx >= 0) PROJ_LIST.splice(specIdx, 0, MS_ENTRY);
+          else PROJ_LIST.push(MS_ENTRY);
+        })();
         // 参与资产对照的项目顺序（排除文档类），首个作为默认项目
         var SPEC_KEYS = PROJ_LIST.filter(function (p) { return p.type !== 'doc'; })
           .map(function (p) { return p.key; });
         var projNavEl = document.getElementById('ef-projects');
         var viewMain = document.getElementById('proj-view-main');
         var viewSpec = document.getElementById('proj-view-spec');
+        var viewMs = document.getElementById('proj-view-milestones');
         var brandEl = document.querySelector('.ef-cmdbar .brand');
         // 各项目留言板容器（侧边栏「小纸条」跳转锚点）
         var NOTES_IDS = { yybld: 'ef-notes', yyzct: 'ef-z-notes' };
@@ -2824,7 +3118,7 @@
           ['doc-sec-02', '动画规范'], ['doc-sec-03', '自检表']];
 
         projNavEl.innerHTML = PROJ_LIST.map(function (p) {
-          var n = p.type === 'doc' ? '资料' : p.count;
+          var n = (p.type === 'doc' && p.key !== 'milestones') ? '资料' : p.count;
           return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="false">' +
             esc(p.name) + ' <span class="n">' + n + '</span></button>';
         }).join('');
@@ -2854,6 +3148,30 @@
           });
           sidenavEl.innerHTML = html.join('');
         }
+
+        // 版本里程碑侧边栏：列出当前项目的各版本锚点（最新在前）
+        function buildMsSidenav() {
+          if (!sidenavEl || !MS_VIEW) return;
+          var key = MS_VIEW.current();
+          var proj = MS_VIEW.projects().filter(function (p) { return p.key === key; })[0];
+          if (!proj) { sidenavEl.innerHTML = ''; return; }
+          var list = proj.versions; // 数据已按最新在前排列
+          sidenavEl.innerHTML = list.map(function (v, i) {
+            var anchor = 'ms-' + key + '-' + v.version.replace(/\./g, '');
+            return '<a href="#' + esc(anchor) + '">' +
+              '<span class="n">' + ('0' + (i + 1)).slice(-2) + '</span>' +
+              '<span class="t">' + esc(v.version) + ' ' + esc(v.short) + '</span></a>';
+          }).join('');
+        }
+
+        // 首次进入里程碑页时才渲染（DOM 一次性构建，后续切项目只重绘列表）
+        function renderMs() {
+          var root = document.getElementById('ef-ms-root');
+          if (MS_VIEW && root) MS_VIEW.render(root);
+        }
+        document.addEventListener('ef:ms-project-changed', function () {
+          if (state.proj === 'milestones') buildMsSidenav();
+        });
 
         // 8.2 渲染当前项目的分类 chips（全部 + 内容分类，含内联图标与计数）
         function renderFilters() {
@@ -2904,10 +3222,13 @@
         // 大分类切换：同步主视图、导航胶囊、侧边栏分组与地址栏
         function setProj(key) {
           var isSpec = key === 'spec';
-          if (!isSpec && SPEC_KEYS.indexOf(key) < 0) key = SPEC_KEYS[0] || 'yybld';
+          var isMs = key === 'milestones';
+          var wasMs = state.proj === 'milestones';
+          if (!isSpec && !isMs && SPEC_KEYS.indexOf(key) < 0) key = SPEC_KEYS[0] || 'yybld';
           state.proj = key;
-          if (viewMain) viewMain.hidden = isSpec;
+          if (viewMain) viewMain.hidden = isSpec || isMs;
           if (viewSpec) viewSpec.hidden = !isSpec;
+          if (viewMs) viewMs.hidden = !isMs;
           projNavEl.querySelectorAll('[data-proj]').forEach(function (b) {
             b.setAttribute('aria-pressed', b.dataset.proj === key ? 'true' : 'false');
           });
@@ -2916,9 +3237,14 @@
             var el = document.getElementById(NOTES_IDS[k] || '');
             if (el) el.hidden = k !== key;
           });
-          if (!isSpec && (!active || active.key !== key)) switchProject(key);
-          // 侧边栏联动：按分组显隐导航项
-          if (sidenavEl) {
+          if (!isSpec && !isMs && (!active || active.key !== key)) switchProject(key);
+          // 里程碑页会接管侧边栏，离开时重建资产/文档导航，避免残留旧链接
+          if (wasMs && !isMs) buildSidenav();
+          if (isMs) {
+            renderMs();
+            buildMsSidenav();
+          } else if (sidenavEl) {
+            // 侧边栏联动：按分组显隐导航项
             sidenavEl.querySelectorAll('[data-proj-group]').forEach(function (a) {
               a.hidden = a.dataset.projGroup !== key;
             });
@@ -2927,16 +3253,20 @@
           if (brandEl) {
             brandEl.innerHTML = isSpec
               ? '<span class="seal">Y</span>YY · MINIAPP SPEC'
-              : '<span class="seal">Y</span>YY · PROJECT ARCHIVE';
+              : isMs
+                ? '<span class="seal">Y</span>YY · VERSION LOG'
+                : '<span class="seal">Y</span>YY · PROJECT ARCHIVE';
           }
           if (isSpec) {
             state.view = 'tree';
             syncViewBtns();
             syncDocNav();
-          } else {
+          } else if (!isMs) {
             syncSidenav();
           }
-          if (history.replaceState) history.replaceState(null, '', '#' + (isSpec ? 'spec' : state.view));
+          if (history.replaceState) {
+            history.replaceState(null, '', '#' + (isSpec ? 'spec' : isMs ? 'milestones' : state.view));
+          }
         }
 
         projNavEl.addEventListener('click', function (ev) {
@@ -2946,18 +3276,20 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        /* ---------- 9. 首次渲染：支持 #models / #anims / #spec / #yyzct 直达 ---------- */
+        /* ---------- 9. 首次渲染：支持 #models / #anims / #spec / #milestones / #yyzct 直达 ---------- */
         var hash = (location.hash || '').replace('#', '');
         if (hash === 'models' || hash === 'anims') state.view = hash;
         ['tree', 'models', 'anims'].forEach(function (v) {
           document.getElementById('view-' + v).hidden = v !== state.view;
         });
-        setProj(hash === 'spec' ? 'spec' : (SPEC_KEYS.indexOf(hash) >= 0 ? hash : (SPEC_KEYS[0] || 'yybld')));
+        setProj(hash === 'spec' ? 'spec'
+          : hash === 'milestones' ? 'milestones'
+            : (SPEC_KEYS.indexOf(hash) >= 0 ? hash : (SPEC_KEYS[0] || 'yybld')));
 
         /* hash 直达：站内改变地址栏 hash 时同步切换项目 / 视图（整页加载已在上方处理） */
         window.addEventListener('hashchange', function () {
           var h = (location.hash || '').replace('#', '');
-          if (h === 'spec' || SPEC_KEYS.indexOf(h) >= 0) setProj(h);
+          if (h === 'spec' || h === 'milestones' || SPEC_KEYS.indexOf(h) >= 0) setProj(h);
           else if (h === 'tree' || h === 'models' || h === 'anims') setView(h);
         });
 
