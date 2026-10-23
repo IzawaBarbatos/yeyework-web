@@ -3067,6 +3067,8 @@
         }
         window.EF_ASSETS = {};
         Object.keys(ALL_ENTRIES).forEach(function (k) { window.EF_ASSETS[k] = makeAssets(k); });
+        // 跨项目共享资产：前置库的资产对所有项目的「小纸条」贴上/文件选择可见
+        window.EF_SHARED_ASSET_KEYS = ['yycore'];
       })();
     </script>
 

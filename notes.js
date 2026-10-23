@@ -36,6 +36,15 @@
   CFG.envId = (CFG.envId || '').trim();
   CFG.github = Object.assign({}, DEFAULTS.github, CFG.github || {});
   var ASSETS = (window.EF_ASSETS && window.EF_ASSETS[INST.key]) || INST.assets || null;
+
+  /* 跨项目共享资产（前置库）：所有项目的留言板都可贴上/选择，由 index.html 注入 key 列表 */
+  function sharedAssetKeys() {
+    return (window.EF_SHARED_ASSET_KEYS || []).filter(function (k) { return k && k !== INST.key; });
+  }
+  function assetSourceOf(key) {
+    if (key === INST.key) return ASSETS;
+    return (window.EF_ASSETS && window.EF_ASSETS[key]) || null;
+  }
   /* 实例根节点：把类 / 属性选择器限定在本实例内，避免多块留言板互相命中 */
   var ROOT = INST.root || document.querySelector(INST.prefix ? '#ef-' + INST.prefix + '-notes' : '#ef-notes');
 
@@ -811,41 +820,62 @@
   }
 
   var cachedAssets = null;
+  var ASSET_KIND_CN = { model: '模型', animation: '动画', texture: '贴图' };
+
+  /* 把单个项目的扁平文件表转成选择器条目（proj 标记来源项目，便于「查看详情」跳转） */
+  function flattenSource(projKey, src) {
+    if (!src || !Array.isArray(src.FLAT)) return [];
+    return src.FLAT.map(function (f) {
+      var r = f.rel_path || f.relPath || f.path || '';
+      if (!r) return null;
+      var entry = f._entry || {};
+      var kind = f._kind || 'asset';
+      return {
+        relPath: r,
+        name: f.file_name || f.name || r.split(/[\\/]/).pop(),
+        cn: entry.chinese_name || f.chinese_name || f.cn || '',
+        cat: entry.category || f.category || '',
+        kind: kind,
+        kindLabel: ASSET_KIND_CN[kind] || '资产',
+        identifier: entry.identifier || entry.id || '',
+        proj: projKey
+      };
+    }).filter(Boolean);
+  }
+
+  /* 候选资产 = 跨项目共享项目（前置库，置顶）+ 当前项目，按相对路径去重 */
   function getFlatAssets() {
     if (cachedAssets) return cachedAssets;
-    if (ASSETS && Array.isArray(ASSETS.FLAT)) {
-      var seen = {};
-      var list = [];
-      var kindMap = {
-        model: '模型',
-        animation: '动画',
-        texture: '贴图'
-      };
-      ASSETS.FLAT.forEach(function (f) {
-        var r = f.rel_path || f.relPath || f.path || '';
-        if (!r || seen[r]) return;
-        seen[r] = true;
-        var entry = f._entry || {};
-        var cn = entry.chinese_name || f.chinese_name || f.cn || '';
-        var name = f.file_name || f.name || r.split(/[\\/]/).pop();
-        var cat = entry.category || f.category || '';
-        var kind = f._kind || 'asset';
-        var kindLabel = kindMap[kind] || '资产';
-        var identifier = entry.identifier || entry.id || '';
-        list.push({
-          relPath: r,
-          name: name,
-          cn: cn,
-          cat: cat,
-          kind: kind,
-          kindLabel: kindLabel,
-          identifier: identifier
-        });
+    var seen = {};
+    var list = [];
+    sharedAssetKeys().map(function (k) { return { key: k, src: assetSourceOf(k) }; })
+      .concat([{ key: INST.key, src: ASSETS }]).forEach(function (s) {
+      flattenSource(s.key, s.src).forEach(function (it) {
+        if (seen[it.relPath]) return;
+        seen[it.relPath] = true;
+        list.push(it);
       });
-      cachedAssets = list;
-      return cachedAssets;
+    });
+    cachedAssets = list;
+    return cachedAssets;
+  }
+
+  /* 按相对路径定位资产并跳转：共享资产会切到其所属项目的资产栏 */
+  function openAssetByRelPath(relPath) {
+    if (!relPath) return;
+    var keys = [INST.key].concat(sharedAssetKeys());
+    for (var i = 0; i < keys.length; i++) {
+      var acc = assetSourceOf(keys[i]);
+      if (!acc || !Array.isArray(acc.FLAT)) continue;
+      var hit = acc.FLAT.some(function (f) {
+        return (f.rel_path || f.relPath || f.path || '') === relPath;
+      });
+      if (hit) {
+        if (typeof acc.openDrawerByRelPath === 'function') acc.openDrawerByRelPath(relPath);
+        return;
+      }
     }
-    return [];
+    if (ASSETS && typeof ASSETS.openDrawerByRelPath === 'function') ASSETS.openDrawerByRelPath(relPath);
   }
 
   function syncAttachedUI() {
@@ -1123,7 +1153,8 @@
               cat: found.cat,
               kind: found.kind,
               kindLabel: found.kindLabel,
-              identifier: found.identifier
+              identifier: found.identifier,
+              proj: found.proj
             };
           }
         }
@@ -1144,12 +1175,7 @@
         }
 
         var viewBtn = ev.target.closest('[data-view-asset]');
-        if (viewBtn) {
-          var relPath = viewBtn.dataset.viewAsset;
-          if (ASSETS && typeof ASSETS.openDrawerByRelPath === 'function') {
-            ASSETS.openDrawerByRelPath(relPath);
-          }
-        }
+        if (viewBtn) openAssetByRelPath(viewBtn.dataset.viewAsset);
       });
     }
 
@@ -1594,10 +1620,7 @@
       var assetChip = ev.target.closest('[data-open-asset]');
       if (assetChip) {
         ev.preventDefault();
-        var relPath = assetChip.dataset.openAsset;
-        if (ASSETS && typeof ASSETS.openDrawerByRelPath === 'function') {
-          ASSETS.openDrawerByRelPath(relPath);
-        }
+        openAssetByRelPath(assetChip.dataset.openAsset);
         return;
       }
 
