@@ -16,7 +16,7 @@
       })();
     </script>
     <script src="variant.js"></script>
-    <link rel="stylesheet" href="endfield.css" />
+    <link rel="stylesheet" href="endfield.css?v=202610241600" />
     <link rel="stylesheet" href="notes.css" />
     <!-- 站点图标：与主导航栏 seal 同款「黄底 + 右下斜切 + 深色 Y」 -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M0 0h36v28.8L28.8 36H0z' fill='%23fffa00'/%3E%3Ctext x='16.4' y='26' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-size='23' font-weight='800' fill='%23161616'%3EY%3C/text%3E%3C/svg%3E" />
@@ -2655,22 +2655,22 @@
                 '<span>' + hl(t.file_name || t.path, q) + '</span></button>';
             }).join('') + '</div></div>';
         }
-        function nodeHtml(e, q, open, order, stagger) {
-          var hasAny = e.models.length || e.animations.length || e.textures.length;
-          var innerContent = '';
-          if (active.chainCats.indexOf(e.category) >= 0) {
-            innerContent = renderFoodChains(e, q);
-          } else {
-            innerContent = branchHtml('模型文件', 'Models', e.models, q) +
+        function nodeInnerHtml(e, q) {
+          var inner = active.chainCats.indexOf(e.category) >= 0
+            ? renderFoodChains(e, q)
+            : branchHtml('模型文件', 'Models', e.models, q) +
               branchHtml('动画文件', 'Animations', e.animations, q) +
               texHtml(e.textures, q);
-          }
-          if (!hasAny || !innerContent) {
-            innerContent = '<p class="ef-empty">该中文名名下暂无已实装的资源文件。</p>';
-          }
-          var body = '<div class="ef-node-body"><div class="ef-node-inner">' + innerContent + '</div></div>';
+          return inner || '<p class="ef-empty">该中文名名下暂无已实装的资源文件。</p>';
+        }
+
+        // 折叠中的条目只留空壳，展开时才构建内部文件树，避免一次性生成上百个面板
+        function nodeHtml(e, q, open, order, stagger, entryIdx) {
+          var body = open
+            ? '<div class="ef-node-body"><div class="ef-node-inner">' + nodeInnerHtml(e, q) + '</div></div>'
+            : '<div class="ef-node-body" data-lazy="1"><div class="ef-node-inner"></div></div>';
           return '<li class="ef-node' + (open ? ' is-open' : '') + (stagger >= 0 ? ' ef-in-come' : '') + '"' +
-            (stagger >= 0 ? ' style="--i:' + stagger + '"' : '') + ' data-idx="' + order + '">' +
+            (stagger >= 0 ? ' style="--i:' + stagger + '"' : '') + ' data-idx="' + order + '" data-entry="' + entryIdx + '">' +
             '<button class="ef-node-head" type="button" aria-expanded="' + (open ? 'true' : 'false') + '">' +
             '<span class="ef-node-name">' + hl(e.chinese_name, q) + '</span>' +
             iconHtml(e) +
@@ -2679,6 +2679,16 @@
             '<span class="ef-node-fields ef-field">模型 ' + e.model_count + ' │ 贴图 ' + e.texture_count + ' │ 动画 ' + e.anim_count + '</span>' +
             '<span class="ef-caret" aria-hidden="true"></span>' +
             '</button>' + body + '</li>';
+        }
+
+        // 首次展开时填充内容；之后直接复用已生成的 DOM
+        function fillNodeBody(node) {
+          var body = node.querySelector('.ef-node-body');
+          if (!body || !body.hasAttribute('data-lazy')) return;
+          var e = active.entries[Number(node.dataset.entry)];
+          if (!e) return;
+          body.removeAttribute('data-lazy');
+          body.firstElementChild.innerHTML = nodeInnerHtml(e, state.q);
         }
 
         /* ---------- 4. 状态 ---------- */
@@ -2730,17 +2740,18 @@
           var shown = 0;
           var order = 0;
           var cap = 12;
-          active.entries.forEach(function (e) {
+          active.entries.forEach(function (e, i) {
             if (state.filter !== 'all' && e.category !== state.filter) return;
             var nameHit = !q || e._nameHay.indexOf(q) >= 0;
             var childHit = q && !nameHit && e._hay.indexOf(q) >= 0;
             if (q && !nameHit && !childHit) return;
             shown++;
-            html.push(nodeHtml(e, q, childHit, order, animate ? Math.min(order, cap) : -1));
+            html.push(nodeHtml(e, q, childHit, order, animate ? Math.min(order, cap) : -1, i));
             order++;
           });
           treeEl.innerHTML = html.join('');
           treeEmpty.hidden = shown > 0;
+          syncExpandBtn();
           return shown;
         }
 
@@ -2908,8 +2919,11 @@
           var head = ev.target.closest('.ef-node-head');
           if (head) {
             var node = head.closest('.ef-node');
+            // 展开前先填充惰性内容，让高度过渡有实际尺寸可量
+            if (!node.classList.contains('is-open')) fillNodeBody(node);
             var open = node.classList.toggle('is-open');
             head.setAttribute('aria-expanded', open ? 'true' : 'false');
+            syncExpandBtn();
           }
         });
 
@@ -2985,15 +2999,25 @@
 
         // 全部展开 / 收起
         var expandBtn = document.getElementById('ef-expand');
+        // 按当前节点状态回写按钮文案：搜索自动展开、切换项目后也能保持一致
+        function syncExpandBtn() {
+          if (!expandBtn) return;
+          var nodes = treeEl.querySelectorAll('.ef-node');
+          var allOpen = nodes.length > 0 && Array.prototype.every.call(nodes, function (n) {
+            return n.classList.contains('is-open');
+          });
+          expandBtn.textContent = allOpen ? '全部收起' : '全部展开';
+        }
         expandBtn.addEventListener('click', function () {
           var nodes = treeEl.querySelectorAll('.ef-node');
           var anyClosed = Array.prototype.some.call(nodes, function (n) { return !n.classList.contains('is-open'); });
           Array.prototype.forEach.call(nodes, function (n) {
+            if (anyClosed) fillNodeBody(n);
             n.classList.toggle('is-open', anyClosed);
             var h = n.querySelector('.ef-node-head');
             if (h) h.setAttribute('aria-expanded', anyClosed ? 'true' : 'false');
           });
-          expandBtn.textContent = anyClosed ? '全部收起' : '全部展开';
+          syncExpandBtn();
         });
 
         // 视图切换（命令栏导航 / 看板数字）
@@ -3316,10 +3340,17 @@
           var groups = [{ els: [document.querySelector('.ef-tri')], cls: 'ef-in-sweep' }];
           if (key === 'milestones') {
             groups.push({ els: viewMs.querySelectorAll('.ef-doc-head'), cls: 'ef-in-drive' });
+            groups.push({ els: viewMs.querySelectorAll('.ms-tabs'), cls: 'ef-in-rise' });
             groups.push({ els: viewMs.querySelectorAll('.ms-item'), cls: 'ef-in-come', cap: 8 });
+            // 卡片内部的要点与流程条目逐条上浮
+            groups.push({ els: viewMs.querySelectorAll('.ms-sum > li, .ms-flows li'), cls: 'ef-in-rise', cap: 12 });
+            groups.push({ els: viewMs.querySelectorAll('.ms-fold'), cls: 'ef-in-rise', cap: 6 });
           } else if (key === 'spec') {
             groups.push({ els: viewSpec.querySelectorAll('.ef-doc-head'), cls: 'ef-in-drive' });
             groups.push({ els: viewSpec.querySelectorAll('.ef-doc-sec'), cls: 'ef-in-come', cap: 6 });
+            // 章节标题、规范卡片、表格行与清单条目全部参与展开
+            groups.push({ els: viewSpec.querySelectorAll('.ef-doc-sectitle, .ef-law-card, .ef-chain-block'), cls: 'ef-in-rise', cap: 8 });
+            groups.push({ els: viewSpec.querySelectorAll('.ef-doc-sec li, .ef-doc-sec tbody tr'), cls: 'ef-in-rise', cap: 16 });
           } else {
             // 资产项目栏：标题擦入 → 总览通电 → 条目错峰入场（与首屏一致）
             groups.push({ els: viewMain.querySelectorAll('.ef-head'), cls: 'ef-in-drive' });

@@ -1282,6 +1282,11 @@ a.ef-record:is(:hover, :focus-visible) > * {
     animation: ef-come 320ms var(--ef-snap) both;
     animation-delay: calc(var(--i, 0) * 38ms);
   }
+  /* 行内条目（li / article / tr）：只做淡入上浮，避免表格行上的 clip-path 兼容问题 */
+  .ef-in-rise {
+    animation: ef-rise 340ms var(--ef-mech) both;
+    animation-delay: calc(var(--i, 0) * 26ms);
+  }
   .ef-tri.ef-in-sweep {
     transform-origin: left;
     animation: ef-sweep 600ms var(--ef-ease) both;
@@ -1329,6 +1334,16 @@ a.ef-record:is(:hover, :focus-visible) > * {
     opacity: 1;
     transform: none;
     clip-path: inset(0 -2% 0 0);
+  }
+}
+@keyframes ef-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
   }
 }
 @keyframes ef-sweep {
@@ -2252,6 +2267,6 @@ a.ef-record:is(:hover, :focus-visible) > * {
 
 /* Calm motion: pages open without entrances; pointing, pressing, opening and
    closing still answer. For tools used all day. */
-:root[data-ef-motion='calm'] :is(.ef-in-drive, .ef-in-stroke, .ef-in-power, .ef-in-come, .ef-in-sweep) {
+:root[data-ef-motion='calm'] :is(.ef-in-drive, .ef-in-stroke, .ef-in-power, .ef-in-come, .ef-in-rise, .ef-in-sweep) {
   animation: none !important;
 }
