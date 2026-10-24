@@ -298,7 +298,7 @@
         }
       }
     },
-    "last_sync_time": "2026-10-24 16:57:26"
+    "last_sync_time": "2026-10-24 17:48:23"
   },
   "entries": {
     "yybld": [
@@ -1941,8 +1941,8 @@
             "file_key": "yybld_yilabao_zhaopin",
             "rel_path": "\\resource_pack\\models\\netease_block\\yybld_yilabao_zhaopin.json",
             "size_str": "3.5 KB",
-            "size_bytes": 3608,
-            "mtime": "2026-10-24 16:56:56",
+            "size_bytes": 3589,
+            "mtime": "2026-10-24 17:48:05",
             "geometry_ids": [
               "netease:block_geometry(yybld_yilabao_zhaopin)"
             ],
@@ -2010,8 +2010,8 @@
             "file_key": "yybld_yilabao_manjian",
             "rel_path": "\\resource_pack\\models\\netease_block\\yybld_yilabao_manjian.json",
             "size_str": "3.5 KB",
-            "size_bytes": 3608,
-            "mtime": "2026-10-24 16:56:56",
+            "size_bytes": 3589,
+            "mtime": "2026-10-24 17:48:05",
             "geometry_ids": [
               "netease:block_geometry(yybld_yilabao_manjian)"
             ],
@@ -2079,8 +2079,8 @@
             "file_key": "yybld_yilabao_tehui",
             "rel_path": "\\resource_pack\\models\\netease_block\\yybld_yilabao_tehui.json",
             "size_str": "3.5 KB",
-            "size_bytes": 3604,
-            "mtime": "2026-10-24 16:56:56",
+            "size_bytes": 3585,
+            "mtime": "2026-10-24 17:48:06",
             "geometry_ids": [
               "netease:block_geometry(yybld_yilabao_tehui)"
             ],
