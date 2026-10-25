@@ -18,6 +18,7 @@
     <script src="variant.js"></script>
     <link rel="stylesheet" href="endfield.css?v=202610241600" />
     <link rel="stylesheet" href="notes.css" />
+    <link rel="stylesheet" href="home.css?v=20261025d" />
     <!-- 站点图标：与主导航栏 seal 同款「黄底 + 右下斜切 + 深色 Y」 -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M0 0h36v28.8L28.8 36H0z' fill='%23fffa00'/%3E%3Ctext x='16.4' y='26' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-size='23' font-weight='800' fill='%23161616'%3EY%3C/text%3E%3C/svg%3E" />
     <style>
@@ -2148,6 +2149,25 @@
       </div>
       <!-- ===== /项目资料库主视图 ===== -->
 
+      <!-- ===== 大分类：首页门户（工作室运营总览 · 展示视图） ===== -->
+      <section class="proj-view ef-doc" id="proj-view-home" aria-label="首页" hidden>
+        <header class="ef-doc-head hm-head ef-in-drive">
+          <div class="ef-doc-meta">
+            <span class="ef-eyebrow slash">Workshop Home</span>
+            <span class="ef-field">项目资料库</span>
+          </div>
+          <h1 class="hm-title">
+            <span class="hm-cn">椰椰工坊</span>
+            <small class="hm-en">YEYEWORK</small>
+          </h1>
+          <p class="hm-sub">
+            <span class="ef-field">美术资产对照 · 版本里程碑 · 开发计划</span>
+          </p>
+        </header>
+        <div id="ef-hm-root"></div>
+      </section>
+      <!-- ===== /大分类：首页门户 ===== -->
+
       <!-- ===== 大分类：版本里程碑（已结项版本公告 · 阅读视图） ===== -->
       <section class="proj-view ef-doc" id="proj-view-milestones" aria-label="版本里程碑" hidden>
         <header class="ef-doc-head ef-in-drive">
@@ -2751,6 +2771,8 @@
     <script src="milestones.js?v=20261025c"></script>
     <!-- 开发计划：在研版本 + 开发规划排期 + 协作者填写/编辑（写入仓库 Issues） -->
     <script src="plan.js?v=20261025f"></script>
+    <!-- 首页门户：运营状态 / 作品 / 正在制作 / 更新公告 / 成员 / 门户入口 -->
+    <script src="home.js?v=20261025d"></script>
 
     <script>
       (function () {
@@ -3093,8 +3115,10 @@
         function setView(view) {
           // 模型表 / 动画表直接暴露文件名，访客只保留对照树
           if (!isMember() && view !== 'tree') return;
-          // 视图切换属于资产对照范畴：若当前在规范文档大分类，先切回默认项目
-          if (state.proj === 'spec' && typeof setProj === 'function') setProj('yybld');
+          // 视图切换属于资产对照范畴：若当前在文档类 / 首页大分类，先切回默认项目
+          if (state.proj === 'spec' || state.proj === 'milestones' || state.proj === 'plan' || state.proj === 'home') {
+            if (typeof setProj === 'function') setProj(SPEC_KEYS[0] || 'yybld');
+          }
           if (view === state.view) return;
           state.view = view;
           syncViewBtns();
@@ -3460,12 +3484,16 @@
           { key: 'yyzct', name: '椰椰工坊：中餐厅', count: 0 },
           { key: 'spec', name: '美术资产规范', count: '规范文档', type: 'doc' }
         ];
+        // 首页门户：与版本里程碑 / 开发计划同级的大分类，固定排在导航最前
+        var HOME_VIEW = window.EF_HOME_VIEW || null;
+        var HOME_ENTRY = { key: 'home', name: '首页', count: HOME_VIEW ? HOME_VIEW.count() : 0, type: 'doc' };
         // 版本里程碑：与项目同级的大分类，插在文档类之前
         var MS_VIEW = window.EF_MILESTONES_VIEW || null;
         var MS_ENTRY = { key: 'milestones', name: '版本里程碑', count: MS_VIEW ? MS_VIEW.count() : 0, type: 'doc' };
         // 开发计划：与版本里程碑同级，插在文档类之前
         var PLAN_VIEW = window.EF_PLAN_VIEW || null;
         var PLAN_ENTRY = { key: 'plan', name: '开发计划', count: PLAN_VIEW ? PLAN_VIEW.count() : 0, type: 'doc' };
+        PROJ_LIST.unshift(HOME_ENTRY);
         (function () {
           var specIdx = -1;
           PROJ_LIST.forEach(function (p, i) { if (p.key === 'spec') specIdx = i; });
@@ -3481,6 +3509,7 @@
         var viewSpec = document.getElementById('proj-view-spec');
         var viewMs = document.getElementById('proj-view-milestones');
         var viewPlan = document.getElementById('proj-view-plan');
+        var viewHome = document.getElementById('proj-view-home');
         var brandEl = document.querySelector('.ef-cmdbar .brand');
         // 各项目留言板容器（侧边栏「小纸条」跳转锚点）
         var NOTES_IDS = { yybld: 'ef-notes', yyzct: 'ef-z-notes' };
@@ -3494,11 +3523,16 @@
           return !!(window.EF_ACCESS && window.EF_ACCESS.isMember());
         }
 
-        // 项目胶囊：访客不生成「美术资产规范」入口
+        // 项目胶囊：访客不生成「美术资产规范」入口；首页独立呈现为「首页」，不带次要徽章
         function renderProjectNav() {
           projNavEl.innerHTML = PROJ_LIST.filter(function (p) {
             return isMember() || p.key !== 'spec';
           }).map(function (p) {
+            if (p.key === 'home') {
+              return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="' +
+                (p.key === state.proj ? 'true' : 'false') + '">' +
+                esc(p.name) + '</button>';
+            }
             var n = (p.type === 'doc' && p.key !== 'milestones' && p.key !== 'plan') ? '资料' : p.count;
             return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="' +
               (p.key === state.proj ? 'true' : 'false') + '">' +
@@ -3542,6 +3576,7 @@
           applyRestrictedPanels();
           if (state.proj === 'milestones') buildMsSidenav();
           else if (state.proj === 'plan') buildPlanSidenav();
+          else if (state.proj === 'home') buildHomeSidenav();
           else { buildSidenav(); syncSidenav(); filterSidenavGroups(state.proj); }
           if (active) render(false);
           syncAccessBtn();
@@ -3680,6 +3715,23 @@
           if (PLAN_VIEW && root) PLAN_VIEW.render(root);
         }
 
+        // 首页门户侧边栏：工作总览 → 作品矩阵 → 在研 → 项目组 → 门户入口
+        function buildHomeSidenav() {
+          if (!sidenavEl || !HOME_VIEW) return;
+          sidenavEl.innerHTML = HOME_VIEW.sidenav().map(function (s) {
+            return '<a href="' + esc(s.href) + '"><span class="n">' + esc(s.n) + '</span>' +
+              '<span class="t">' + esc(s.t) + '</span></a>';
+          }).join('');
+        }
+
+        // 首次进入首页时才渲染（数据来自 data.js / 里程碑 / 开发计划）
+        function renderHome() {
+          var root = document.getElementById('ef-hm-root');
+          if (HOME_VIEW && root) HOME_VIEW.render(root);
+          // 顶部状态位与首页看板同源，进入首页即对齐同步时间，避免残留「未同步」占位
+          setText('#ef-stamp', '同步于 ' + (meta.last_sync_time || '未同步'));
+        }
+
         // 8.2 渲染当前项目的分类 chips（全部 + 内容分类，含内联图标与计数）
         function renderFilters() {
           if (!filtersEl || !active) return;
@@ -3802,6 +3854,11 @@
             // 章节标题、规范卡片、表格行与清单条目全部参与展开
             groups.push({ els: viewSpec.querySelectorAll('.ef-doc-sectitle, .ef-law-card, .ef-chain-block'), cls: 'ef-in-rise', cap: 8 });
             groups.push({ els: viewSpec.querySelectorAll('.ef-doc-sec li, .ef-doc-sec tbody tr'), cls: 'ef-in-rise', cap: 16 });
+          } else if (key === 'home' && viewHome) {
+            groups.push({ els: viewHome.querySelectorAll('.ef-doc-head'), cls: 'ef-in-drive' });
+            groups.push({ els: viewHome.querySelectorAll('.ef-figs'), cls: 'ef-in-power', cap: 0 });
+            groups.push({ els: viewHome.querySelectorAll('.hm-sec-head, .hm-sec-note'), cls: 'ef-in-rise', cap: 8 });
+            groups.push({ els: viewHome.querySelectorAll('.hm-proj, .hm-ver, .hm-crew-card, .hm-portal'), cls: 'ef-in-come', cap: 10 });
           } else {
             // 资产项目栏：标题擦入 → 总览通电 → 条目错峰入场（与首屏一致）
             groups.push({ els: viewMain.querySelectorAll('.ef-head'), cls: 'ef-in-drive' });
@@ -3818,14 +3875,17 @@
           var isSpec = key === 'spec';
           var isMs = key === 'milestones';
           var isPlan = key === 'plan';
+          var isHome = key === 'home';
           var wasMs = state.proj === 'milestones';
           var wasPlan = state.proj === 'plan';
-          if (!isSpec && !isMs && !isPlan && SPEC_KEYS.indexOf(key) < 0) key = SPEC_KEYS[0] || 'yybld';
+          var wasHome = state.proj === 'home';
+          if (!isSpec && !isMs && !isPlan && !isHome && SPEC_KEYS.indexOf(key) < 0) key = SPEC_KEYS[0] || 'yybld';
           state.proj = key;
-          if (viewMain) viewMain.hidden = isSpec || isMs || isPlan;
+          if (viewMain) viewMain.hidden = isSpec || isMs || isPlan || isHome;
           if (viewSpec) viewSpec.hidden = !isSpec;
           if (viewMs) viewMs.hidden = !isMs;
           if (viewPlan) viewPlan.hidden = !isPlan;
+          if (viewHome) viewHome.hidden = !isHome;
           projNavEl.querySelectorAll('[data-proj]').forEach(function (b) {
             b.setAttribute('aria-pressed', b.dataset.proj === key ? 'true' : 'false');
           });
@@ -3834,15 +3894,18 @@
             var el = document.getElementById(NOTES_IDS[k] || '');
             if (el) el.hidden = !isMember() || k !== key;
           });
-          if (!isSpec && !isMs && !isPlan && (!active || active.key !== key)) switchProject(key);
-          // 里程碑 / 开发计划页会接管侧边栏，离开时重建资产/文档导航，避免残留旧链接
-          if ((wasMs || wasPlan) && !isMs && !isPlan) buildSidenav();
+          if (!isSpec && !isMs && !isPlan && !isHome && (!active || active.key !== key)) switchProject(key);
+          // 里程碑 / 开发计划 / 首页会接管侧边栏，离开时重建资产/文档导航，避免残留旧链接
+          if ((wasMs || wasPlan || wasHome) && !isMs && !isPlan && !isHome) buildSidenav();
           if (isMs) {
             renderMs();
             buildMsSidenav();
           } else if (isPlan) {
             renderPlan();
             buildPlanSidenav();
+          } else if (isHome) {
+            renderHome();
+            buildHomeSidenav();
           } else if (sidenavEl) {
             // 侧边栏联动：按分组显隐导航项
             filterSidenavGroups(key);
@@ -3855,17 +3918,19 @@
                 ? '<span class="seal">Y</span>YY · VERSION LOG'
                 : isPlan
                   ? '<span class="seal">Y</span>YY · DEV PLAN'
-                  : '<span class="seal">Y</span>YY · PROJECT ARCHIVE';
+                  : isHome
+                    ? '<span class="seal">Y</span>YY · WORKSHOP'
+                    : '<span class="seal">Y</span>YY · PROJECT ARCHIVE';
           }
           if (isSpec) {
             state.view = 'tree';
             syncViewBtns();
             syncDocNav();
-          } else if (!isMs && !isPlan) {
+          } else if (!isMs && !isPlan && !isHome) {
             syncSidenav();
           }
           if (history.replaceState) {
-            history.replaceState(null, '', '#' + (isSpec ? 'spec' : isMs ? 'milestones' : isPlan ? 'plan' : state.view));
+            history.replaceState(null, '', '#' + (isSpec ? 'spec' : isMs ? 'milestones' : isPlan ? 'plan' : isHome ? 'home' : state.view));
           }
           // 切栏重放入场动效（首次进入也走这里，保证文档栏同样有展开效果）
           playEnter(key);
@@ -3878,7 +3943,7 @@
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
 
-        /* ---------- 9. 首次渲染：支持 #models / #anims / #spec / #milestones / #yyzct 直达 ---------- */
+        /* ---------- 9. 首次渲染：支持 #home / #models / #anims / #spec / #milestones / #yyzct 直达 ---------- */
         var hash = (location.hash || '').replace('#', '');
         if (hash === 'models' || hash === 'anims') state.view = hash;
         // 访客只保留对照树，模型/动画明细视图不对其开放
@@ -3891,19 +3956,28 @@
           window.EF_ACCESS.onChange(applyAccessUI);
           applyAccessUI();
         }
+        // 首页内锚点（#hm-*）整页加载时，先落到首页再滚到对应板块
+        var homeAnchor = /^hm-/.test(hash);
         setProj(hash === 'spec' ? 'spec'
           : hash === 'milestones' ? 'milestones'
             : hash === 'plan' ? 'plan'
-              : (SPEC_KEYS.indexOf(hash) >= 0 ? hash : (SPEC_KEYS[0] || 'yybld')));
+              : (hash === 'home' || homeAnchor) ? 'home'
+                : (hash === 'tree' || hash === 'models' || hash === 'anims')
+                  ? (SPEC_KEYS[0] || 'yybld')
+                  : (SPEC_KEYS.indexOf(hash) >= 0 ? hash : 'home'));
+        if (homeAnchor) {
+          var anchorEl = document.getElementById(hash);
+          if (anchorEl) anchorEl.scrollIntoView({ block: 'start' });
+        }
         verifyAccess();
 
         /* hash 直达：站内改变地址栏 hash 时同步切换项目 / 视图（整页加载已在上方处理） */
         window.addEventListener('hashchange', function () {
           var h = (location.hash || '').replace('#', '');
-          if (h === 'spec' || h === 'milestones' || h === 'plan' || SPEC_KEYS.indexOf(h) >= 0) setProj(h);
+          if (h === 'spec' || h === 'milestones' || h === 'plan' || h === 'home' || SPEC_KEYS.indexOf(h) >= 0) setProj(h);
           else if (h === 'tree' || h === 'models' || h === 'anims') {
-            // 文档类栏目下改 hash 到资产视图时，先退回资产栏（否则主视图仍隐藏）
-            if (state.proj === 'spec' || state.proj === 'milestones' || state.proj === 'plan') {
+            // 文档类 / 首页栏目下改 hash 到资产视图时，先退回资产栏（否则主视图仍隐藏）
+            if (state.proj === 'spec' || state.proj === 'milestones' || state.proj === 'plan' || state.proj === 'home') {
               setProj(SPEC_KEYS[0] || 'yybld');
             }
             setView(h);

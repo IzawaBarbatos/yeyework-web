@@ -1,0 +1,353 @@
+/* ==========================================================================
+   首页门户（终末地展示范式）
+   字标 → 真实数据看板 → 工作室介绍 → 作品矩阵 → 当前在研 → 项目组 → 门户入口
+   颜色、字体、切角、动效全部取自 endfield.css 的 tokens，不新增配色。
+   ========================================================================== */
+
+#proj-view-home {
+  max-width: 78rem;
+}
+
+/* ---------- 首屏字标 ---------- */
+.hm-head {
+  padding-bottom: 1.4rem;
+  margin-bottom: 1.8rem;
+}
+.hm-head .hm-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.85rem;
+  margin: 0.25rem 0 0.85rem;
+  line-height: 1.15;
+}
+.hm-head .hm-cn {
+  font-size: clamp(2.35rem, 4.8vw, 3.2rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  color: var(--ef-ink);
+}
+.hm-head .hm-en {
+  font-family: var(--ef-font-ui);
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-stretch: var(--ef-wider);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ef-ink-2);
+}
+.hm-sub {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 1.1rem;
+  margin: 0;
+}
+
+/* ---------- 章节骨架 ---------- */
+.hm-sec {
+  padding-top: 1.9rem;
+  margin-bottom: 3rem;
+  border-top: 1px solid var(--ef-rule);
+}
+.hm-sec-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  margin-bottom: 1rem;
+}
+.hm-sec-head h2 {
+  margin: 0;
+  font-size: clamp(1.3rem, 2.4vw, 1.65rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.hm-sec-note {
+  max-width: 52rem;
+  margin: -0.35rem 0 1.1rem;
+}
+
+/* ---------- 运营状态：控制台栏 ---------- */
+.hm-console {
+  padding-top: 0;
+  margin-bottom: 0;
+  border-top: 0;
+}
+.hm-console + .hm-sec {
+  border-top: 0;
+  padding-top: 2.2rem;
+}
+.hm-console-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.85rem;
+  padding: 0.55rem 0.95rem;
+  background: var(--ef-ink);
+  color: var(--ef-paper);
+}
+.hm-console-bar .ef-eyebrow {
+  color: inherit;
+  opacity: 0.62;
+}
+.hm-console-bar h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.hm-console-rows {
+  border-bottom: 1px solid var(--ef-rule);
+}
+.hm-con-row {
+  display: grid;
+  grid-template-columns: 2.4rem minmax(7.5rem, 0.75fr) minmax(0, 1.5fr);
+  gap: 0 0.9rem;
+  align-items: baseline;
+  padding: 0.55rem 0;
+  border-top: 1px solid var(--ef-rule);
+}
+.hm-con-no {
+  font-family: var(--ef-font-ui);
+  font-size: 0.8rem;
+  font-weight: 800;
+  font-stretch: var(--ef-wide);
+  font-variant-numeric: tabular-nums;
+  color: var(--ef-ink-2);
+}
+.hm-con-label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--ef-ink-2);
+}
+.hm-con-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+/* ---------- 作品 ---------- */
+.hm-proj-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
+  gap: 1rem;
+}
+.hm-proj {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-height: 14rem;
+  padding: 1.1rem 1.2rem 1.6rem;
+}
+.hm-proj-no {
+  position: absolute;
+  top: 0.7rem;
+  right: 1.1rem;
+  font-family: var(--ef-font-ui);
+  font-size: 2.6rem;
+  font-weight: 800;
+  font-stretch: var(--ef-wider);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--ef-ink) 35%, transparent);
+  pointer-events: none;
+}
+.hm-proj-name {
+  font-size: 1.15rem;
+  font-weight: 800;
+  margin-top: 0.1rem;
+}
+.hm-proj-desc {
+  margin: 0.2rem 0 0.9rem;
+  font-size: 0.88rem;
+  line-height: 1.7;
+  color: var(--ef-ink-2);
+}
+.hm-go {
+  align-self: flex-start;
+  margin-top: auto;
+  padding-bottom: 0.1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--ef-ink-2);
+  border-bottom: 1px solid transparent;
+  transition: color 0.18s var(--ef-ease), border-bottom-color 0.18s var(--ef-ease);
+}
+.hm-proj:is(:hover, :focus-visible) .hm-go,
+.hm-go:is(:hover, :focus-visible) {
+  color: var(--ef-ink);
+  border-bottom-color: var(--ef-trace);
+}
+
+/* ---------- 正在制作 ---------- */
+.hm-ver-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
+  gap: 1.6rem 2.4rem;
+}
+.hm-ver {
+  padding-top: 0.8rem;
+  border-top: 2px solid var(--ef-ink);
+}
+.hm-ver-top {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.75rem;
+}
+.hm-ver-no {
+  font-size: 1.2rem;
+  font-weight: 800;
+  font-stretch: var(--ef-wide);
+}
+.hm-ver-theme {
+  margin: 0.55rem 0 0.4rem;
+  font-size: 1rem;
+  font-weight: 800;
+}
+.hm-goals {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--ef-ink-2);
+}
+.hm-more {
+  margin: 1.1rem 0 0;
+}
+
+/* ---------- 最新更新公告 ---------- */
+.hm-news-grid {
+  display: grid;
+  gap: 1.5rem;
+}
+.hm-news {
+  padding-top: 0.8rem;
+  border-top: 2px solid var(--ef-ink);
+}
+.hm-news-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.8rem;
+}
+.hm-news-ver {
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-stretch: var(--ef-wide);
+}
+.hm-news-date {
+  font-family: var(--ef-font-ui);
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-stretch: var(--ef-wide);
+  font-variant-numeric: tabular-nums;
+  color: var(--ef-ink-2);
+}
+.hm-news-theme {
+  margin: 0.5rem 0 0.45rem;
+  font-size: 1.02rem;
+  font-weight: 800;
+}
+.hm-news-list {
+  margin: 0;
+  padding-left: 1.1rem;
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--ef-ink-2);
+}
+
+/* ---------- 项目组成员 ---------- */
+.hm-crew-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+}
+.hm-crew-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 1.1rem 1.2rem 1.3rem;
+}
+.hm-crew-no {
+  position: absolute;
+  top: 0.7rem;
+  right: 1rem;
+  font-family: var(--ef-font-ui);
+  font-size: 2rem;
+  font-weight: 800;
+  font-stretch: var(--ef-wider);
+  line-height: 1;
+  color: transparent;
+  -webkit-text-stroke: 1px color-mix(in srgb, var(--ef-ink) 30%, transparent);
+}
+.hm-crew-name {
+  margin: 0.15rem 0 0.1rem;
+  font-size: 1.2rem;
+  font-weight: 800;
+}
+.hm-crew-card p {
+  margin: 0;
+}
+.hm-crew-card .hm-crew-bio {
+  margin: 0.2rem 0 0;
+  font-size: 0.86rem;
+  line-height: 1.65;
+  color: var(--ef-ink-2);
+}
+/* 未录入的信息用虚线标注，避免被当成真实信息 */
+.hm-tbd {
+  color: var(--ef-ink-2);
+  text-decoration: underline dashed color-mix(in srgb, var(--ef-ink) 28%, transparent);
+  text-underline-offset: 0.22em;
+}
+
+/* ---------- 门户入口 ---------- */
+.hm-portal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr));
+  gap: 1rem;
+}
+.hm-portal {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-height: 9.5rem;
+  padding: 1rem 1.15rem 1.5rem;
+}
+.hm-portal b {
+  font-size: 1.05rem;
+  font-weight: 800;
+}
+.hm-portal p {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: var(--ef-ink-2);
+}
+
+/* ---------- 窄屏 ---------- */
+@media (max-width: 640px) {
+  .hm-sec {
+    margin-bottom: 2.25rem;
+    padding-top: 1.5rem;
+  }
+  .hm-head .hm-title {
+    column-gap: 0.7rem;
+  }
+  .hm-con-row {
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0.1rem 0.7rem;
+  }
+  .hm-con-value {
+    grid-column: 2;
+  }
+  .hm-proj,
+  .hm-crew-card,
+  .hm-portal {
+    min-height: 0;
+  }
+  .hm-proj-no {
+    font-size: 2.1rem;
+  }
+}

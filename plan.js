@@ -640,6 +640,8 @@
     render: render,
     count: count,
     sidenav: sidenav,
+    // 首页门户读取在研版本（只读副本，避免外部改动内部状态）
+    versions: function () { return VERSIONS.slice(); },
     refreshAccess: syncCompose
   };
 })();
