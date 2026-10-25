@@ -1036,7 +1036,8 @@
           var titleEl = document.getElementById('ef-head-title');
           if (titleEl) titleEl.innerHTML = titleHtml(h.title || '内容索引');
           setText('#ef-head-sub', h.sub || 'Model / Animation / Texture / Name');
-          setText('#ef-head-desc', h.desc || '');
+          var descEl = document.getElementById('ef-head-desc');
+          if (descEl) descEl.innerHTML = h.desc || '';
           setText('#ef-head-en', PROJ_EN[active.key] || 'Project Archive');
           setText('#ef-head-ns', '命名空间 ' + active.key);
         }

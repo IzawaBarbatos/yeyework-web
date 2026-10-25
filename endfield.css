@@ -1062,6 +1062,10 @@ a.ef-record:is(:hover, :focus-visible) > * {
   margin: 0;
   color: var(--ef-ink-2);
 }
+.ef-head p b {
+  color: var(--ef-ink);
+  font-weight: 700;
+}
 
 /* A panel: a plate on the paper with a heavy ink tab on its top edge, which
    runs out along the whole edge when the panel is pointed at.
