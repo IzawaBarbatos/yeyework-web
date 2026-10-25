@@ -75,10 +75,14 @@
         gap: 0.75rem;
         margin: 0 0 0.4rem;
       }
-      /* 访客视图：仅展示分类计数，不暴露任何条目 DOM */
+      /* 访客视图：留言板整体不展示；条目可见但不可展开 */
       html[data-access="guest"] #ef-notes,
       html[data-access="guest"] #ef-z-notes {
         display: none !important;
+      }
+      /* 访客不可展开：隐藏展开箭头，避免暗示可点开 */
+      html[data-access="guest"] .ef-node-head .ef-caret {
+        display: none;
       }
       .ef-guest-cats {
         margin: 0.6rem 0 0;
@@ -1873,11 +1877,11 @@
           </div>
         </section>
 
-        <!-- 访客视图：只给分类计数，不渲染任何资产条目 -->
+        <!-- 访客视图：分类计数（条目仍可浏览，但不可展开查看文件名） -->
         <section class="ef-panel cut-br" id="ef-guest-stats" hidden>
           <h2>资产构成 <span class="ef-field">访客视图</span></h2>
           <p class="ef-field">
-            当前仅展示资产总量与分类计数；具体条目明细、小纸条留言板与美术资产规范仅对仓库协作者开放。
+            访客可浏览全部条目名称与分类计数；展开查看具体文件名、相对路径等资料，以及小纸条留言板与美术资产规范，仅对仓库协作者开放。
           </p>
           <ul class="ef-guest-cats" id="ef-guest-cats"></ul>
         </section>
@@ -2705,13 +2709,18 @@
         }
 
         // 折叠中的条目只留空壳，展开时才构建内部文件树，避免一次性生成上百个面板
+        // 访客：只输出条目头部（中文名/分类/资源计数），不生成可展开的 body
         function nodeHtml(e, q, open, order, stagger, entryIdx) {
-          var body = open
-            ? '<div class="ef-node-body"><div class="ef-node-inner">' + nodeInnerHtml(e, q) + '</div></div>'
-            : '<div class="ef-node-body" data-lazy="1"><div class="ef-node-inner"></div></div>';
-          return '<li class="ef-node' + (open ? ' is-open' : '') + (stagger >= 0 ? ' ef-in-come' : '') + '"' +
+          var guest = !isMember();
+          var body = guest
+            ? ''
+            : open
+              ? '<div class="ef-node-body"><div class="ef-node-inner">' + nodeInnerHtml(e, q) + '</div></div>'
+              : '<div class="ef-node-body" data-lazy="1"><div class="ef-node-inner"></div></div>';
+          return '<li class="ef-node' + (open && !guest ? ' is-open' : '') + (stagger >= 0 ? ' ef-in-come' : '') + '"' +
             (stagger >= 0 ? ' style="--i:' + stagger + '"' : '') + ' data-idx="' + order + '" data-entry="' + entryIdx + '">' +
-            '<button class="ef-node-head" type="button" aria-expanded="' + (open ? 'true' : 'false') + '">' +
+            '<button class="ef-node-head" type="button" aria-expanded="' + (open && !guest ? 'true' : 'false') + '"' +
+            (guest ? ' aria-disabled="true"' : '') + '>' +
             '<span class="ef-node-name">' + hl(e.chinese_name, q) + '</span>' +
             iconHtml(e) +
             '<span class="ef-node-id">' + hl(e.identifier, q) + '</span>' +
@@ -2819,8 +2828,7 @@
         }
 
         function render(animate) {
-          // 访客一律不生成条目 DOM（只保留总览与分类计数）
-          if (!isMember()) return;
+          var member = isMember();
           var q = state.q;
           var counts = { models: active.MODEL_ROWS.length, anims: active.ANIM_ROWS.length, textures: active.TEX_ROWS.length };
           var shown;
@@ -2828,7 +2836,7 @@
             shown = renderTree(q, animate);
             countEl.textContent = '显示 ' + shown + ' / ' + active.entries.length + ' 条目' +
               (q ? '　│　搜索「' + q + '」' : '') + '　│　模型 ' + counts.models + ' │ 贴图 ' + counts.textures + ' │ 动画 ' + counts.anims;
-          } else {
+          } else if (member) {
             var r = renderTables(q);
             shown = state.view === 'models' ? r.models : r.anims;
             countEl.textContent = '显示 ' + shown + ' / ' + (state.view === 'models' ? counts.models + ' 模型文件' : counts.anims + ' 动画文件') +
@@ -2843,6 +2851,11 @@
           });
         }
         function setView(view) {
+          // 模型表 / 动画表直接暴露文件名，访客只保留对照树
+          if (!isMember() && view !== 'tree') {
+            toast('访客仅可浏览条目；模型与动画明细需要协作者身份。');
+            return;
+          }
           // 视图切换属于资产对照范畴：若当前在规范文档大分类，先切回默认项目
           if (state.proj === 'spec' && typeof setProj === 'function') setProj('yybld');
           if (view === state.view) return;
@@ -2878,6 +2891,8 @@
         function defLabel(key) { return (active.defLabels && active.defLabels[key]) || key; }
 
         function openDrawer(f) {
+          // 抽屉含相对路径等具体资料，仅协作者可用
+          if (!isMember()) { toast('访客不可查看文件详情，需协作者身份。'); return; }
           current = f;
           var e = f._entry || {};
           dKind.textContent = (KIND_CN[f._kind] || '文件') + ' / ' + (e.identifier || '');
@@ -2954,12 +2969,18 @@
         treeEl.addEventListener('click', function (ev) {
           var leaf = ev.target.closest('.ef-leaf');
           if (leaf) {
+            if (!isMember()) { toast('访客不可查看具体文件名，展开与详情需协作者身份。'); return; }
             var item = active.FLAT[Number(leaf.dataset.flat)];
             if (item) openDrawer(item);
             return;
           }
           var head = ev.target.closest('.ef-node-head');
           if (head) {
+            // 访客：条目可见但不可展开（不生成任何文件明细）
+            if (!isMember()) {
+              toast('访客可浏览条目；展开查看文件名与具体资料需要协作者身份。');
+              return;
+            }
             var node = head.closest('.ef-node');
             // 展开前先填充惰性内容，让高度过渡有实际尺寸可量
             if (!node.classList.contains('is-open')) fillNodeBody(node);
@@ -3025,14 +3046,6 @@
 
         if (sidenavEl) {
           sidenavEl.addEventListener('click', function (ev) {
-            // 访客侧栏：滚到访客统计面板
-            var guestLink = ev.target.closest('[data-nav-guest]');
-            if (guestLink) {
-              ev.preventDefault();
-              var gp = document.getElementById('ef-guest-stats');
-              if (gp) gp.scrollIntoView({ behavior: 'smooth', block: 'start' });
-              return;
-            }
             var docLink = ev.target.closest('[data-nav-doc]');
             if (docLink) {
               ev.preventDefault();
@@ -3259,13 +3272,14 @@
         // 受限面板显隐统一由访问状态驱动，避免各渲染函数各自判断
         function applyRestrictedPanels() {
           var member = isMember();
+          // 搜索会自动展开命中条目、视图切换会暴露文件名 → 访客隐藏整条工具条
           var bar = document.querySelector('#proj-view-main .bar');
           if (bar) bar.hidden = !member;
-          if (filtersEl) filtersEl.hidden = !member;
-          if (countEl) countEl.hidden = !member;
+          if (filtersEl) filtersEl.hidden = false;
+          if (countEl) countEl.hidden = false;
           ['tree', 'models', 'anims'].forEach(function (v) {
             var el = document.getElementById('view-' + v);
-            if (el) el.hidden = !member || v !== state.view;
+            if (el) el.hidden = v !== state.view || (!member && v !== 'tree');
           });
           var guestPanel = document.getElementById('ef-guest-stats');
           if (guestPanel) guestPanel.hidden = member;
@@ -3294,7 +3308,7 @@
           applyRestrictedPanels();
           if (state.proj === 'milestones') buildMsSidenav();
           else { buildSidenav(); syncSidenav(); }
-          if (member && active) render(false);
+          if (active) render(false);
           syncAccessBtn();
         }
 
@@ -3366,12 +3380,7 @@
         // 侧边栏导航项：每个项目「内容分类 + 小纸条」一组，规范文档章节目录一组
         function buildSidenav() {
           if (!sidenavEl) return;
-          // 访客：侧栏只留一个「资产统计」锚点，避免出现指向隐藏条目的死链接
-          if (!isMember()) {
-            sidenavEl.innerHTML = '<a href="#ef-guest-stats" data-nav-guest="1">' +
-              '<span class="n">00</span><span class="t">资产统计</span></a>';
-            return;
-          }
+          var member = isMember();
           var html = [];
           SPEC_KEYS.forEach(function (key) {
             var cats = (PD[key] || {}).categories || [];
@@ -3382,12 +3391,14 @@
               html.push('<a href="#tree" data-proj-group="' + esc(key) + '" data-nav-filter="' + esc(c.key) + '">' +
                 '<span class="n">' + pad(i + 1) + '</span><span class="t">' + esc(c.name) + '</span></a>');
             });
-            // 无留言板实例的项目（如前置库）不生成小纸条导航，避免空锚点
-            if (NOTES_IDS[key]) {
+            // 无留言板实例的项目（如前置库）与访客均不生成小纸条导航
+            if (NOTES_IDS[key] && member) {
               html.push('<a href="#' + NOTES_IDS[key] + '" data-proj-group="' + esc(key) + '" data-nav-notes="1">' +
                 '<span class="n">' + pad(cats.length + 1) + '</span><span class="t">小纸条</span></a>');
             }
           });
+          // 规范文档章节目录仅协作者可见
+          if (!member) { sidenavEl.innerHTML = html.join(''); return; }
           SIDENAV_DOC.forEach(function (d, i) {
             html.push('<a href="#' + d[0] + '" data-proj-group="spec" data-nav-doc="' + d[0] + '">' +
               '<span class="n">0' + i + '</span><span class="t">' + esc(d[1]) + '</span></a>');
@@ -3610,6 +3621,8 @@
         /* ---------- 9. 首次渲染：支持 #models / #anims / #spec / #milestones / #yyzct 直达 ---------- */
         var hash = (location.hash || '').replace('#', '');
         if (hash === 'models' || hash === 'anims') state.view = hash;
+        // 访客只保留对照树，模型/动画明细视图不对其开放
+        if (!isMember()) state.view = 'tree';
         ['tree', 'models', 'anims'].forEach(function (v) {
           document.getElementById('view-' + v).hidden = v !== state.view;
         });
