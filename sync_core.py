@@ -9,11 +9,51 @@ r"""椰椰工坊 · 项目资料库 —— 资产扫描通用内核。
 import os
 import re
 import json
-import base64
+import hashlib
 import datetime
 
-MAX_ICON_BYTES = 64 * 1024  # 单张条目图标 base64 体积上限，超出则退回分类图标
-MAX_TEX_BYTES = 48 * 1024   # 单张贴图缩略图 base64 体积上限，超出则只展示路径
+MAX_ICON_BYTES = 64 * 1024  # 单张条目图标体积上限，超出则退回分类图标
+MAX_TEX_BYTES = 48 * 1024   # 单张贴图缩略图体积上限，超出则只展示路径
+
+THUMB_DIR = "thumbs"        # 缩略图外置目录：thumbs/<项目key>/<内容哈希>.png
+
+
+def externalize_png(raw, out_dir, key, used):
+    """把 PNG 原样落盘为 thumbs/<key>/<内容哈希>.png，返回站内相对路径。
+
+    内容哈希命名让同一张图在多次同步间保持稳定，同时天然完成缓存失效；
+    相同内容的贴图/图标会合并为同一个文件。
+    """
+    digest = hashlib.md5(raw).hexdigest()[:12]
+    rel = f"{THUMB_DIR}/{key}/{digest}.png"
+    path = os.path.join(out_dir, THUMB_DIR, key, digest + ".png")
+    if not os.path.isfile(path):
+        os.makedirs(os.path.dirname(path), exist_ok=True)
+        with open(path, "wb") as f:
+            f.write(raw)
+    used.add(rel)
+    return rel
+
+
+def prune_thumbs(out_dir, key, used):
+    """删除本次同步未引用的缩略图，避免资源更名后留下孤儿文件。"""
+    folder = os.path.join(out_dir, THUMB_DIR, key)
+    if not os.path.isdir(folder):
+        return 0
+    removed = 0
+    for fn in os.listdir(folder):
+        p = os.path.join(folder, fn)
+        if not os.path.isfile(p):
+            continue
+        if f"{THUMB_DIR}/{key}/{fn}" not in used:
+            os.remove(p)
+            removed += 1
+    try:
+        if not os.listdir(folder):
+            os.rmdir(folder)
+    except OSError:
+        pass
+    return removed
 
 
 def size_str(sz):
@@ -32,15 +72,17 @@ def load_json(fp):
         return None
 
 
-def scan_project(workspace_dir, spec):
-    """扫描单个项目，返回 (项目元信息 dict, 条目列表 list)。
+def scan_project(workspace_dir, spec, out_dir):
+    """扫描单个项目，返回 (项目元信息 dict, 条目列表 list, 已引用缩略图集合 set)。
 
     spec 需提供：key / name / rel_dir / norm_id / label_group / anim_group / group_stem /
     tex_group / build_stem_cn / parse_authoritative / categories / classify /
     cn_fallback / share_model_field / anim_self_include / entity_def_via_group_stem /
     protected_stems / scan_tex_dirs / def_labels / head / chains / chain_categories。
+    out_dir 为站点根目录，缩略图写入其下的 thumbs/<key>/。
     """
     key = spec["key"]
+    used_thumbs = set()
     project_dir = os.path.join(workspace_dir, spec["rel_dir"])
     bp_dir = os.path.join(project_dir, "behavior_pack")
     rp_dir = os.path.join(project_dir, "resource_pack")
@@ -138,7 +180,7 @@ def scan_project(workspace_dir, spec):
             try:
                 raw = open(png, "rb").read()
                 if len(raw) <= MAX_TEX_BYTES:
-                    thumb = "data:image/png;base64," + base64.b64encode(raw).decode("ascii")
+                    thumb = externalize_png(raw, out_dir, key, used_thumbs)
             except Exception:
                 thumb = None
         rec = {
@@ -212,7 +254,7 @@ def scan_project(workspace_dir, spec):
             raw = open(os.path.join(rp_dir, cand["path"] + ".png"), "rb").read()
             if len(raw) > MAX_ICON_BYTES:
                 return None
-            return "data:image/png;base64," + base64.b64encode(raw).decode("ascii")
+            return externalize_png(raw, out_dir, key, used_thumbs)
         except Exception:
             return None
 
@@ -417,7 +459,8 @@ def scan_project(workspace_dir, spec):
         cat_meta[cat]["count"] += 1
         entry_list.append(e)
 
-    entry_list.sort(key=lambda x: (x["category"], -x["model_count"], x["chinese_name"]))
+    cat_order = {k: i for i, (k, _n, _d) in enumerate(CATEGORIES)}
+    entry_list.sort(key=lambda x: (cat_order.get(x["category"], 999), -x["model_count"], x["chinese_name"]))
 
     proj_meta = {
         "project_key": key,
@@ -434,7 +477,8 @@ def scan_project(workspace_dir, spec):
         "def_labels": spec["def_labels"],
         "head": spec["head"],
     }
-    print(f"[*] [{key}] 条目: {len(entry_list)} | icon 命中: {proj_meta['icon_hit']}")
+    print(f"[*] [{key}] 条目: {len(entry_list)} | icon 命中: {proj_meta['icon_hit']}"
+          f" | 缩略图文件: {len(used_thumbs)}")
     for k, _n, _d in CATEGORIES:
         print(f"    - {cat_meta[k]['name']}: {cat_meta[k]['count']}")
-    return proj_meta, entry_list
+    return proj_meta, entry_list, used_thumbs

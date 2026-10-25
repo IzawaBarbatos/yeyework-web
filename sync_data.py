@@ -3,9 +3,11 @@ r"""
 椰椰工坊 · 项目资料库 —— 一键同步脚本（编排层）
 
 作用：按 sync_specs.py 中的项目规格，逐个项目调用 sync_core.scan_project 扫描工程资源
+      -> 缩略图外置为 thumbs/<项目key>/<内容哈希>.png，数据里只存相对路径
       -> 汇总为多项目数据契约 window.EF_DATA
       -> 输出外链数据文件 data.js（页面运行时加载）与 data.json（调试/工具用）
       -> 清理 index.html 内的历史内联数据块（替换为轻量占位，使页面保持小体积）
+      -> 按文件内容哈希自动刷新 index.html 内本地 js/css 的缓存指纹
 
 用法：在本目录执行  python sync_data.py
 
@@ -23,10 +25,11 @@ r"""
 import os
 import re
 import json
+import hashlib
 import datetime
 
 from sync_specs import SPECS
-from sync_core import scan_project
+from sync_core import scan_project, prune_thumbs
 
 # ────────────────────────────── 路径常量 ──────────────────────────────
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__)) if "__file__" in locals() else \
@@ -45,19 +48,21 @@ DOC_PROJECTS = [
 
 # ────────────────────────────── 逐项目扫描 ──────────────────────────────
 def scan_all():
-    """按 SPECS 顺序扫描全部工程，返回 (projects_data, entries_map)。"""
+    """按 SPECS 顺序扫描全部工程，返回 (projects_data, entries_map, thumbs_used)。"""
     projects_data = {}
     entries_map = {}
+    thumbs_used = {}
     for spec in SPECS:
-        proj_meta, entry_list = scan_project(WORKSPACE_DIR, spec)
+        proj_meta, entry_list, used = scan_project(WORKSPACE_DIR, spec, OUTPUT_DIR)
         projects_data[spec["key"]] = proj_meta
         entries_map[spec["key"]] = entry_list
-    return projects_data, entries_map
+        thumbs_used[spec["key"]] = used
+    return projects_data, entries_map, thumbs_used
 
 
 # ────────────────────────────── 元信息与输出 ──────────────────────────────
 def build_payload():
-    projects_data, entries_map = scan_all()
+    projects_data, entries_map, thumbs_used = scan_all()
 
     projects = [
         {"key": s["key"], "name": s["name"], "count": projects_data[s["key"]]["total_entries"]}
@@ -70,10 +75,33 @@ def build_payload():
         "projects_data": projects_data,
         "last_sync_time": datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
-    return {"meta": meta_summary, "entries": entries_map}
+    return {"meta": meta_summary, "entries": entries_map}, thumbs_used
 
 
-def write_outputs(page_payload):
+# 本地 js/css 的 src/href 引用（跳过外链与 data URI）
+ASSET_REF_RE = re.compile(r'((?:src|href)=")([^"?:]+?\.(?:js|css))(?:\?v=[^"]*)?"')
+
+
+def stamp_asset_versions(html):
+    """按文件内容哈希刷新本地 js/css 的 ?v= 指纹，替代手工改版本号。"""
+    changed = [0]
+
+    def repl(m):
+        rel = m.group(2)
+        path = os.path.join(OUTPUT_DIR, *rel.split("/"))
+        if not os.path.isfile(path):
+            return m.group(0)
+        with open(path, "rb") as f:
+            digest = hashlib.md5(f.read()).hexdigest()[:10]
+        out = m.group(1) + rel + "?v=" + digest + '"'
+        if out != m.group(0):
+            changed[0] += 1
+        return out
+
+    return ASSET_REF_RE.sub(repl, html), changed[0]
+
+
+def write_outputs(page_payload, thumbs_used):
     data_compact = json.dumps(page_payload, ensure_ascii=False, separators=(",", ":"))
     # 转义 JS 行分隔符，避免个别引擎把 U+2028/U+2029 当作换行导致语法错误
     data_compact = data_compact.replace("\u2028", "\\u2028").replace("\u2029", "\\u2029")
@@ -89,9 +117,15 @@ def write_outputs(page_payload):
     with open(data_js_path, "w", encoding="utf-8") as f:
         f.write("/* 本文件由 sync_data.py 自动生成，请勿手动编辑 */\n")
         f.write("window.EF_DATA = " + data_compact + ";\n")
-    print(f"[+] data.js 已导出（{os.path.getsize(data_js_path) / 1024 / 1024:.2f} MB，页面运行时加载）")
+    print(f"[+] data.js 已导出（{os.path.getsize(data_js_path) / 1024:.1f} KB，页面运行时加载）")
 
-    # 3) 清理 index.html 内的历史内联数据块，替换为轻量占位（保证页面体积恒定）
+    # 3) 清理未被本次数据引用的历史缩略图（资源改名/删除后不留孤儿）
+    for key, used in thumbs_used.items():
+        removed = prune_thumbs(OUTPUT_DIR, key, used)
+        if removed:
+            print(f"[+] [{key}] 清理孤儿缩略图 {removed} 个")
+
+    # 4) 清理 index.html 内的历史内联数据块，替换为轻量占位（保证页面体积恒定）
     html_path = os.path.join(OUTPUT_DIR, "index.html")
     if not os.path.isfile(html_path):
         print("[!] 未找到 index.html")
@@ -105,21 +139,17 @@ def write_outputs(page_payload):
     pattern = re.compile(r"<!--EF_DATA_START-->[\s\S]*?<!--EF_DATA_END-->")
     new_html = pattern.sub(lambda _m: placeholder, html, count=1) if pattern.search(html) else html
 
-    # 4) data.js 版本指纹：托管平台（GitHub Pages / CDN）与浏览器会强缓存静态脚本，
-    #    每次同步改写入参，确保页面拿到的永远是最新数据
-    ver = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
-    new_html, hit = re.subn(r'src="data\.js(?:\?v=\d+)?"',
-                            'src="data.js?v=%s"' % ver, new_html, count=1)
-    if not hit:
-        print("[!] index.html 未找到 data.js 引用")
+    # 5) 缓存指纹：按各本地 js/css 的内容哈希写入 ?v=，数据与脚本更新后自动失效
+    new_html, stamped = stamp_asset_versions(new_html)
 
     if new_html != html:
         with open(html_path, "w", encoding="utf-8") as f:
             f.write(new_html)
-        print("[+] index.html 已更新（数据块占位 + data.js 版本指纹 %s）" % ver)
+        print(f"[+] index.html 已更新（数据块占位 + {stamped} 处资源指纹）")
     else:
         print("[=] index.html 无需变更")
 
 
 if __name__ == "__main__":
-    write_outputs(build_payload())
+    payload, thumbs_used = build_payload()
+    write_outputs(payload, thumbs_used)
