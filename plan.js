@@ -8,7 +8,14 @@
 
   var GH = { owner: 'IzawaBarbatos', repo: 'yeyework-web', label: 'ef-plan', prefix: '[开发计划]' };
   var UPDATED = '2026.10.25';
-  var QUARTERS = ['2026 Q4', '2027 Q1', '2027 Q2', '2027 Q3', '2027 Q4', '待排期'];
+  var QUARTERS = ['2026 冬季', '2027 春季', '2027 夏季', '2027 秋季', '2027 冬季', '待排期'];
+  var SEASON_BY_Q = { Q1: '春季', Q2: '夏季', Q3: '秋季', Q4: '冬季' };
+  // 兼容旧数据里的「2026 Q4」写法
+  function normalizeQuarter(q) {
+    var s = String(q || '').trim();
+    var m = s.match(/^(\d{4})\s*Q([1-4])$/i);
+    return m ? (m[1] + ' ' + SEASON_BY_Q['Q' + m[2]]) : (s || '待排期');
+  }
   var STATUS_OPTIONS = [['planned', '规划中'], ['ready', '已定案 · 未开项'], ['live', '开发中'], ['accept', '待验收']];
   var SCOPES = ['前置库 / 便利店 / 中餐厅', '便利店', '中餐厅', '前置库'];
 
@@ -22,7 +29,7 @@
       pkg: '1.3.0',
       status: '开发中',
       state: 'live',
-      quarter: '2026 Q4',
+      quarter: '2026 冬季',
       theme: '币种物理统一',
       goals: [
         '新增统一货币，便利店改用统一币结算',
@@ -40,7 +47,7 @@
       pkg: '1.1.0',
       status: '开发中',
       state: 'live',
-      quarter: '2026 Q4',
+      quarter: '2026 冬季',
       theme: '币种物理统一',
       goals: [
         '与便利店共用同一种统一币，中餐厅货币切换为统一币',
@@ -154,8 +161,9 @@
   function groupByQuarter(list) {
     var map = {};
     list.forEach(function (e) {
-      var q = QUARTERS.indexOf(e.quarter) >= 0 ? e.quarter : '待排期';
-      (map[q] = map[q] || []).push(e);
+      var q = normalizeQuarter(e.quarter);
+      e.quarter = QUARTERS.indexOf(q) >= 0 ? q : '待排期';
+      (map[e.quarter] = map[e.quarter] || []).push(e);
     });
     return Object.keys(map).sort(function (a, b) { return quarterRank(a) - quarterRank(b); })
       .map(function (q) { return { quarter: q, items: map[q] }; });
@@ -288,7 +296,7 @@
       scope: meta.scope || '未标注范围',
       status: meta.statusLabel || '规划中',
       state: meta.state || 'draft',
-      quarter: meta.quarter || '待排期',
+      quarter: normalizeQuarter(meta.quarter),
       note: text,
       seed: meta.seed || '',
       src: 'GitHub #' + it.number
