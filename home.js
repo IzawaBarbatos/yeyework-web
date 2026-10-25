@@ -12,7 +12,7 @@
     name: '椰椰工坊',
     accounts: [
       { label: '网易创作者账号', value: 'Maks' },
-      { label: 'B站 / 小红书 / 抖音', value: '伊茶Izawa Maks怜悯' }
+      { label: 'B站 / 小红书 / 抖音', value: ['伊茶Izawa', 'Maks怜悯'] }
     ],
     /* role 为分工，bio 为个人简介（留空时页面显示「待补充」） */
     crew: [
@@ -81,13 +81,23 @@
       '</header>';
   }
 
+  // 账号值支持数组：多账号并排渲染为独立 span，由 CSS 控制间距
+  function valueHtml(v) {
+    if (Object.prototype.toString.call(v) === '[object Array]') {
+      return '<span class="hm-con-value hm-con-accounts">' +
+        v.map(function (name) { return '<span>' + esc(name) + '</span>'; }).join('') +
+        '</span>';
+    }
+    return '<span class="hm-con-value">' + esc(v) + '</span>';
+  }
+
   /* 运营状态：账号信息与资料库同步时间 */
   function consoleHtml(s) {
     var rows = WORKSHOP.accounts.map(function (a, i) {
       return '<div class="hm-con-row">' +
         '<span class="hm-con-no">' + pad(i + 1) + '</span>' +
         '<span class="hm-con-label">' + esc(a.label) + '</span>' +
-        '<span class="hm-con-value">' + esc(a.value) + '</span></div>';
+        valueHtml(a.value) + '</div>';
     });
     rows.push('<div class="hm-con-row">' +
       '<span class="hm-con-no">' + pad(rows.length + 1) + '</span>' +

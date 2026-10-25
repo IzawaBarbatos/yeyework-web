@@ -125,6 +125,14 @@
   font-weight: 700;
   overflow-wrap: anywhere;
 }
+/* 多账号并排：独立 span + 明显大于普通空格的列间距 */
+.hm-con-accounts {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 1.15rem;
+  row-gap: 0.15rem;
+}
 
 /* ---------- 作品 ---------- */
 .hm-proj-grid {
