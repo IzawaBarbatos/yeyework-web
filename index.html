@@ -1574,6 +1574,205 @@
           display: none;
         }
       }
+
+      /* ==========================================================================
+         开发计划（在研版本 + 远期季度时间轴 + 填写板）
+         ========================================================================== */
+      .pl-lede {
+        margin: 0 0 1.4rem;
+      }
+      .pl-list {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        border-top: 1px solid var(--ef-rule);
+      }
+      .pl-item {
+        padding: 1.3rem 0 1.5rem;
+        border-bottom: 1px solid var(--ef-rule);
+        scroll-margin-top: 3.5rem;
+      }
+      .pl-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.45rem 0.85rem;
+      }
+      .pl-ver {
+        font-size: 1.35rem;
+        font-weight: 900;
+        font-stretch: var(--ef-wider);
+        letter-spacing: 0.03em;
+        font-variant-numeric: tabular-nums;
+      }
+      .pl-theme {
+        margin: 0.5rem 0 1rem;
+        font-size: 1.05rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+        line-height: 1.5;
+      }
+      .pl-st {
+        font-size: 0.68rem;
+      }
+      .pl-st[data-state="live"] {
+        border-style: solid;
+        font-weight: 800;
+      }
+      .pl-st[data-state="ready"] {
+        border-style: dashed;
+      }
+      .pl-st[data-state="draft"],
+      .pl-st[data-state="planned"],
+      .pl-st[data-state="accept"] {
+        border-style: dashed;
+        color: var(--ef-ink-2);
+      }
+      .pl-scope {
+        margin: 0.2rem 0 0;
+      }
+      .pl-sec {
+        margin-top: 2.5rem;
+        scroll-margin-top: 3.5rem;
+      }
+      .pl-sec-head {
+        padding-top: 1.1rem;
+        border-top: 1px solid var(--ef-rule);
+      }
+      .pl-sec-head h2 {
+        margin: 0.25rem 0 0;
+        font-size: 1.25rem;
+        font-weight: 900;
+        letter-spacing: 0.02em;
+      }
+      .pl-sec-note {
+        max-width: var(--ef-measure);
+        margin: 0.55rem 0 1.1rem;
+      }
+      .pl-tl {
+        border-top: 1px solid var(--ef-rule);
+      }
+      .pl-q {
+        padding: 1rem 0 1.2rem;
+        border-bottom: 1px solid var(--ef-rule);
+        scroll-margin-top: 3.5rem;
+      }
+      .pl-q-head {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.6rem;
+      }
+      .pl-q-name {
+        font-size: 1.05rem;
+        font-weight: 900;
+        font-stretch: var(--ef-wider);
+        letter-spacing: 0.05em;
+        font-variant-numeric: tabular-nums;
+      }
+      .pl-row {
+        display: grid;
+        grid-template-columns: 2rem minmax(0, 1fr) auto;
+        gap: 0.5rem 0.8rem;
+        padding: 0.8rem 0.55rem 0.8rem 0.2rem;
+        border-top: 1px solid var(--ef-rule);
+      }
+      .pl-row:hover {
+        background: rgba(128, 128, 128, 0.08);
+      }
+      .pl-no {
+        padding-top: 0.28rem;
+        color: var(--ef-ink-2);
+        font-size: 0.72rem;
+        font-weight: 700;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.04em;
+      }
+      .pl-row-t {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.5rem;
+        margin: 0;
+        font-size: 0.98rem;
+        font-weight: 800;
+        line-height: 1.6;
+      }
+      .pl-row-note {
+        margin: 0.28rem 0 0;
+        color: var(--ef-ink-2);
+        font-size: 0.86rem;
+        line-height: 1.7;
+      }
+      .pl-row-meta {
+        margin: 0.3rem 0 0;
+      }
+      .pl-del {
+        align-self: start;
+        --fill: transparent;
+      }
+      .pl-empty {
+        margin: 0;
+        padding: 0.9rem 0.2rem;
+      }
+      .pl-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.9rem;
+        max-width: 54rem;
+        margin-top: 1rem;
+      }
+      .pl-field {
+        display: grid;
+        gap: 0.32rem;
+      }
+      .pl-field > span {
+        color: var(--ef-ink-2);
+        font-size: 0.7rem;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .pl-field input,
+      .pl-field select,
+      .pl-field textarea {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 0.5rem 0.6rem;
+        border: 1px solid var(--ef-rule);
+        border-radius: 0;
+        background: transparent;
+        color: var(--ef-ink);
+        font: inherit;
+        font-size: 0.9rem;
+      }
+      .pl-field input:focus-visible,
+      .pl-field select:focus-visible,
+      .pl-field textarea:focus-visible {
+        outline: 2px solid var(--ef-ink);
+        outline-offset: -2px;
+      }
+      .pl-field-wide {
+        grid-column: 1 / -1;
+      }
+      .pl-form-act {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.8rem;
+        grid-column: 1 / -1;
+      }
+      @media (max-width: 700px) {
+        .pl-form {
+          grid-template-columns: 1fr;
+        }
+        .pl-row {
+          grid-template-columns: 1.6rem minmax(0, 1fr);
+        }
+        .pl-del {
+          grid-column: 2;
+        }
+      }
     </style>
   </head>
   <body class="ef ef-contours">
@@ -1935,6 +2134,27 @@
         <div id="ef-ms-root"></div>
       </section>
       <!-- ===== /大分类：版本里程碑 ===== -->
+
+      <!-- ===== 大分类：开发计划（在研版本 + 远期时间轴 · 阅读视图） ===== -->
+      <section class="proj-view ef-doc" id="proj-view-plan" aria-label="开发计划" hidden>
+        <header class="ef-doc-head ef-in-drive">
+          <div class="ef-doc-meta">
+            <span class="ef-eyebrow slash">Development Plan</span>
+            <span class="ef-field">在研版本与后续排期</span>
+            <span class="ef-field" id="ef-pl-updated">数据更新于 2026.10.25</span>
+          </div>
+          <h1>
+            开发计划
+            <small>ROADMAP &amp; WORK IN PROGRESS</small>
+          </h1>
+          <p class="ef-doc-lead">
+            <b>读法：</b>上半部分是<b>正在开发、尚未结项的版本</b>，按版本列出目标与规模；
+            下半部分是后续排期，按季度排在时间轴上。未定档的计划统一落在「待排期」。
+          </p>
+        </header>
+        <div id="ef-pl-root"></div>
+      </section>
+      <!-- ===== /大分类：开发计划 ===== -->
 
       <!-- ===== 大分类：美术资产规范（规范文档资料文本 · 阅读视图） ===== -->
       <section class="proj-view ef-doc" id="proj-view-spec" aria-label="美术资产命名与制作规范" hidden>
@@ -2496,6 +2716,8 @@
     <script src="access.js?v=20261025"></script>
     <!-- 版本里程碑：已结项版本公告数据与渲染（手写维护；带版本指纹避免旧缓存） -->
     <script src="milestones.js?v=202610241300"></script>
+    <!-- 开发计划：在研版本 + 远期时间轴 + 协作者填写板（写入仓库 Issues） -->
+    <script src="plan.js?v=20261025"></script>
 
     <script>
       (function () {
@@ -3200,11 +3422,15 @@
         // 版本里程碑：与项目同级的大分类，插在文档类之前
         var MS_VIEW = window.EF_MILESTONES_VIEW || null;
         var MS_ENTRY = { key: 'milestones', name: '版本里程碑', count: MS_VIEW ? MS_VIEW.count() : 0, type: 'doc' };
+        // 开发计划：与版本里程碑同级，插在文档类之前
+        var PLAN_VIEW = window.EF_PLAN_VIEW || null;
+        var PLAN_ENTRY = { key: 'plan', name: '开发计划', count: PLAN_VIEW ? PLAN_VIEW.count() : 0, type: 'doc' };
         (function () {
           var specIdx = -1;
           PROJ_LIST.forEach(function (p, i) { if (p.key === 'spec') specIdx = i; });
-          if (specIdx >= 0) PROJ_LIST.splice(specIdx, 0, MS_ENTRY);
-          else PROJ_LIST.push(MS_ENTRY);
+          var docs = [MS_ENTRY, PLAN_ENTRY];
+          if (specIdx >= 0) PROJ_LIST.splice.apply(PROJ_LIST, [specIdx, 0].concat(docs));
+          else PROJ_LIST.push.apply(PROJ_LIST, docs);
         })();
         // 参与资产对照的项目顺序（排除文档类），首个作为默认项目
         var SPEC_KEYS = PROJ_LIST.filter(function (p) { return p.type !== 'doc'; })
@@ -3213,6 +3439,7 @@
         var viewMain = document.getElementById('proj-view-main');
         var viewSpec = document.getElementById('proj-view-spec');
         var viewMs = document.getElementById('proj-view-milestones');
+        var viewPlan = document.getElementById('proj-view-plan');
         var brandEl = document.querySelector('.ef-cmdbar .brand');
         // 各项目留言板容器（侧边栏「小纸条」跳转锚点）
         var NOTES_IDS = { yybld: 'ef-notes', yyzct: 'ef-z-notes' };
@@ -3231,7 +3458,7 @@
           projNavEl.innerHTML = PROJ_LIST.filter(function (p) {
             return isMember() || p.key !== 'spec';
           }).map(function (p) {
-            var n = (p.type === 'doc' && p.key !== 'milestones') ? '资料' : p.count;
+            var n = (p.type === 'doc' && p.key !== 'milestones' && p.key !== 'plan') ? '资料' : p.count;
             return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="' +
               (p.key === state.proj ? 'true' : 'false') + '">' +
               esc(p.name) + ' <span class="n">' + n + '</span></button>';
@@ -3273,6 +3500,7 @@
           renderProjectNav();
           applyRestrictedPanels();
           if (state.proj === 'milestones') buildMsSidenav();
+          else if (state.proj === 'plan') buildPlanSidenav();
           else { buildSidenav(); syncSidenav(); }
           if (active) render(false);
           syncAccessBtn();
@@ -3396,6 +3624,21 @@
           if (state.proj === 'milestones') buildMsSidenav();
         });
 
+        // 开发计划侧边栏：在研版本 + 远期排期（填写板仅协作者）
+        function buildPlanSidenav() {
+          if (!sidenavEl || !PLAN_VIEW) return;
+          sidenavEl.innerHTML = PLAN_VIEW.sidenav().map(function (s) {
+            return '<a href="' + esc(s.href) + '"><span class="n">' + esc(s.n) + '</span>' +
+              '<span class="t">' + esc(s.t) + '</span></a>';
+          }).join('');
+        }
+
+        // 首次进入开发计划页时才渲染（DOM 一次性构建，后续只刷新时间轴）
+        function renderPlan() {
+          var root = document.getElementById('ef-pl-root');
+          if (PLAN_VIEW && root) PLAN_VIEW.render(root);
+        }
+
         // 8.2 渲染当前项目的分类 chips（全部 + 内容分类，含内联图标与计数）
         function renderFilters() {
           if (!filtersEl || !active) return;
@@ -3507,6 +3750,11 @@
             // 卡片内部的要点与流程条目逐条上浮
             groups.push({ els: viewMs.querySelectorAll('.ms-sum > li, .ms-flows li'), cls: 'ef-in-rise', cap: 12 });
             groups.push({ els: viewMs.querySelectorAll('.ms-fold'), cls: 'ef-in-rise', cap: 6 });
+          } else if (key === 'plan' && viewPlan) {
+            groups.push({ els: viewPlan.querySelectorAll('.ef-doc-head'), cls: 'ef-in-drive' });
+            groups.push({ els: viewPlan.querySelectorAll('.pl-item'), cls: 'ef-in-come', cap: 6 });
+            groups.push({ els: viewPlan.querySelectorAll('.ms-sum > li'), cls: 'ef-in-rise', cap: 12 });
+            groups.push({ els: viewPlan.querySelectorAll('.pl-q, .pl-sec'), cls: 'ef-in-rise', cap: 10 });
           } else if (key === 'spec') {
             groups.push({ els: viewSpec.querySelectorAll('.ef-doc-head'), cls: 'ef-in-drive' });
             groups.push({ els: viewSpec.querySelectorAll('.ef-doc-sec'), cls: 'ef-in-come', cap: 6 });
@@ -3528,12 +3776,15 @@
           if (key === 'spec' && !isMember()) key = SPEC_KEYS[0] || 'yybld';
           var isSpec = key === 'spec';
           var isMs = key === 'milestones';
+          var isPlan = key === 'plan';
           var wasMs = state.proj === 'milestones';
-          if (!isSpec && !isMs && SPEC_KEYS.indexOf(key) < 0) key = SPEC_KEYS[0] || 'yybld';
+          var wasPlan = state.proj === 'plan';
+          if (!isSpec && !isMs && !isPlan && SPEC_KEYS.indexOf(key) < 0) key = SPEC_KEYS[0] || 'yybld';
           state.proj = key;
-          if (viewMain) viewMain.hidden = isSpec || isMs;
+          if (viewMain) viewMain.hidden = isSpec || isMs || isPlan;
           if (viewSpec) viewSpec.hidden = !isSpec;
           if (viewMs) viewMs.hidden = !isMs;
+          if (viewPlan) viewPlan.hidden = !isPlan;
           projNavEl.querySelectorAll('[data-proj]').forEach(function (b) {
             b.setAttribute('aria-pressed', b.dataset.proj === key ? 'true' : 'false');
           });
@@ -3542,12 +3793,15 @@
             var el = document.getElementById(NOTES_IDS[k] || '');
             if (el) el.hidden = !isMember() || k !== key;
           });
-          if (!isSpec && !isMs && (!active || active.key !== key)) switchProject(key);
-          // 里程碑页会接管侧边栏，离开时重建资产/文档导航，避免残留旧链接
-          if (wasMs && !isMs) buildSidenav();
+          if (!isSpec && !isMs && !isPlan && (!active || active.key !== key)) switchProject(key);
+          // 里程碑 / 开发计划页会接管侧边栏，离开时重建资产/文档导航，避免残留旧链接
+          if ((wasMs || wasPlan) && !isMs && !isPlan) buildSidenav();
           if (isMs) {
             renderMs();
             buildMsSidenav();
+          } else if (isPlan) {
+            renderPlan();
+            buildPlanSidenav();
           } else if (sidenavEl) {
             // 侧边栏联动：按分组显隐导航项
             sidenavEl.querySelectorAll('[data-proj-group]').forEach(function (a) {
@@ -3560,17 +3814,19 @@
               ? '<span class="seal">Y</span>YY · MINIAPP SPEC'
               : isMs
                 ? '<span class="seal">Y</span>YY · VERSION LOG'
-                : '<span class="seal">Y</span>YY · PROJECT ARCHIVE';
+                : isPlan
+                  ? '<span class="seal">Y</span>YY · DEV PLAN'
+                  : '<span class="seal">Y</span>YY · PROJECT ARCHIVE';
           }
           if (isSpec) {
             state.view = 'tree';
             syncViewBtns();
             syncDocNav();
-          } else if (!isMs) {
+          } else if (!isMs && !isPlan) {
             syncSidenav();
           }
           if (history.replaceState) {
-            history.replaceState(null, '', '#' + (isSpec ? 'spec' : isMs ? 'milestones' : state.view));
+            history.replaceState(null, '', '#' + (isSpec ? 'spec' : isMs ? 'milestones' : isPlan ? 'plan' : state.view));
           }
           // 切栏重放入场动效（首次进入也走这里，保证文档栏同样有展开效果）
           playEnter(key);
@@ -3598,14 +3854,21 @@
         }
         setProj(hash === 'spec' ? 'spec'
           : hash === 'milestones' ? 'milestones'
-            : (SPEC_KEYS.indexOf(hash) >= 0 ? hash : (SPEC_KEYS[0] || 'yybld')));
+            : hash === 'plan' ? 'plan'
+              : (SPEC_KEYS.indexOf(hash) >= 0 ? hash : (SPEC_KEYS[0] || 'yybld')));
         verifyAccess();
 
         /* hash 直达：站内改变地址栏 hash 时同步切换项目 / 视图（整页加载已在上方处理） */
         window.addEventListener('hashchange', function () {
           var h = (location.hash || '').replace('#', '');
-          if (h === 'spec' || h === 'milestones' || SPEC_KEYS.indexOf(h) >= 0) setProj(h);
-          else if (h === 'tree' || h === 'models' || h === 'anims') setView(h);
+          if (h === 'spec' || h === 'milestones' || h === 'plan' || SPEC_KEYS.indexOf(h) >= 0) setProj(h);
+          else if (h === 'tree' || h === 'models' || h === 'anims') {
+            // 文档类栏目下改 hash 到资产视图时，先退回资产栏（否则主视图仍隐藏）
+            if (state.proj === 'spec' || state.proj === 'milestones' || state.proj === 'plan') {
+              setProj(SPEC_KEYS[0] || 'yybld');
+            }
+            setView(h);
+          }
         });
 
         /* ---------- 10. 规范文档：自检清单（可勾选 · 本地持久化） ---------- */
