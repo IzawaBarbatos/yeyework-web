@@ -83,7 +83,7 @@
     }
   ];
 
-  var state = { issues: [], overrides: {}, loaded: false, error: '', busy: false, editing: '' };
+  var state = { issues: [], overrides: {}, order: [], orderNum: null, loaded: false, error: '', busy: false, editing: '' };
   var rootEl = null;
 
   /* ---------- 工具 ---------- */
@@ -153,6 +153,19 @@
     return e.num ? 'i' + e.num : 's' + e.id;
   }
 
+  // 排序索引：已记录的按位置，未记录的排末尾并保持默认顺序
+  function orderIndex(key) {
+    var i = state.order.indexOf(key);
+    return i < 0 ? 9999 : i;
+  }
+
+  function orderedKeys() {
+    var keys = allEntries().map(entryKey);
+    var out = state.order.filter(function (k) { return keys.indexOf(k) >= 0; });
+    keys.forEach(function (k) { if (out.indexOf(k) < 0) out.push(k); });
+    return out;
+  }
+
   function quarterRank(q) {
     var i = QUARTERS.indexOf(q);
     return i < 0 ? QUARTERS.length - 1 : i;
@@ -165,8 +178,12 @@
       e.quarter = QUARTERS.indexOf(q) >= 0 ? q : '待排期';
       (map[e.quarter] = map[e.quarter] || []).push(e);
     });
-    return Object.keys(map).sort(function (a, b) { return quarterRank(a) - quarterRank(b); })
+    var groups = Object.keys(map).sort(function (a, b) { return quarterRank(a) - quarterRank(b); })
       .map(function (q) { return { quarter: q, items: map[q] }; });
+    groups.forEach(function (g) {
+      g.items.sort(function (a, b) { return orderIndex(entryKey(a)) - orderIndex(entryKey(b)); });
+    });
+    return groups;
   }
 
   function statusOptionsHtml(cur) {
@@ -202,13 +219,17 @@
       '</form>';
   }
 
-  function entryHtml(e, i) {
+  function entryHtml(e, i, first, last) {
     var key = entryKey(e);
     if (state.editing === key) {
       return '<article class="pl-row is-editing">' + editFormHtml(e) + '</article>';
     }
     var acts = '';
     if (isMember()) {
+      acts += '<button class="ef-btn small pl-act pl-move" type="button" data-pl-move="up" data-pl-key="' + esc(key) + '"' +
+        (first ? ' disabled' : '') + ' aria-label="上移">↑</button>' +
+        '<button class="ef-btn small pl-act pl-move" type="button" data-pl-move="down" data-pl-key="' + esc(key) + '"' +
+        (last ? ' disabled' : '') + ' aria-label="下移">↓</button>';
       acts += '<button class="ef-btn small pl-act" type="button" data-pl-edit-btn="' + esc(key) + '">编辑</button>';
       if (e.num) {
         acts += '<button class="ef-btn small pl-act" type="button" data-pl-del="' + esc(e.num) + '"' +
@@ -240,7 +261,9 @@
       return '<section class="pl-q" id="pl-q-' + esc(g.quarter.replace(/\s+/g, '').toLowerCase()) + '">' +
         '<div class="pl-q-head"><span class="pl-q-name">' + esc(g.quarter) + '</span>' +
         '<span class="ef-field">' + g.items.length + ' 项</span></div>' +
-        g.items.map(function (e) { return entryHtml(e, n++); }).join('') +
+        g.items.map(function (e, j) {
+          return entryHtml(e, n++, j === 0, j === g.items.length - 1);
+        }).join('') +
         '</section>';
     }).join('');
     if (!html) {
@@ -299,6 +322,8 @@
       quarter: normalizeQuarter(meta.quarter),
       note: text,
       seed: meta.seed || '',
+      kind: meta.kind || '',
+      order: Array.isArray(meta.order) ? meta.order : null,
       src: 'GitHub #' + it.number
     };
   }
@@ -329,6 +354,12 @@
       state.issues = [];
       state.overrides = {};
       all.forEach(function (e) {
+        // 排序索引记录只用于排序，不进入时间轴
+        if (e.kind === 'order') {
+          state.orderNum = e.num;
+          state.order = e.order || [];
+          return;
+        }
         if (!e.seed) e.seed = seedIdByTitle(e.title);
         // 带 seed 的记录是对手写种子的覆盖，不单独成行；接口按创建时间倒序，先到者（最新）生效
         if (e.seed) {
@@ -344,6 +375,65 @@
     }).then(function () {
       renderTimeline();
       syncChip();
+    });
+  }
+
+  // 把接口返回的记录立刻并入本地状态，避免等待列表刷新
+  function upsertEntry(e) {
+    if (e.seed) { state.overrides[e.seed] = e; return; }
+    var arr = state.issues;
+    for (var i = 0; i < arr.length; i++) {
+      if (String(arr[i].num) === String(e.num)) { arr[i] = e; return; }
+    }
+    arr.unshift(e);
+  }
+
+  function setOrderMsg(t) {
+    var el = rootEl && rootEl.querySelector('#ef-pl-order-msg');
+    if (el) el.textContent = t || '';
+  }
+
+  // 上下移动：仅在当前季度分组内交换
+  function moveEntry(key, dir) {
+    if (!isMember()) return;
+    var group = null, idx = -1;
+    groupByQuarter(allEntries()).forEach(function (g) {
+      g.items.forEach(function (e, i) {
+        if (entryKey(e) === key) { group = g; idx = i; }
+      });
+    });
+    if (!group) return;
+    var to = dir === 'up' ? idx - 1 : idx + 1;
+    if (to < 0 || to >= group.items.length) return;
+    var other = entryKey(group.items[to]);
+    var keys = orderedKeys();
+    var a = keys.indexOf(key), b = keys.indexOf(other);
+    if (a < 0 || b < 0) return;
+    keys[a] = other;
+    keys[b] = key;
+    state.order = keys;
+    renderTimeline();
+    saveOrder();
+  }
+
+  // 排序索引存为一条隐藏的 Issues 记录（meta.kind = order）
+  function saveOrder() {
+    if (!isMember() || !token()) return;
+    var body = '<!-- EF_PLAN ' + JSON.stringify({ kind: 'order', order: state.order }) + ' -->\n排序索引，请勿删除。';
+    var payload = { title: GH.prefix + ' 排序索引', body: body };
+    if (!state.orderNum) payload.labels = [GH.label];
+    fetch(apiBase() + '/issues' + (state.orderNum ? '/' + state.orderNum : ''), {
+      method: state.orderNum ? 'PATCH' : 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, headers(true)),
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('排序保存失败 (' + r.status + ')');
+      return r.json();
+    }).then(function (it) {
+      state.orderNum = it.number;
+      setOrderMsg('排序已保存');
+    }).catch(function (e) {
+      setOrderMsg(e && e.message ? e.message : '排序保存失败');
     });
   }
 
@@ -376,9 +466,17 @@
     }).then(function (r) {
       if (!r.ok) throw new Error('写入失败 (' + r.status + ')');
       return r.json();
-    }).then(function () {
+    }).then(function (created) {
+      // 先用接口返回值上屏，再后台校准列表
+      var e = parseIssue(created);
+      if (!e.seed) e.seed = seedIdByTitle(e.title);
+      upsertEntry(e);
+      state.order = orderedKeys();
+      saveOrder();
       form.reset();
       setMsg('已加入时间轴。');
+      renderTimeline();
+      syncChip();
       return loadIssues();
     }).catch(function (e) {
       setMsg('提交失败：' + (e && e.message ? e.message : '网络异常'));
@@ -422,8 +520,14 @@
     }).then(function (r) {
       if (!r.ok) throw new Error('保存失败 (' + r.status + ')');
       return r.json();
-    }).then(function () {
+    }).then(function (updated) {
+      // PATCH/POST 的返回值直接替换本地条目，保存后立即上屏
+      var e = parseIssue(updated);
+      if (!e.seed) e.seed = seedIdByTitle(e.title);
+      upsertEntry(e);
       state.editing = '';
+      renderTimeline();
+      syncChip();
       return loadIssues();
     }).catch(function (e) {
       msg('保存失败：' + (e && e.message ? e.message : '网络异常'));
@@ -474,7 +578,8 @@
       '<header class="pl-sec-head"><span class="ef-eyebrow slash">Roadmap</span>' +
       '<h2>开发规划排期</h2></header>' +
       '<p class="ef-field pl-sec-note">上方为在研版本，本段时间轴只排后续计划；' +
-      '季度按实际排期填写，未定档的条目统一落在「待排期」。协作者可直接编辑条目。</p>' +
+      '季度按实际排期填写，未定档的条目统一落在「待排期」。协作者可直接编辑或用 ↑ ↓ 调整顺序。</p>' +
+      '<p class="ef-field pl-order-msg" id="ef-pl-order-msg"></p>' +
       '<div class="pl-tl" id="ef-pl-tl"><p class="ef-field pl-empty">正在读取排期…</p></div>' +
       '</section>' +
       composeHtml();
@@ -485,6 +590,11 @@
       else if (ev.target.classList.contains('pl-edit')) submitEdit(ev);
     });
     rootEl.addEventListener('click', function (ev) {
+      var moveBtn = ev.target.closest('[data-pl-move]');
+      if (moveBtn) {
+        moveEntry(moveBtn.dataset.plKey, moveBtn.dataset.plMove);
+        return;
+      }
       var editBtn = ev.target.closest('[data-pl-edit-btn]');
       if (editBtn) {
         state.editing = editBtn.dataset.plEditBtn;

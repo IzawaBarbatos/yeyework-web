@@ -1716,6 +1716,17 @@
       .pl-act {
         --fill: transparent;
       }
+      .pl-act[disabled] {
+        opacity: 0.35;
+        pointer-events: none;
+      }
+      .pl-move {
+        padding-inline: 0.5rem;
+      }
+      .pl-order-msg {
+        min-height: 1em;
+        margin: -0.45rem 0 0.5rem;
+      }
       .pl-edit {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -2735,7 +2746,7 @@
     <!-- 版本里程碑：已结项版本公告数据与渲染（手写维护；带版本指纹避免旧缓存） -->
     <script src="milestones.js?v=20261025c"></script>
     <!-- 开发计划：在研版本 + 开发规划排期 + 协作者填写/编辑（写入仓库 Issues） -->
-    <script src="plan.js?v=20261025e"></script>
+    <script src="plan.js?v=20261025f"></script>
 
     <script>
       (function () {
