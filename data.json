@@ -107,7 +107,7 @@
           "food": "饮品/食品配置（动画映射）"
         },
         "head": {
-          "title": "美术资产对照索引",
+          "title": "椰椰工坊：便利店 内容索引",
           "sub": "Model / Animation / Texture / Name",
           "desc": "便利店项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。"
         }
@@ -208,7 +208,7 @@
           "food": "动画映射配置"
         },
         "head": {
-          "title": "美术资产对照索引",
+          "title": "椰椰工坊：中餐厅 内容索引",
           "sub": "Model / Animation / Texture / Name",
           "desc": "中餐厅项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。"
         }
@@ -292,13 +292,13 @@
           "item": "物品配置"
         },
         "head": {
-          "title": "美术资产对照索引",
+          "title": "椰椰工坊：前置库 内容索引",
           "sub": "Model / Animation / Texture / Name",
-          "desc": "前置库项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目；分类口径与便利店一致（食品饮料 / 普通方块 / 方块实体 / 物品 / 实体）。"
+          "desc": "前置库项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目；分类口径与便利店一致（食品饮料 / 普通方块 / 方块实体 / 物品 / 实体）。前置库无需单独下载：加载任一椰椰工坊系列模组时，会自动下载、更新并加载前置库。"
         }
       }
     },
-    "last_sync_time": "2026-10-24 17:48:23"
+    "last_sync_time": "2026-10-25 09:02:57"
   },
   "entries": {
     "yybld": [
@@ -1962,9 +1962,9 @@
             "rel_path": "\\resource_pack\\textures\\blocks\\yybld_yilabao_zhaopin.png",
             "size_str": "788 B",
             "size_bytes": 788,
-            "mtime": "2026-10-12 23:03:09",
+            "mtime": "2026-10-24 18:27:30",
             "exists": true,
-            "thumb": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAACyUlEQVR4AeSWTUhUURTHzxsiWkgaKEQhCUkYUtAiXETr1kELKQlalRDkIiKybRFRZBC0aRvMImjfvoVFBIVkpqSE1ULwY+XKcX4Hz+N4nXFmnjDy7pP5zfm47973/v/75vlKs78XK1l5/G6qAqPPPlaywFwjy3w/h3V8vVv+bXJSrxfdJdn6e/V1XAxaExMvBXxuNT3jz/yK/J9eyARzWYeYdQ2b18oanHP04gHp7jgoqQE04fa5RwQZG7uj0b7C2voWjw6ckFawecTXdy8k799c3ROtrME5zw4NJV09PckOA7gLOGBp/ZqM3PokYWQMOA7XycF2otnIHPBrULeb1AB23uAiug+9lVowhvjh0/OkuSc1ACUIa4ZYxKN5mwHcATR3Iybx6NxmAA1MqAVjofjevi7aSisPQI7VSdUvv0a1bMtn7uev9Dw7DEhHXMLPIhTvhjVt9uFnx+mkffq6fH0ksVOrAav37gtI9Y8I1TT9cEeUf/SltU/YQXY0C8z1a+1HrgZw4s6nT9QEInVILRMeXBlMgP/BWWAuhOdqZ60GmOgwhhdSy4TwmLzVagCvuPVAkI2Rx2aCGsBrbj0QbWPkEJMJaoDtcKOIeAMTLM9zVANshxvFPAu1aw+jGuB3ngN87XPGYkMN8DuPQF/7nLHYUAPsxYdoxCa0nh41gEGE23sAdVFQAxAOiCYCeRFQA8IHna99HqMhakD4oPO1z6M1gN+/gUhyYhHQO8CE8tsvknh0qwEIBxpEIC8CaoB/0Flu4q0Oo43nPaoB/kFnuQmzOow2nvdY2njxUKDjQ7/0/rukUBszN28IfH4+rpE+NeRdPNevd8DhwbIcOXNSlr/P0RNqktnpRVk9dUzpnPkr/QPHhR6R8RhQA0w8caF8XtamhuXLRkWFIzIUjwn0Y6DEbiMaMdwB1AhEND3gLqBHbpE8DzS6xk0AAAD///+Bm1cAAAAGSURBVAMApUg2V85NCwMAAAAASUVORK5CYII=",
+            "thumb": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAACyUlEQVR4AeSWz0tUURTHz8wiWkgaKEQhCYkY0qJFq/6A1kELKSlaVRDkIiKybT+IIoOgTdtgFkH79m2KaBGSmZo/8Aco+GPlynE+B8/jeJ1xZp4w8u6T+cw5595377vf773zfMXJ/wvltDz/PFaGe6+/ldPAWCPNeD+GeXx9UL6+sqLrRXdRdv/e/xoRg6bR0XcCPreaNmN+Zl2Wx2dTwVjmIaadw8Y1M8fc9LS8uNUnnW3HJDGAhcD9i88IMjz8QKN9hbW1WzzVf1aawcYRPzy8XPjy8fqhaGYO7tnR1VWAfQZwCrhgdeuGDN39LmGkD7gO18nBdqLRyBjwc1C3msQAdt5gEZ3HP0k16EP84PkZ0syTGIAShDVCLOLRvMcATgCNBxGTeHTuMYAGTKgGfaH47p4OmpVmHoBcq4MqX36OStmSz9Tff8l99hmQ9LiEn0Uo3nVr2ujDz67TQUf0dfXmUMFurQZsPHosIJU/IlTS5MOJKP3pSWqfsIPsaBoY6+c6ilwN4Mbtr16qCUTqkGomPLk2UAD+B6eBsRDeq5W1GmCiwxgupJoJ4TVZq9UAXnFrgSDrI4/NBDWA19xaINr6yCEmE9QA2+F6EfEGJlie5agG2A7Xi1kWamsPoxrgd54LfO1z+mJDDfA7j0Bf+5y+2FAD7MWHaMQmtJYeNYBOhNt7AHVeUAMQDogmAnkeUAPCB52vfR6jIWpA+KDztc+jNYDfv4FIcmIe0BNgQvnt50k8utUAhAMNRCDPA2qAf9BZbuKtDqP1Zz2qAf5BZ7kJszqM1p/1WNx++1Sg7WuvdC9dUaiNiTu3BX68GdFIOzVkXTzr1xNwYqAkJy+ck7XfU7QJNcnk+IJs9J1W2icWpbf/jNBGpD8G1AATT5wtXZLNsUH5uV1W4YgMxWMC7TFQZLcRjRhOADUCEU0bcApoI7dIngXqrXEHAAD///yjGyIAAAAGSURBVAMA6mE5V70+IsgAAAAASUVORK5CYII=",
             "source": "terrain",
             "stem": "yybld_yilabao_zhaopin",
             "group": "block"
@@ -2029,11 +2029,11 @@
             "path": "textures/blocks/yybld_yilabao_manjian",
             "file_name": "yybld_yilabao_manjian.png",
             "rel_path": "\\resource_pack\\textures\\blocks\\yybld_yilabao_manjian.png",
-            "size_str": "796 B",
-            "size_bytes": 796,
-            "mtime": "2026-10-12 23:03:09",
+            "size_str": "795 B",
+            "size_bytes": 795,
+            "mtime": "2026-10-24 18:27:30",
             "exists": true,
-            "thumb": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAC0UlEQVR4AeSZP2gUQRTGZ5dDEEQj5MAmmFIULD1EbOzEKqiNiJXNYWHAP4WFIY2FWsRCg2Bto2Bla2eRlIKgqKiIICgoNjaBc36PfONk3CXZDVzcMdyX92fem93vvXezl0s5c/7haHj7eWOQd+PxyxFok08OuQL2ZsA+G81/sbRkfN++/zwqXfLz5dVHV4ck1MxPH37UxtftIz+5bIKUr61ssgfXHB7tuckd21y5Z99eN7/7keHSyWnWaqE4JHlxIHYTxLmLl48UTx6c2RSa7MG1Dw4GxUS/X4QJ+HnsCn53//ByLSwg+kXVZTbtnPLiPeQbp7QCiPzOZ7fc3PfTBm4CHQnQAXpOsAJACPLIFDFpRj+209gu2laAmDwkAWSQQHos0XOAFYC3QFNAfmp6AmFocgASa0n+V7yHN8fyevf6TbiOFSBYkbKyPOdWnl5wSNxIg/dhp2h7CKb7jMOeOXe20HVCAarI9U7cde7rN8W63qH5oEuZ8lNAR9uAXO2zVTIUwIj2J9fcBxMQHL4QFCnYXrl26kABeAa3AbnAb7Vlrz8F8OTjDqPbBKzeGjo+5+NWXVmIUADIxR1GB2KJDmxS5MxAhgJAjiKIE7qBc8A7TfdnAJPgzWxeoQB0liJkw2yDREp90LF4f9Ah+WAkyEbGWJMXL/zjenp7YQIYbUBA/KFINjJHhAIsLNxxAkSlI2Ujc0MowOzsRSdAUjpSNjI3hALQ6SpAOPXjywWhAHS6ChBN/fhyQam/79VliKFLoqdgTXnoXUZ4DKrLkEGXRE/BWnaPQUj9j7C3wK+ri64psnkLqOvbbw5NRdaBANaQuSA8BZgAkao69LQWx8nXZRkKEHe26tATyThOvi7Lku/yIBB3Np0AbGKA4pSHr8uwf41BIO5sOgHYxADF8R0gdtfx1wTQ4TpAljVkNhMAmeu79jtwb3DcrQfiAHldwHr3+BsAAP//ofbt3gAAAAZJREFUAwByvDILwbKJ9AAAAABJRU5ErkJggg==",
+            "thumb": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAAC0ElEQVR4AeSZP2gUURDG3y1BEEQjJGATTCWivSJ2dmIV1EZEG5tgYcA/hYUhjYJaxEKDYG2jYGVrZ5NeUNT4D0E4wWBjEzjfb8j3nDxvSfYCF/cZ7rtvZnbm3X7z5nYvd9XUhce96bsvG4O6m09f9cAg9dRQK+BvBqyz0frlbtf0vvvwtVeF7O/b60+hDlmquV8+Ltfm162jOLUsAis2KDdZ4/PSUrh1fl8Y27EtVHv27w1zu58YLp+c5HxqoTyYOp+I3wS+duHK0c6zR2c2hSZr8Nqj4+MdkCbg57GrxMPDI4u1sAT3RNflNt051fk1FBsmWwMkfueLO2H2x2kDJ4ENA2yAXRKsAQhCPJzDi2b0vZ/nttG3BnjxiASIgYFsz9glwBrAW6ApED8xOQoZmlwAybWi+OTXiO5QHu/fvE2vYw1InjNWFmfDyvOLASYMG2IMP8egF8F8nWH4U+fOdvQ6qQH9xI2cuB9C97tyw8ihuWTLmIhTwI4OAmq1zlZxaoAJHR9bcx5MQArERtCk5Efj+qmDHcA9eBBQC+JSW/b404Ao3u8wtk3A6qlhEwsxbzVUBKUGIM7vMDaQSmxgk6JgAZwagDiaIE3YBq4DMWh2vAYwCdEt5pEawM7ShGKUbVBIpQ86lh8vdDAfjAT5sMeaOn/gH7fz00sTwGgDEvyHIvlwiUgNmJ+/FwSEyoblw6UhNWBm5lIQECkblg+XhtQAdrofEJzHiZWC1AB2uh8QmseJlYJK/99rlxGGLcbOwTHVYbcZ6TaoXUYMthg7B8eKuw0i6n+EvQV+XVsITVHMW0C7vv32tJlwHUjgGFwK0l2ACZCofhc9HfN5irWZUwP8zva76Emkz1OszVzxXR4C/M7mE4BPDlCe6oi1GfbTGAL8zuYTgE8OUB7fAeK3HX9NADtcB8RyDC5mAhBzY9eBAB4cPh7WA3mAujZgvXP8DQAA//+fRgHeAAAABklEQVQDALfVNQuIZvGoAAAAAElFTkSuQmCC",
             "source": "terrain",
             "stem": "yybld_yilabao_manjian",
             "group": "block"
@@ -2100,9 +2100,9 @@
             "rel_path": "\\resource_pack\\textures\\blocks\\yybld_yilabao_tehui.png",
             "size_str": "907 B",
             "size_bytes": 907,
-            "mtime": "2026-10-12 23:03:09",
+            "mtime": "2026-10-24 18:27:30",
             "exists": true,
-            "thumb": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAADQElEQVR4AdyZTUhUURSAz1yklYnCGFL0Q4GIhdYmTYl20cIsqVWEELQRAiXsd29QSBgtbOEmiSAQjJKI2lRQJkGGENiPlYkhIikFrQKb7+AZ7jxGhxlJnRt9c+4579733nfvnTeOus9fJ+dz4dfvP/NX+t4rLZ0v53PBxhNzGe+PyeYcI0NDer94uw3xEjG6um4I/9JFamB96QcT3+ZkanQ8Jxi73HPYtTmXtTNFrtmyv0DihevEkUzPzArQRpIYpa2tVUv0M7Sw8FJWsVWyYWGYhu72+lh/z4llkc05uGhVTU2suLQ05pChAEgalqeL1IBZJ0KmWY8eZwz45yBfaXQHpLvo0c6Hshj0561AzHdSJsAXvt9+WHziTfsEEKYfMQR0AhACX7h6V7ls+X5KKbpXIW+O1EnPjnhyEuou9obgL84XR9qYfVQvc4ODcrdkQjqqnZzuK5Cbo5Up0pu3FSfzbB6A9LWB/jms9r/j2IdPyUs4Vt2kk9VEA3nEBwamZHLYSWvtJdmzaWPiSPr/0Ydcpjz9WVam2tR8MmZXcshbYnGk+Zi86yjU9FrLBWloKJPz3VeFydBi4oWJSwRhBVnRXGAs51hN9BmAcL8rknONu5WxO09T7ml48ofmM3ufyUz/oLb5FLh8fGcM+AzOBcaCnnCVXhzydu26gS8y8vy13Fo/rbD1X0zc1reAL2+rb+PyOTpWG0yi6kCtQOPjci2x7X15LQb04l41bE/qsPLsAHhw6KOouLft6RjS6uPjkEUcKPzsfSsG73egDqHJ4+RM1iLCBh0AcaCd70Tv35msxWiHUMXNUz8GLfEj4uDX+KoMf5+c9ct53U6ZAIQNs0IYLOfrMm3/azR5vqI/CkelkUEaEAZqQI0YCroD2NImRgSTpm2cqRwXCEUeD50AGoYvTg1ho+DgdTE4FgIpExBdacRNmBiCcNQhOQHIGsga0QGh5ToBJmsxNMmlfHQCbOvT0drRGD1GHgI6ATz4ACFiOqLHyENAJ8BWGyFrE6M5NYNjIeD4zY6tOELWJkZzagbjOJ7v6F+G/FW1drqIrNVph8CSO8BW2yLCfps839FnwGIS/jan7bPYmLVWz3Q//wAAAP//4rvFqwAAAAZJREFUAwCT6WxcFDH3fwAAAABJRU5ErkJggg==",
+            "thumb": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAAAgCAYAAACinX6EAAADQElEQVR4AdyZTUhUURSAz1yklYnCGFL0Q4GIRdYmTBftooVZUqsII2gjBErY796ikDBa2MJNEkEgGCURtamgDIIMIbAfLRVDVFIKWgU238Ez3HmMDjOSOlf83rn3vHvve9+9d944jvv6bWI+F379/jN/teej0tT+ej4XrD8xl/5+n2zGmJue1vvF222Il4jR0XFL+EkXyYG1pR2Mf5+TyaHRnKDvcsewazOWlTPFsZERuXaqXOKF68RxA1MzswKUkSRGaWlp1hTtDE0sHMoqtko2LHTT0NlaG+vtOrEsshmDixaXlsbAIUMCkDSsni6SA2adCJlmPXqePuCPQX2l0R2Q7qJH2x/LYtCelwIx30mZAF/4Yeth8Yk37BdAmHbEENAJQAh84apd5bJl7LRS9KBC3h2pka4d8eQk1FzqDsFfnC+OtDH7pFbm+vvlfsm4tFU5OdNTILeHKlOkN28rTtazeQDS1jr6Y1juf8fhT1+Sl3Csukkns4kC8oj39U3KxICT5urLsnfTxsSZ9L/Rh1ymevpRVibb0HgyZldyyFvF4mDjMfnQVqjVG00Xpa6uTC50XhcmQ5OJAxOXCMIKsqK5QF/GWE30GYBwryuS8/V7lOF7z1PuaWDih9Zn9r2Qmd5+LfMucOX4zhjwHpwL9AUdcJUODnm7dk3fiAy+fCt31k8pbP1X43f1JeDL2+pbv3yOjtUGk9h9oFqg/mm5ptj2vrwmAzq4N3XbkzqsPDsAHh36LCrubXsahrT6+DhkEQcSP7vfi8HrHchDaPI4OZO1iLBBA0AcKOc70ft3Jmsx2iBUcfPUt0Gr+BFx8HN8VIa/z8756bwup0wAwoZZIQxW5+MyZf9jNPV8Rf8UjkojgzQgDOSAHDEUdAewpU2MCCZN2ThbOSoQijweOgEUDF+cHMJGwcGbYnAuBFImILrSiJswMQThqENyApA1kDWiHUKr6wSYrMXQJJfy0QmwrU9DK0dj9Bz1ENAJ4MEHCBHTET1HPQR0Amy1EbIyMVonZ3AuBBz/2bEVR8jKxGidnEE/zuc7+s2Qv6pWTheRtTzlEFhyB9hqW0TYL1PPd/QZsJiEv80p+yzWZ63lM93PPwAAAP//Vyw14QAAAAZJREFUAwDZAm9cbgIjpAAAAABJRU5ErkJggg==",
             "source": "terrain",
             "stem": "yybld_yilabao_tehui",
             "group": "block"

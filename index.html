@@ -75,34 +75,17 @@
         gap: 0.75rem;
         margin: 0 0 0.4rem;
       }
-      /* 访客视图：留言板整体不展示；条目可见但不可展开 */
+      /* 访客态：留言板整体不展示；条目可见但不可展开 */
       html[data-access="guest"] #ef-notes,
       html[data-access="guest"] #ef-z-notes {
         display: none !important;
       }
-      /* 访客不可展开：隐藏展开箭头，避免暗示可点开 */
+      /* 访客不可展开：隐藏箭头并取消头部的点击/悬停反馈 */
+      html[data-access="guest"] .ef-node-head {
+        pointer-events: none;
+      }
       html[data-access="guest"] .ef-node-head .ef-caret {
         display: none;
-      }
-      .ef-guest-cats {
-        margin: 0.6rem 0 0;
-        padding: 0;
-        list-style: none;
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
-        gap: 0.2rem 1.4rem;
-      }
-      .ef-guest-cats li {
-        display: flex;
-        align-items: baseline;
-        justify-content: space-between;
-        gap: 0.75rem;
-        padding: 0.4rem 0;
-        border-bottom: 1px solid var(--ef-rule);
-      }
-      .ef-guest-cats b {
-        font-family: var(--ef-font-mono);
-        font-weight: 600;
       }
       /* ---------- 视图 ---------- */
       .ef-view {
@@ -653,7 +636,7 @@
         font-size: 0.85rem;
       }
 
-      /* ---------- 美术资产对照索引主标题增强：扩大画面占比与字间距 ---------- */
+      /* ---------- 内容索引主标题增强：扩大画面占比与字间距 ---------- */
       .ef-head h1 {
         font-size: clamp(2.35rem, 5.2vw, 3.4rem);
         font-weight: 900;
@@ -1622,7 +1605,7 @@
           <span class="ef-field" id="ef-head-ns">命名空间 yybld</span>
           <span class="ef-field" id="ef-head-sync">同步于 —</span>
         </div>
-        <h1><span id="ef-head-title">美术资产对照索引</span> <small id="ef-head-sub">Model / Animation / Texture / Name</small></h1>
+        <h1><span id="ef-head-title">内容索引</span> <small id="ef-head-sub">Model / Animation / Texture / Name</small></h1>
         <p id="ef-head-desc">项目内全部已实装的模型、动画与贴图资源，按「暴露给玩家的内容」归纳为中文名条目并分类；同一中文名对应多套资源时以可展开的树状图呈现。点任意文件可查看其相对路径与关联配置。</p>
       </header>
 
@@ -1875,15 +1858,6 @@
             <div><b data-fig="textures">--</b><span>贴图文件</span></div>
             <a href="#anims" data-view="anims"><b data-fig="anims">--</b><span>动画文件</span></a>
           </div>
-        </section>
-
-        <!-- 访客视图：分类计数（条目仍可浏览，但不可展开查看文件名） -->
-        <section class="ef-panel cut-br" id="ef-guest-stats" hidden>
-          <h2>资产构成 <span class="ef-field">访客视图</span></h2>
-          <p class="ef-field">
-            访客可浏览全部条目名称与分类计数；展开查看具体文件名、相对路径等资料，以及小纸条留言板与美术资产规范，仅对仓库协作者开放。
-          </p>
-          <ul class="ef-guest-cats" id="ef-guest-cats"></ul>
         </section>
       </div>
 
@@ -2511,7 +2485,7 @@
     <!--EF_DATA_END-->
 
     <!-- 资产数据外链：由 sync_data.py 生成的 data.js 注入 window.EF_DATA -->
-    <script src="data.js?v=20261024174823"></script>
+    <script src="data.js?v=20261025090257"></script>
     <!-- 留言板配置先加载：访问控制与留言板共用同一仓库 owner/repo -->
     <script src="notes-config.js"></script>
     <!-- 访问控制：仓库协作者 / 访客（纯展示层隔离） -->
@@ -2852,10 +2826,7 @@
         }
         function setView(view) {
           // 模型表 / 动画表直接暴露文件名，访客只保留对照树
-          if (!isMember() && view !== 'tree') {
-            toast('访客仅可浏览条目；模型与动画明细需要协作者身份。');
-            return;
-          }
+          if (!isMember() && view !== 'tree') return;
           // 视图切换属于资产对照范畴：若当前在规范文档大分类，先切回默认项目
           if (state.proj === 'spec' && typeof setProj === 'function') setProj('yybld');
           if (view === state.view) return;
@@ -2892,7 +2863,7 @@
 
         function openDrawer(f) {
           // 抽屉含相对路径等具体资料，仅协作者可用
-          if (!isMember()) { toast('访客不可查看文件详情，需协作者身份。'); return; }
+          if (!isMember()) return;
           current = f;
           var e = f._entry || {};
           dKind.textContent = (KIND_CN[f._kind] || '文件') + ' / ' + (e.identifier || '');
@@ -2969,7 +2940,7 @@
         treeEl.addEventListener('click', function (ev) {
           var leaf = ev.target.closest('.ef-leaf');
           if (leaf) {
-            if (!isMember()) { toast('访客不可查看具体文件名，展开与详情需协作者身份。'); return; }
+            if (!isMember()) return;
             var item = active.FLAT[Number(leaf.dataset.flat)];
             if (item) openDrawer(item);
             return;
@@ -2977,10 +2948,7 @@
           var head = ev.target.closest('.ef-node-head');
           if (head) {
             // 访客：条目可见但不可展开（不生成任何文件明细）
-            if (!isMember()) {
-              toast('访客可浏览条目；展开查看文件名与具体资料需要协作者身份。');
-              return;
-            }
+            if (!isMember()) return;
             var node = head.closest('.ef-node');
             // 展开前先填充惰性内容，让高度过渡有实际尺寸可量
             if (!node.classList.contains('is-open')) fillNodeBody(node);
@@ -3242,7 +3210,7 @@
           ['doc-sec-02', '动画规范'], ['doc-sec-03', '自检表']];
 
         /* ---------- 8.0 访问控制：仓库协作者 / 访客 ---------- */
-        // 访客只保留总体统计；资产条目、小纸条、美术资产规范仅协作者可见
+        // 访客可浏览条目，但不可展开/查看明细；小纸条、规范栏、模型表与搜索不展示
         function isMember() {
           return !!(window.EF_ACCESS && window.EF_ACCESS.isMember());
         }
@@ -3259,17 +3227,7 @@
           }).join('');
         }
 
-        // 访客分类计数：只有名称与数量，不渲染任何条目
-        function renderGuestStats() {
-          var list = document.getElementById('ef-guest-cats');
-          if (!list || !active) return;
-          list.innerHTML = (active.CATS || []).map(function (c) {
-            return '<li><span class="ef-cat" data-cat="' + esc(c.key) + '">' + esc(c.name) + '</span>' +
-              '<b>' + Number(c.count || 0) + '</b></li>';
-          }).join('') || '<li><span class="ef-field">暂无分类数据</span><b>0</b></li>';
-        }
-
-        // 受限面板显隐统一由访问状态驱动，避免各渲染函数各自判断
+        // 访问状态变化后：导航 / 受限面板 / 侧栏 / 条目渲染全部对齐
         function applyRestrictedPanels() {
           var member = isMember();
           // 搜索会自动展开命中条目、视图切换会暴露文件名 → 访客隐藏整条工具条
@@ -3281,15 +3239,12 @@
             var el = document.getElementById('view-' + v);
             if (el) el.hidden = v !== state.view || (!member && v !== 'tree');
           });
-          var guestPanel = document.getElementById('ef-guest-stats');
-          if (guestPanel) guestPanel.hidden = member;
           SPEC_KEYS.forEach(function (k) {
             var el = document.getElementById(NOTES_IDS[k] || '');
             if (el) el.hidden = !member || k !== state.proj;
           });
           // 停留在仅协作者可见的规范栏时退回资产栏
           if (!member && state.proj === 'spec') setProj(SPEC_KEYS[0] || 'yybld');
-          renderGuestStats();
         }
 
         var accessBtn = document.getElementById('ef-access-btn');
@@ -3346,7 +3301,7 @@
             var cur = A.token();
             var msg = member
               ? '当前浏览器已保存协作者 Token（' + cur.slice(0, 4) + '****' + cur.slice(-4) + '）。\n\n' +
-                '输入新 Token 可更换；留空并确定则清除 Token，回到访客视图：'
+                '输入新 Token 可更换；留空并确定则清除 Token：'
               : '请输入 GitHub Token（需勾选 repo 权限）以验证仓库协作者身份。\n\n' +
                 '生成方式：GitHub 头像 → Settings → Developer settings → Personal access tokens。\n' +
                 '验证通过后本浏览器会自动记住，下次打开直接解锁。\n\n请输入 Token：';
@@ -3357,7 +3312,7 @@
               if (!member) return;
               A.clearToken();
               setAccessState('guest');
-              toast('已清除协作者 Token，回到访客视图。');
+              toast('已清除协作者 Token。');
               return;
             }
             A.verify(next).then(function (ok) {
@@ -3367,7 +3322,7 @@
                 setAccessState('member');
                 toast('协作者验证通过，已解锁完整视图。');
               } else if (ok === false) {
-                toast('该 Token 不具备仓库写权限，仍保持访客视图。');
+                toast('该 Token 不具备仓库写权限。');
               } else {
                 toast('验证请求失败，请检查网络后重试。');
               }
@@ -3450,7 +3405,7 @@
         function renderHead() {
           if (!active) return;
           var h = active.head || {};
-          setText('#ef-head-title', h.title || '美术资产对照索引');
+          setText('#ef-head-title', h.title || '内容索引');
           setText('#ef-head-sub', h.sub || 'Model / Animation / Texture / Name');
           setText('#ef-head-desc', h.desc || '');
           setText('#ef-head-en', PROJ_EN[active.key] || 'Project Archive');
@@ -3475,7 +3430,6 @@
           renderHead();
           renderFilters();
           renderStats();
-          renderGuestStats();
           buildSidenav();
           syncViewBtns();
           render(true);
