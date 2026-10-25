@@ -758,6 +758,10 @@
         color: var(--ef-ink-2);
         transition: background-color 0.18s var(--ef-ease), color 0.18s var(--ef-ease);
       }
+      /* JS 用 a.hidden 切换项目分组；.ef-sidenav a 的 display:flex 会盖掉 [hidden]，需显式补回 */
+      .ef-sidenav a[hidden] {
+        display: none;
+      }
       .ef-sidenav a .n {
         flex: none;
         font-size: 0.62rem;
@@ -3324,6 +3328,14 @@
         /* ---------- 侧边导航高亮 / 回到顶部 ---------- */
         var topBtn = document.getElementById('ef-totop');
 
+        // 侧边栏只显示当前项目的分组（buildSidenav 会重建全部项目链接）
+        function filterSidenavGroups(key) {
+          if (!sidenavEl) return;
+          sidenavEl.querySelectorAll('[data-proj-group]').forEach(function (a) {
+            a.hidden = a.dataset.projGroup !== key;
+          });
+        }
+
         function syncSidenav() {
           if (!sidenavEl) return;
           if (state.proj === 'spec') return syncDocNav();
@@ -3530,7 +3542,7 @@
           applyRestrictedPanels();
           if (state.proj === 'milestones') buildMsSidenav();
           else if (state.proj === 'plan') buildPlanSidenav();
-          else { buildSidenav(); syncSidenav(); }
+          else { buildSidenav(); syncSidenav(); filterSidenavGroups(state.proj); }
           if (active) render(false);
           syncAccessBtn();
         }
@@ -3833,9 +3845,7 @@
             buildPlanSidenav();
           } else if (sidenavEl) {
             // 侧边栏联动：按分组显隐导航项
-            sidenavEl.querySelectorAll('[data-proj-group]').forEach(function (a) {
-              a.hidden = a.dataset.projGroup !== key;
-            });
+            filterSidenavGroups(key);
           }
           // 品牌标识跟随当前大分类
           if (brandEl) {
