@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="zh-CN" data-ef-variant="standard">
+<html lang="zh-CN" data-ef-variant="standard" data-access="guest">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -74,6 +74,31 @@
         align-items: baseline;
         gap: 0.75rem;
         margin: 0 0 0.4rem;
+      }
+      /* 访客视图：仅展示分类计数，不暴露任何条目 DOM */
+      html[data-access="guest"] #ef-notes,
+      html[data-access="guest"] #ef-z-notes {
+        display: none !important;
+      }
+      .ef-guest-cats {
+        margin: 0.6rem 0 0;
+        padding: 0;
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+        gap: 0.2rem 1.4rem;
+      }
+      .ef-guest-cats li {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 0.75rem;
+        padding: 0.4rem 0;
+        border-bottom: 1px solid var(--ef-rule);
+      }
+      .ef-guest-cats b {
+        font-family: var(--ef-font-mono);
+        font-weight: 600;
       }
       /* ---------- 视图 ---------- */
       .ef-view {
@@ -1574,6 +1599,8 @@
           <button type="button" data-fs="+" title="放大字体" aria-label="放大字体">A+</button>
         </span>
         <button class="ef-btn small" id="ef-theme" type="button" aria-pressed="false">切换深浅</button>
+        <button class="ef-btn small" id="ef-access-btn" type="button" aria-pressed="false"
+                title="仓库协作者可录入 GitHub Token 解锁完整视图">协作者登录</button>
       </div>
     </header>
 
@@ -1844,6 +1871,15 @@
             <div><b data-fig="textures">--</b><span>贴图文件</span></div>
             <a href="#anims" data-view="anims"><b data-fig="anims">--</b><span>动画文件</span></a>
           </div>
+        </section>
+
+        <!-- 访客视图：只给分类计数，不渲染任何资产条目 -->
+        <section class="ef-panel cut-br" id="ef-guest-stats" hidden>
+          <h2>资产构成 <span class="ef-field">访客视图</span></h2>
+          <p class="ef-field">
+            当前仅展示资产总量与分类计数；具体条目明细、小纸条留言板与美术资产规范仅对仓库协作者开放。
+          </p>
+          <ul class="ef-guest-cats" id="ef-guest-cats"></ul>
         </section>
       </div>
 
@@ -2472,6 +2508,10 @@
 
     <!-- 资产数据外链：由 sync_data.py 生成的 data.js 注入 window.EF_DATA -->
     <script src="data.js?v=20261024174823"></script>
+    <!-- 留言板配置先加载：访问控制与留言板共用同一仓库 owner/repo -->
+    <script src="notes-config.js"></script>
+    <!-- 访问控制：仓库协作者 / 访客（纯展示层隔离） -->
+    <script src="access.js?v=20261025"></script>
     <!-- 版本里程碑：已结项版本公告数据与渲染（手写维护；带版本指纹避免旧缓存） -->
     <script src="milestones.js?v=202610241300"></script>
 
@@ -2779,6 +2819,8 @@
         }
 
         function render(animate) {
+          // 访客一律不生成条目 DOM（只保留总览与分类计数）
+          if (!isMember()) return;
           var q = state.q;
           var counts = { models: active.MODEL_ROWS.length, anims: active.ANIM_ROWS.length, textures: active.TEX_ROWS.length };
           var shown;
@@ -2983,6 +3025,14 @@
 
         if (sidenavEl) {
           sidenavEl.addEventListener('click', function (ev) {
+            // 访客侧栏：滚到访客统计面板
+            var guestLink = ev.target.closest('[data-nav-guest]');
+            if (guestLink) {
+              ev.preventDefault();
+              var gp = document.getElementById('ef-guest-stats');
+              if (gp) gp.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              return;
+            }
             var docLink = ev.target.closest('[data-nav-doc]');
             if (docLink) {
               ev.preventDefault();
@@ -3178,15 +3228,150 @@
         var SIDENAV_DOC = [['doc-sec-00', '全局铁律'], ['doc-sec-01', '资源链清单'],
           ['doc-sec-02', '动画规范'], ['doc-sec-03', '自检表']];
 
-        projNavEl.innerHTML = PROJ_LIST.map(function (p) {
-          var n = (p.type === 'doc' && p.key !== 'milestones') ? '资料' : p.count;
-          return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="false">' +
-            esc(p.name) + ' <span class="n">' + n + '</span></button>';
-        }).join('');
+        /* ---------- 8.0 访问控制：仓库协作者 / 访客 ---------- */
+        // 访客只保留总体统计；资产条目、小纸条、美术资产规范仅协作者可见
+        function isMember() {
+          return !!(window.EF_ACCESS && window.EF_ACCESS.isMember());
+        }
+
+        // 项目胶囊：访客不生成「美术资产规范」入口
+        function renderProjectNav() {
+          projNavEl.innerHTML = PROJ_LIST.filter(function (p) {
+            return isMember() || p.key !== 'spec';
+          }).map(function (p) {
+            var n = (p.type === 'doc' && p.key !== 'milestones') ? '资料' : p.count;
+            return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="' +
+              (p.key === state.proj ? 'true' : 'false') + '">' +
+              esc(p.name) + ' <span class="n">' + n + '</span></button>';
+          }).join('');
+        }
+
+        // 访客分类计数：只有名称与数量，不渲染任何条目
+        function renderGuestStats() {
+          var list = document.getElementById('ef-guest-cats');
+          if (!list || !active) return;
+          list.innerHTML = (active.CATS || []).map(function (c) {
+            return '<li><span class="ef-cat" data-cat="' + esc(c.key) + '">' + esc(c.name) + '</span>' +
+              '<b>' + Number(c.count || 0) + '</b></li>';
+          }).join('') || '<li><span class="ef-field">暂无分类数据</span><b>0</b></li>';
+        }
+
+        // 受限面板显隐统一由访问状态驱动，避免各渲染函数各自判断
+        function applyRestrictedPanels() {
+          var member = isMember();
+          var bar = document.querySelector('#proj-view-main .bar');
+          if (bar) bar.hidden = !member;
+          if (filtersEl) filtersEl.hidden = !member;
+          if (countEl) countEl.hidden = !member;
+          ['tree', 'models', 'anims'].forEach(function (v) {
+            var el = document.getElementById('view-' + v);
+            if (el) el.hidden = !member || v !== state.view;
+          });
+          var guestPanel = document.getElementById('ef-guest-stats');
+          if (guestPanel) guestPanel.hidden = member;
+          SPEC_KEYS.forEach(function (k) {
+            var el = document.getElementById(NOTES_IDS[k] || '');
+            if (el) el.hidden = !member || k !== state.proj;
+          });
+          // 停留在仅协作者可见的规范栏时退回资产栏
+          if (!member && state.proj === 'spec') setProj(SPEC_KEYS[0] || 'yybld');
+          renderGuestStats();
+        }
+
+        var accessBtn = document.getElementById('ef-access-btn');
+        function syncAccessBtn() {
+          if (!accessBtn) return;
+          var member = isMember();
+          accessBtn.textContent = member ? '协作者 · 已解锁' : '协作者登录';
+          accessBtn.setAttribute('aria-pressed', member ? 'true' : 'false');
+        }
+
+        // 访问状态变化后：导航 / 受限面板 / 侧栏 / 条目渲染全部对齐
+        function applyAccessUI() {
+          var member = isMember();
+          document.documentElement.setAttribute('data-access', member ? 'member' : 'guest');
+          renderProjectNav();
+          applyRestrictedPanels();
+          if (state.proj === 'milestones') buildMsSidenav();
+          else { buildSidenav(); syncSidenav(); }
+          if (member && active) render(false);
+          syncAccessBtn();
+        }
+
+        function setAccessState(next) {
+          if (!window.EF_ACCESS) return;
+          var before = window.EF_ACCESS.state;
+          window.EF_ACCESS.setState(next);
+          if (before === next) applyAccessUI();
+        }
+
+        // 启动复核：有 Token 才请求 GitHub；网络异常沿用本地缓存，401/403 直接降级访客
+        function verifyAccess() {
+          var A = window.EF_ACCESS;
+          if (!A) return;
+          var token = A.token();
+          if (!token) { A.setState('guest'); applyAccessUI(); return; }
+          A.verify(token).then(function (ok) {
+            if (ok === null) return;
+            if (ok) {
+              A.markMember(true);
+              A.setState('member');
+            } else {
+              A.clearToken();
+              A.setState('guest');
+            }
+            applyAccessUI();
+          });
+        }
+
+        if (accessBtn) {
+          accessBtn.addEventListener('click', function () {
+            var A = window.EF_ACCESS;
+            if (!A) return;
+            var member = isMember();
+            var cur = A.token();
+            var msg = member
+              ? '当前浏览器已保存协作者 Token（' + cur.slice(0, 4) + '****' + cur.slice(-4) + '）。\n\n' +
+                '输入新 Token 可更换；留空并确定则清除 Token，回到访客视图：'
+              : '请输入 GitHub Token（需勾选 repo 权限）以验证仓库协作者身份。\n\n' +
+                '生成方式：GitHub 头像 → Settings → Developer settings → Personal access tokens。\n' +
+                '验证通过后本浏览器会自动记住，下次打开直接解锁。\n\n请输入 Token：';
+            var next = window.prompt(msg, '');
+            if (next === null) return;
+            next = next.trim();
+            if (!next) {
+              if (!member) return;
+              A.clearToken();
+              setAccessState('guest');
+              toast('已清除协作者 Token，回到访客视图。');
+              return;
+            }
+            A.verify(next).then(function (ok) {
+              if (ok === true) {
+                A.saveToken(next);
+                A.markMember(true);
+                setAccessState('member');
+                toast('协作者验证通过，已解锁完整视图。');
+              } else if (ok === false) {
+                toast('该 Token 不具备仓库写权限，仍保持访客视图。');
+              } else {
+                toast('验证请求失败，请检查网络后重试。');
+              }
+            });
+          });
+        }
+
+        renderProjectNav();
 
         // 侧边栏导航项：每个项目「内容分类 + 小纸条」一组，规范文档章节目录一组
         function buildSidenav() {
           if (!sidenavEl) return;
+          // 访客：侧栏只留一个「资产统计」锚点，避免出现指向隐藏条目的死链接
+          if (!isMember()) {
+            sidenavEl.innerHTML = '<a href="#ef-guest-stats" data-nav-guest="1">' +
+              '<span class="n">00</span><span class="t">资产统计</span></a>';
+            return;
+          }
           var html = [];
           SPEC_KEYS.forEach(function (key) {
             var cats = (PD[key] || {}).categories || [];
@@ -3279,6 +3464,7 @@
           renderHead();
           renderFilters();
           renderStats();
+          renderGuestStats();
           buildSidenav();
           syncViewBtns();
           render(true);
@@ -3362,6 +3548,8 @@
 
         // 大分类切换：同步主视图、导航胶囊、侧边栏分组与地址栏
         function setProj(key) {
+          // 规范文档仅对仓库协作者开放，访客直达 hash 时回退到资产栏
+          if (key === 'spec' && !isMember()) key = SPEC_KEYS[0] || 'yybld';
           var isSpec = key === 'spec';
           var isMs = key === 'milestones';
           var wasMs = state.proj === 'milestones';
@@ -3373,10 +3561,10 @@
           projNavEl.querySelectorAll('[data-proj]').forEach(function (b) {
             b.setAttribute('aria-pressed', b.dataset.proj === key ? 'true' : 'false');
           });
-          // 各项目留言板：仅显示当前项目的留言板
+          // 各项目留言板：仅协作者可见，且只显示当前项目的留言板
           SPEC_KEYS.forEach(function (k) {
             var el = document.getElementById(NOTES_IDS[k] || '');
-            if (el) el.hidden = k !== key;
+            if (el) el.hidden = !isMember() || k !== key;
           });
           if (!isSpec && !isMs && (!active || active.key !== key)) switchProject(key);
           // 里程碑页会接管侧边栏，离开时重建资产/文档导航，避免残留旧链接
@@ -3425,9 +3613,15 @@
         ['tree', 'models', 'anims'].forEach(function (v) {
           document.getElementById('view-' + v).hidden = v !== state.view;
         });
+        // 访问控制：先按本地缓存套用受限界面（避免闪现条目标题），再异步复核 Token
+        if (window.EF_ACCESS) {
+          window.EF_ACCESS.onChange(applyAccessUI);
+          applyAccessUI();
+        }
         setProj(hash === 'spec' ? 'spec'
           : hash === 'milestones' ? 'milestones'
             : (SPEC_KEYS.indexOf(hash) >= 0 ? hash : (SPEC_KEYS[0] || 'yybld')));
+        verifyAccess();
 
         /* hash 直达：站内改变地址栏 hash 时同步切换项目 / 视图（整页加载已在上方处理） */
         window.addEventListener('hashchange', function () {
@@ -3548,7 +3742,6 @@
     </script>
 
     <!-- 小纸条留言板：配置 + 逻辑（数据层可在本地模式与 CloudBase 云端模式间自动切换） -->
-    <script src="notes-config.js"></script>
     <script src="notes.js"></script>
   </body>
 </html>

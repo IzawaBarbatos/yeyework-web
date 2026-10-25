@@ -316,6 +316,8 @@
     _setMember: function (v) {
       if (v) localStorage.setItem(this._memberKey, '1');
       else localStorage.removeItem(this._memberKey);
+      // 与站点访问控制共用同一份 Token / 成员标记，状态变化后同步全站界面
+      if (window.EF_ACCESS) window.EF_ACCESS.setState(v ? 'member' : 'guest');
     },
     // 校验当前 Token 所属用户是否为仓库协作者（拥有写权限即项目成员）；结果本地缓存
     checkMember: function () {
@@ -1845,12 +1847,21 @@
   /* ================= 以下为模块级启动 ================= */
 
   /* ---------------- 启动：逐个挂载留言板实例 ---------------- */
+  // 访客不挂载：留言板对非协作者整体不可见，也避免无谓的 GitHub 请求；解锁后再按需挂载一次
+  var mounted = Object.create(null);
   function mountAll() {
-    (window.EF_NOTES_INSTANCES || []).forEach(function (inst) { mountNotes(inst); });
+    (window.EF_NOTES_INSTANCES || []).forEach(function (inst) {
+      var key = (inst.key || '') + '|' + (inst.prefix || '');
+      if (mounted[key]) return;
+      mounted[key] = true;
+      mountNotes(inst);
+    });
   }
+  window.EF_NOTES_MOUNT_ALL = mountAll;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', mountAll);
+  if (window.EF_ACCESS) {
+    if (window.EF_ACCESS.isMember()) mountAll();
+    window.EF_ACCESS.onChange(function (next) { if (next === 'member') mountAll(); });
   } else {
     mountAll();
   }
