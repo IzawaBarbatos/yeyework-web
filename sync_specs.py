@@ -279,27 +279,49 @@ def yybld_parse_authoritative(bp_dir, rp_dir, env):
 
 
 YYBLD_CATEGORIES = [
-    ("food", "食品饮料", "带第一人称吃喝动画的食品 / 饮品资源链（共享几何与贴图已并入各口味条目）"),
-    ("block", "普通方块", "配置了自定义模型（netease_block）的方块资源链"),
-    ("block_entity", "方块实体", "配置了网易方块实体（netease:block_entity）的方块资源链"),
-    ("item", "物品", "所有物品（道具 / 工具 / 手册等）资源链"),
-    ("entity", "实体", "独立实体资源链（当前项目暂缺，预留）"),
+    ("instant", "即食食品", "方便面各状态 / 烤肠等即食热食资源链"),
+    ("packaged", "包装食品", "薯片 / 辣条 / 面包 / 月饼 / 海苔 / 冰品等预包装零食"),
+    ("drink", "饮品", "矿泉水 / 茶饮 / 牛奶 / 汽水 / 功能饮料等"),
+    ("facility", "店内设备与陈列", "货架 / 冰柜 / 收银 / 贩卖机 / 空调 / 购物车 / 门窗等"),
+    ("decor", "装饰与建筑", "灯 / 广告牌 / 易拉宝 / 地板 / 墙 / 天花 / 栏杆等"),
+    ("prop", "物品道具", "叉子 / 调料包 / 校准棒 / 清理棒 / 介绍书 / 纪念币等"),
 ]
+
+# 分类识别词（资源 stem 级，避免依赖中文名；沿用中餐厅「功能归类」的显式口径）
+YYBLD_DRINK_KEYS = ("kqs_", "yinliao", "kuoluo", "leibi", "mojiao", "niunai_", "niunaiyl", "lvdong", "houjiao")
+YYBLD_DECOR_KEYS = ("xidingdeng", "guandeng", "cuxiaoqi", "guanggaopai", "yilabao", "yupeng",
+                    "zhaopai", "denglong", "diban", "baiqiang", "tianhua", "langan", "bolichuang",
+                    "chuan_", "rocket", "flybag")
+YYBLD_FACILITY_KEYS = ("binggui", "lenggui", "huojia", "guitai", "guizi", "shouyin", "saoma",
+                       "fanmaiji", "gouwuche", "kongtiao", "xianshiqi", "shaoshuihu",
+                       "shuibei", "beizi", "canpan")
+YYBLD_PROP_KEYS = ("fangbianmianchazi", "fangbianmiantiaoliao", "calibration_stick",
+                   "qinglijibang", "coin_golden")
 
 
 def yybld_classify(stem, ctx):
+    s = stem[len("yybld_"):] if stem.startswith("yybld_") else stem
+    # 兜底条目 xxx_1 / xxx_1_1 先还原到基础 stem，避免被默认归入食品
+    base = re.sub(r"(_\d+)+$", "", s)
+    # 即食热食：方便面各状态（方块态 + 泡好物品）与烤肠；排除叉子/调料包与烤肠机
+    if "fangbianmian_" in s or "kaochang_" in s:
+        return "instant"
     if stem in ctx["food"]:
-        return "food"
-    if stem in ctx["block_entity"]:
-        return "block_entity"
-    if stem in ctx["block"]:
-        return "block"
-    if stem in ctx["item"]:
-        return "item"
+        return "drink" if any(k in s for k in YYBLD_DRINK_KEYS) else "packaged"
+    if stem in ctx["item"] or any(k in s for k in YYBLD_PROP_KEYS):
+        return "prop"
+    if any(k in s for k in YYBLD_DECOR_KEYS):
+        return "decor"
+    if any(k in s for k in YYBLD_FACILITY_KEYS):
+        return "facility"
+    if stem in ctx["block_entity"] or ("yybld_" + base) in ctx["block_entity"]:
+        return "facility"
     if stem in ctx["entity"]:
-        return "entity"
-    # 未被任何注册表收录的资源，默认归入「食品饮料」
-    return "food"
+        return "facility"
+    if stem in ctx["block"] or ("yybld_" + base) in ctx["block"]:
+        return "decor"
+    # 未收录资源：按建筑装饰兜底（不再默认食品饮料）
+    return "decor"
 
 
 YYBLD_SPEC = {
@@ -344,7 +366,7 @@ YYBLD_SPEC = {
         {"key": "hand", "name": "第一人称（hand）", "en": "Hand", "tag": "hand标注", "num": "03"},
         {"key": "hold", "name": "第三人称（hold）", "en": "Hold", "tag": "hold标注", "num": "04"},
     ],
-    "chain_categories": ["food"],
+    "chain_categories": ["instant", "packaged", "drink"],
 }
 
 
@@ -697,7 +719,7 @@ def yycore_tex_group(tpath):
     return "block"
 
 
-# 分类口径完全沿用便利店（五分类 + 注册表优先归类），保证同一资产在三个项目里叫法一致
+# 前置库体量较小，保留便利店早期五分类口径（未跟随 2026-10-25 便利店六分类改版）
 YYCORE_CATEGORIES = [
     ("food", "食品饮料", "带第一人称吃喝动画的食品 / 饮品资源链"),
     ("block", "普通方块", "配置了自定义模型（netease_block）的方块资源链"),

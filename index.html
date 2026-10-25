@@ -391,11 +391,15 @@
         font-stretch: var(--ef-wide);
         white-space: nowrap;
       }
-      .ef-cat[data-cat='food'] {
+      .ef-cat[data-cat='food'],
+      .ef-cat[data-cat='instant'],
+      .ef-cat[data-cat='packaged'],
+      .ef-cat[data-cat='drink'] {
         border-color: var(--ef-ink);
         color: var(--ef-ink);
       }
-      .ef-cat[data-cat='block_entity'] {
+      .ef-cat[data-cat='block_entity'],
+      .ef-cat[data-cat='facility'] {
         border-style: dashed;
       }
       /* ---------- 分类筛选 chips ---------- */
@@ -636,12 +640,12 @@
         font-size: 0.85rem;
       }
 
-      /* ---------- 内容索引主标题增强：扩大画面占比与字间距 ---------- */
+      /* ---------- 内容索引主标题：长标题控制字号，避免撑满整行 ---------- */
       .ef-head h1 {
-        font-size: clamp(2.35rem, 5.2vw, 3.4rem);
+        font-size: clamp(1.85rem, 3.9vw, 2.55rem);
         font-weight: 900;
-        letter-spacing: 0.08em;
-        line-height: 1.16;
+        letter-spacing: 0.06em;
+        line-height: 1.2;
       }
       .ef-head h1 small {
         font-size: 0.8rem;
@@ -2485,7 +2489,7 @@
     <!--EF_DATA_END-->
 
     <!-- 资产数据外链：由 sync_data.py 生成的 data.js 注入 window.EF_DATA -->
-    <script src="data.js?v=20261025090257"></script>
+    <script src="data.js?v=20261025091827"></script>
     <!-- 留言板配置先加载：访问控制与留言板共用同一仓库 owner/repo -->
     <script src="notes-config.js"></script>
     <!-- 访问控制：仓库协作者 / 访客（纯展示层隔离） -->
@@ -2545,6 +2549,13 @@
         CAT_ICON.furniture = CAT_ICON.block;
         CAT_ICON.functional = CAT_ICON.block_entity;
         CAT_ICON.tableware = '<svg' + SVG + '><path d="M4 4v16"/><path d="M7 4v6a3 3 0 0 1-6 0"/><path d="M14 20 20 4"/><path d="M16 12h4"/></svg>';
+        // 便利店六分类（即食/包装/饮品/设备/装饰/道具）图标
+        CAT_ICON.instant = CAT_ICON.food;
+        CAT_ICON.packaged = CAT_ICON.food;
+        CAT_ICON.drink = '<svg' + SVG + '><path d="M9 3h6l-1 4h-4L9 3Z"/><path d="M8 7h8l1 13a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2L8 7Z"/><path d="M8 13h8"/></svg>';
+        CAT_ICON.facility = CAT_ICON.block_entity;
+        CAT_ICON.decor = CAT_ICON.block;
+        CAT_ICON.prop = CAT_ICON.item;
 
         /* ---------- 1. 扁平索引（每个项目各建一份） ---------- */
         var KEYS = [['models', 'model'], ['animations', 'animation'], ['textures', 'texture']];
