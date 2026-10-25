@@ -177,8 +177,10 @@
   }
 
   function editFormHtml(e) {
+    // 手写种子没有 num，用自身 id 作为覆盖键；已覆盖的条目沿用记录里的 seed
+    var seedId = e.seed || (!e.num ? e.id : '') || '';
     return '<form class="pl-edit" data-pl-edit="' + esc(entryKey(e)) + '"' +
-      ' data-num="' + esc(e.num || '') + '" data-seed="' + esc(e.seed || '') + '" autocomplete="off">' +
+      ' data-num="' + esc(e.num || '') + '" data-seed="' + esc(seedId) + '" autocomplete="off">' +
       '<label class="pl-field"><span>条目名称</span>' +
       '<input name="title" type="text" maxlength="60" required value="' + esc(e.title) + '"></label>' +
       '<label class="pl-field"><span>所属范围</span><select name="scope">' + selectOptionsHtml(SCOPES, e.scope) + '</select></label>' +
@@ -297,6 +299,14 @@
     return it && !it.pull_request && String(it.title || '').indexOf(GH.prefix) === 0;
   }
 
+  // 旧版编辑未写 meta.seed，会生成同名的新条目；按标题回收为对应种子的覆盖记录
+  function seedIdByTitle(title) {
+    for (var i = 0; i < SEEDS.length; i++) {
+      if (SEEDS[i].title === title) return SEEDS[i].id;
+    }
+    return '';
+  }
+
   function loadIssues() {
     var url = apiBase() + '/issues?state=open&per_page=100';
     function get(auth) {
@@ -308,10 +318,17 @@
     }
     return get(true).then(function (arr) {
       var all = (Array.isArray(arr) ? arr : []).filter(isPlanIssue).map(parseIssue);
-      // 带 seed 的记录是对手写种子的覆盖，不单独成行
-      state.issues = all.filter(function (e) { return !e.seed; });
+      state.issues = [];
       state.overrides = {};
-      all.forEach(function (e) { if (e.seed) state.overrides[e.seed] = e; });
+      all.forEach(function (e) {
+        if (!e.seed) e.seed = seedIdByTitle(e.title);
+        // 带 seed 的记录是对手写种子的覆盖，不单独成行；接口按创建时间倒序，先到者（最新）生效
+        if (e.seed) {
+          if (!state.overrides[e.seed]) state.overrides[e.seed] = e;
+        } else {
+          state.issues.push(e);
+        }
+      });
       state.loaded = true;
       state.error = '';
     }).catch(function (e) {
