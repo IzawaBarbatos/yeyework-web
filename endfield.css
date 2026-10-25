@@ -120,8 +120,16 @@
   font-family: var(--ef-font-ui);
   font-size: var(--ef-t-ui);
   line-height: 1.6;
+  /* 中文断行遵循禁则：标点不落行首/行尾；长拉丁词仅在必要时断 */
+  line-break: strict;
+  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip;
+}
+
+/* 正文优先避免末行孤字；不支持 text-wrap 的浏览器自动退回默认换行 */
+.ef :is(p, li) {
+  text-wrap: pretty;
 }
 
 .ef a {

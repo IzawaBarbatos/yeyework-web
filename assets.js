@@ -1022,10 +1022,19 @@
 
         // 8.3 头部文案与统计数字（随当前项目切换）
         var PROJ_EN = { yybld: 'Convenience Store', yyzct: 'Chinese Restaurant', yycore: 'Core Library' };
+        // 标题按语义片段分组：只在冒号 / 空格处换行，避免词组被拆成两行
+        function titleHtml(title) {
+          return esc(title).split(/([：:]\s*|\s+)/).filter(Boolean).map(function (seg) {
+            if (/^[：:]\s*$/.test(seg)) return seg + '<wbr>';
+            if (/^\s+$/.test(seg)) return ' ';
+            return '<span class="ef-nw">' + seg + '</span>';
+          }).join('');
+        }
         function renderHead() {
           if (!active) return;
           var h = active.head || {};
-          setText('#ef-head-title', h.title || '内容索引');
+          var titleEl = document.getElementById('ef-head-title');
+          if (titleEl) titleEl.innerHTML = titleHtml(h.title || '内容索引');
           setText('#ef-head-sub', h.sub || 'Model / Animation / Texture / Name');
           setText('#ef-head-desc', h.desc || '');
           setText('#ef-head-en', PROJ_EN[active.key] || 'Project Archive');

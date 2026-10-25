@@ -21,9 +21,9 @@
       })();
     </script>
     <script src="variant.js?v=9231561dce"></script>
-    <link rel="stylesheet" href="endfield.css?v=2e5834a241" />
-    <link rel="stylesheet" href="notes.css?v=86b38e50f8" />
-    <link rel="stylesheet" href="home.css?v=34e27111b4" />
+    <link rel="stylesheet" href="endfield.css?v=fba055ff55" />
+    <link rel="stylesheet" href="notes.css?v=efeee6c9e1" />
+    <link rel="stylesheet" href="home.css?v=77738070a2" />
     <!-- 站点图标：与主导航栏 seal 同款「黄底 + 右下斜切 + 深色 Y」 -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M0 0h36v28.8L28.8 36H0z' fill='%23fffa00'/%3E%3Ctext x='16.4' y='26' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-size='23' font-weight='800' fill='%23161616'%3EY%3C/text%3E%3C/svg%3E" />
     <style>
@@ -653,6 +653,17 @@
         letter-spacing: 0.06em;
         line-height: 1.2;
       }
+      /* 语义片段整体换行：只在冒号 / 空格处断开，不在词组内部硬拆 */
+      .ef-nw {
+        white-space: nowrap;
+      }
+      .ef-head h1 > #ef-head-title {
+        /* 语义片段已由 .ef-nw / <wbr> 控制，标题用贪心换行避免平衡算法把冒号单独留在行尾 */
+        text-wrap: wrap;
+      }
+      .ef-head p {
+        max-width: var(--ef-measure);
+      }
       .ef-head h1 small {
         font-size: 0.8rem;
         letter-spacing: 0.18em;
@@ -979,7 +990,7 @@
         font-size: 0.98rem;
         line-height: 1.82;
         color: var(--ef-ink-2);
-        max-width: 52rem;
+        max-width: var(--ef-measure);
         margin: 0;
       }
       .ef-doc-lead b {
@@ -1058,6 +1069,7 @@
         margin: 0 0 0.35rem;
       }
       .ef-law-body p {
+        max-width: var(--ef-measure);
         font-size: 0.84rem;
         line-height: 1.7;
         color: var(--ef-ink-2);
@@ -1118,6 +1130,7 @@
         display: flex;
         align-items: baseline;
         gap: 0.5rem;
+        max-width: var(--ef-measure);
         margin: 0 0 1rem;
         padding: 0.55rem 0.85rem;
         background: var(--ef-chip);
@@ -1709,6 +1722,7 @@
         line-height: 1.6;
       }
       .pl-row-note {
+        max-width: var(--ef-measure);
         margin: 0.28rem 0 0;
         color: var(--ef-ink-2);
         font-size: 0.86rem;
@@ -1814,7 +1828,7 @@
       }
     </style>
     <!-- 移动端 App 壳层：必须在页面内联样式之后加载，确保手机端覆盖生效 -->
-    <link rel="stylesheet" href="mobile.css?v=8702597f36" />
+    <link rel="stylesheet" href="mobile.css?v=1f93adbab0" />
   </head>
   <body class="ef ef-contours ef-app">
     <div class="ef-tri ef-in-sweep" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -2230,7 +2244,7 @@
             <span class="ef-field">适用 <code>yyzct</code> · <code>yybld</code> · <code>yybldty</code></span>
           </div>
           <h1>
-            美术资产命名与制作规范
+            <span class="ef-nw">美术资产命名</span><wbr><span class="ef-nw">与制作规范</span>
             <small>ART ASSET NAMING &amp; DELIVERY SPECIFICATION</small>
           </h1>
           <p class="ef-doc-lead">
@@ -2794,7 +2808,7 @@
     <!-- 首页门户：运营状态 / 作品 / 正在制作 / 更新公告 / 成员 / 门户入口 -->
     <script src="home.js?v=d04d9f4bab"></script>
 
-    <script src="assets.js?v=b437870e01"></script>
+    <script src="assets.js?v=6411287f0e"></script>
 
     <!-- 小纸条留言板：配置 + 逻辑（数据层可在本地模式与 CloudBase 云端模式间自动切换） -->
     <script src="notes.js?v=89c4e24cd7"></script>

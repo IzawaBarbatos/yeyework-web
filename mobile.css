@@ -252,8 +252,26 @@
   }
 
   .ef-head {
+    grid-template-columns: minmax(0, 1fr);
     gap: 0.6rem 0.8rem;
     margin-bottom: 1rem;
+  }
+  /* 手机端标题独占整行：英文副题落到下一行，不再与标题抢宽度 */
+  .ef-head::after {
+    display: none;
+  }
+  .ef-head.has-meta h1,
+  .ef-head.has-meta p {
+    grid-column: 1;
+  }
+  .ef-head h1 {
+    display: block;
+    /* 标题的语义片段已用 .ef-nw / <wbr> 固定，块级容器用贪心换行 */
+    text-wrap: wrap;
+  }
+  .ef-head h1 small {
+    display: block;
+    margin-top: 0.3rem;
   }
   .ef-head.has-meta h1 {
     font-size: 1.7rem;
@@ -507,6 +525,99 @@
   }
   .notes-attached-layout-seg {
     margin-left: 0;
+  }
+
+  /* ---------- 手机阅读排版：禁则断行 + 长文限宽 + 更松行距 ---------- */
+  /* 标题按语义片段平衡换行，避免末行只剩一个字 */
+  .hm-ver-theme,
+  .hm-news-theme,
+  .hm-proj-name,
+  .hm-crew-name,
+  .ms-theme,
+  .pl-theme,
+  .pl-row-t,
+  .ef-node-name,
+  .ef-doc-sectitle {
+    text-wrap: balance;
+  }
+  /* 短标签整体不拆：版本号 / 日期 / 编号 / 分类 / 字段 */
+  .hm-ver-no,
+  .hm-news-ver,
+  .hm-news-date,
+  .ms-ver,
+  .ms-no,
+  .pl-ver,
+  .pl-q-name,
+  .pl-no,
+  .ef-node-fields,
+  .ef-cat {
+    white-space: nowrap;
+  }
+  /* 长文统一松行距；pre-wrap 的留言正文单独再放宽 */
+  .ef-head p,
+  .ef-doc-head p,
+  .ef-doc-lead,
+  .ef-law-body p,
+  .ef-chain-desc,
+  .pl-row-note,
+  .ms-lede,
+  .hm-proj-desc,
+  .hm-goals,
+  .hm-news-list,
+  .hm-crew-bio,
+  .hm-portal p,
+  .hm-sec-note,
+  .notes-hint,
+  .notes-body,
+  .ef-empty {
+    line-height: 1.8;
+    text-wrap: pretty;
+  }
+  .notes-body {
+    max-width: var(--ef-measure);
+  }
+  /* 次级说明文字在手机上抬到 15px 左右，避免小字密排 */
+  .ef-head p,
+  .hm-proj-desc,
+  .hm-goals,
+  .hm-news-list,
+  .hm-crew-card .hm-crew-bio,
+  .hm-portal p,
+  .ef-law-body p,
+  .ef-chain-desc,
+  .pl-row-note,
+  .ef-empty {
+    font-size: 0.95rem;
+  }
+  .hm-crew-card .hm-crew-bio {
+    line-height: 1.8;
+  }
+  .hm-sec-note,
+  .notes-hint {
+    font-size: 0.88rem;
+  }
+  .ms-sum > li {
+    font-size: 0.98rem;
+    line-height: 1.8;
+  }
+  .ms-flows li {
+    font-size: 0.95rem;
+    line-height: 1.8;
+  }
+  .hm-goals li + li,
+  .hm-news-list li + li {
+    margin-top: 0.3rem;
+  }
+  .ef-doc-table-wrap .ef-table td {
+    font-size: 0.88rem;
+    line-height: 1.65;
+  }
+  /* 规范链说明：手机端标签与正文同一段流式排列，避免窄列挤压 */
+  .ef-chain-desc {
+    display: block;
+  }
+  .ef-chain-desc b {
+    margin-right: 0.4rem;
   }
 
   /* ---------- 底部标签栏（App 一级导航） ---------- */

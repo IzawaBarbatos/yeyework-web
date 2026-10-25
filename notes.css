@@ -542,11 +542,20 @@
 }
 
 .notes-body {
+  max-width: var(--ef-measure);
+  min-width: 0;
   font-family: var(--ef-font-text);
   font-size: var(--ef-t-body);
-  line-height: 1.7;
+  line-height: 1.75;
   white-space: pre-wrap;
-  word-break: break-word;
+  /* 正文保留单词边界；长链接仅在必要时断 */
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+/* 网格子项允许收缩，避免长链接把整张卡片撑宽 */
+.notes-card > * {
+  min-width: 0;
 }
 
 .notes-acts {
@@ -756,7 +765,8 @@
   font-size: var(--ef-t-ui);
   font-weight: 800;
   color: var(--ef-ink);
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-break: normal;
   white-space: normal;
 }
 
@@ -1046,7 +1056,8 @@
   font-size: var(--ef-t-ui);
   font-weight: 800;
   color: var(--ef-ink);
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-break: normal;
   white-space: normal;
 }
 
@@ -1173,7 +1184,8 @@
 .notes-asset-card-cn {
   font-weight: 700;
   font-size: 0.8rem;
-  word-break: break-all;
+  overflow-wrap: break-word;
+  word-break: normal;
   white-space: normal;
 }
 
