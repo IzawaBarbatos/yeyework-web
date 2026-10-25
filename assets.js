@@ -609,6 +609,35 @@
           });
         }
 
+        // 首页 / 里程碑 / 计划：滚动位置反查当前板块并高亮横滑条
+        function syncSectionNav() {
+          if (!sidenavEl) return;
+          if (state.proj !== 'home' && state.proj !== 'milestones' && state.proj !== 'plan') return;
+          var links = Array.prototype.slice.call(sidenavEl.querySelectorAll('a[href^="#"]'));
+          if (!links.length) return;
+          var probe = window.innerHeight * 0.3;
+          var current = links[0];
+          links.forEach(function (a) {
+            var el = document.getElementById(a.getAttribute('href').slice(1));
+            if (el && el.getBoundingClientRect().top <= probe) current = a;
+          });
+          var changed = false;
+          links.forEach(function (a) {
+            var on = a === current;
+            if ((a.getAttribute('aria-current') === 'true') !== on) changed = true;
+            if (on) a.setAttribute('aria-current', 'true');
+            else a.removeAttribute('aria-current');
+          });
+          // 当前项横向滚出视野时带到中间，保证黄块始终可见
+          if (changed && sidenavEl.scrollWidth > sidenavEl.clientWidth) {
+            var ar = current.getBoundingClientRect();
+            var sr = sidenavEl.getBoundingClientRect();
+            if (ar.left < sr.left || ar.right > sr.right) {
+              sidenavEl.scrollLeft += (ar.left - sr.left) - 16;
+            }
+          }
+        }
+
         // 规范文档章节：滚动位置反查当前章节并高亮
         var docSecs = [];
         function syncDocNav() {
@@ -641,6 +670,7 @@
           requestAnimationFrame(function () {
             scrollTick = false;
             syncSidenav();
+            syncSectionNav();
             syncTopBtn();
           });
         }
@@ -751,6 +781,9 @@
         var viewPlan = document.getElementById('proj-view-plan');
         var viewHome = document.getElementById('proj-view-home');
         var brandEl = document.querySelector('.ef-cmdbar .brand');
+        var cmdbarEl = document.querySelector('.ef-cmdbar');
+        var appMenuBtn = document.getElementById('ef-app-menu-btn');
+        var appTabbar = document.getElementById('ef-app-tabbar');
         // 各项目留言板容器（侧边栏「小纸条」跳转锚点）
         var NOTES_IDS = { yybld: 'ef-notes', yyzct: 'ef-z-notes' };
         // 规范文档章节目录（侧边栏 spec 分组）
@@ -769,12 +802,12 @@
             return isMember() || p.key !== 'spec';
           }).map(function (p) {
             if (p.key === 'home') {
-              return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="' +
+              return '<button class="ef-chip" type="button" data-type="doc" data-proj="' + esc(p.key) + '" aria-pressed="' +
                 (p.key === state.proj ? 'true' : 'false') + '">' +
                 esc(p.name) + '</button>';
             }
             var n = (p.type === 'doc' && p.key !== 'milestones' && p.key !== 'plan') ? '资料' : p.count;
-            return '<button class="ef-chip" type="button" data-proj="' + esc(p.key) + '" aria-pressed="' +
+            return '<button class="ef-chip" type="button" data-type="' + esc(p.type || 'asset') + '" data-proj="' + esc(p.key) + '" aria-pressed="' +
               (p.key === state.proj ? 'true' : 'false') + '">' +
               esc(p.name) + ' <span class="n">' + n + '</span></button>';
           }).join('');
@@ -1108,6 +1141,48 @@
           enterViewport(groups);
         }
 
+        // 移动端 App 壳层：顶部标题、资产/文档形态与底部标签栏高亮
+        var APP_TITLES = { home: '首页', milestones: '版本里程碑', plan: '开发计划', spec: '美术资产规范' };
+        function syncAppShell(key) {
+          var isDoc = key === 'home' || key === 'milestones' || key === 'plan' || key === 'spec';
+          document.documentElement.dataset.projKind = isDoc ? 'doc' : 'asset';
+          var titleEl = document.getElementById('ef-app-title');
+          if (titleEl) {
+            var t = APP_TITLES[key];
+            if (!t) {
+              var p = PROJ_LIST.filter(function (x) { return x.key === key; })[0];
+              t = p ? String(p.name).split('：').pop() : '项目资料库';
+            }
+            titleEl.textContent = t;
+          }
+          if (!appTabbar) return;
+          var tabKey = isDoc ? key : 'archive';
+          appTabbar.querySelectorAll('[data-tab]').forEach(function (b) {
+            if (b.dataset.tab === tabKey) b.setAttribute('aria-current', 'page');
+            else b.removeAttribute('aria-current');
+          });
+        }
+
+        // 手机端设置浮层（复用桌面 .util 节点）
+        function closeAppMenu() {
+          if (!cmdbarEl || !appMenuBtn) return;
+          cmdbarEl.classList.remove('is-menu-open');
+          appMenuBtn.setAttribute('aria-expanded', 'false');
+        }
+        if (appMenuBtn && cmdbarEl) {
+          appMenuBtn.addEventListener('click', function (ev) {
+            ev.stopPropagation();
+            var open = cmdbarEl.classList.toggle('is-menu-open');
+            appMenuBtn.setAttribute('aria-expanded', open ? 'true' : 'false');
+          });
+          document.addEventListener('click', function (ev) {
+            if (!ev.target.closest('.ef-cmdbar')) closeAppMenu();
+          });
+          document.addEventListener('keydown', function (ev) {
+            if (ev.key === 'Escape') closeAppMenu();
+          });
+        }
+
         // 大分类切换：同步主视图、导航胶囊、侧边栏分组与地址栏
         function setProj(key) {
           // 规范文档仅对仓库协作者开放，访客直达 hash 时回退到资产栏
@@ -1121,6 +1196,8 @@
           var wasHome = state.proj === 'home';
           if (!isSpec && !isMs && !isPlan && !isHome && SPEC_KEYS.indexOf(key) < 0) key = SPEC_KEYS[0] || 'yybld';
           state.proj = key;
+          syncAppShell(key);
+          closeAppMenu();
           if (viewMain) viewMain.hidden = isSpec || isMs || isPlan || isHome;
           if (viewSpec) viewSpec.hidden = !isSpec;
           if (viewMs) viewMs.hidden = !isMs;
@@ -1140,12 +1217,15 @@
           if (isMs) {
             renderMs();
             buildMsSidenav();
+            syncSectionNav();
           } else if (isPlan) {
             renderPlan();
             buildPlanSidenav();
+            syncSectionNav();
           } else if (isHome) {
             renderHome();
             buildHomeSidenav();
+            syncSectionNav();
           } else if (sidenavEl) {
             // 侧边栏联动：按分组显隐导航项
             filterSidenavGroups(key);
@@ -1153,14 +1233,14 @@
           // 品牌标识跟随当前大分类
           if (brandEl) {
             brandEl.innerHTML = isSpec
-              ? '<span class="seal">Y</span>YY · MINIAPP SPEC'
+              ? '<span class="seal">Y</span><span class="brand-text">YY · MINIAPP SPEC</span>'
               : isMs
-                ? '<span class="seal">Y</span>YY · VERSION LOG'
+                ? '<span class="seal">Y</span><span class="brand-text">YY · VERSION LOG</span>'
                 : isPlan
-                  ? '<span class="seal">Y</span>YY · DEV PLAN'
+                  ? '<span class="seal">Y</span><span class="brand-text">YY · DEV PLAN</span>'
                   : isHome
-                    ? '<span class="seal">Y</span>YY · WORKSHOP'
-                    : '<span class="seal">Y</span>YY · PROJECT ARCHIVE';
+                    ? '<span class="seal">Y</span><span class="brand-text">YY · WORKSHOP</span>'
+                    : '<span class="seal">Y</span><span class="brand-text">YY · PROJECT ARCHIVE</span>';
           }
           if (isSpec) {
             state.view = 'tree';
@@ -1182,6 +1262,19 @@
           setProj(btn.dataset.proj);
           window.scrollTo({ top: 0, behavior: 'smooth' });
         });
+
+        // 底部标签栏：资料库回到最近一次资产项目，其余为一级栏目
+        if (appTabbar) {
+          appTabbar.addEventListener('click', function (ev) {
+            var btn = ev.target.closest('[data-tab]');
+            if (!btn) return;
+            var tab = btn.dataset.tab;
+            setProj(tab === 'archive'
+              ? ((active && active.key) || SPEC_KEYS[0] || 'yybld')
+              : tab);
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          });
+        }
 
         /* ---------- 9. 首次渲染：支持 #home / #models / #anims / #spec / #milestones / #yyzct 直达 ---------- */
         var hash = (location.hash || '').replace('#', '');

@@ -1,8 +1,13 @@
 <!doctype html>
-<html lang="zh-CN" data-ef-variant="standard" data-access="guest">
+<html lang="zh-CN" data-ef-variant="standard" data-access="guest" data-proj-kind="doc">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#161616" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="椰椰工坊" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <title>椰椰工坊 · 项目资料库</title>
     <script>
       // 主题 / 字号：优先使用上次选择，其次跟随系统；在绘制前写入，避免闪烁
@@ -1808,14 +1813,18 @@
         }
       }
     </style>
+    <!-- 移动端 App 壳层：必须在页面内联样式之后加载，确保手机端覆盖生效 -->
+    <link rel="stylesheet" href="mobile.css?v=8702597f36" />
   </head>
-  <body class="ef ef-contours">
+  <body class="ef ef-contours ef-app">
     <div class="ef-tri ef-in-sweep" aria-hidden="true"><i></i><i></i><i></i></div>
 
     <header class="ef-cmdbar">
-      <a class="brand" href="#tree" data-view="tree"><span class="seal">Y</span>YY · PROJECT ARCHIVE</a>
+      <a class="brand" href="#tree" data-view="tree"><span class="seal">Y</span><span class="brand-text">YY · PROJECT ARCHIVE</span></a>
+      <span class="ef-app-title" id="ef-app-title" aria-live="polite">首页</span>
       <nav class="proj-nav" id="ef-projects" aria-label="项目导航"></nav>
-      <div class="util">
+      <div class="util" id="ef-util">
+        <span class="ef-app-menu-title">界面与权限</span>
         <span class="ef-field" id="ef-stamp">未同步</span>
         <span class="ef-seg" id="ef-fontsize" role="group" aria-label="字体大小">
           <button type="button" data-fs="-" title="缩小字体" aria-label="缩小字体">A−</button>
@@ -1826,6 +1835,8 @@
         <button class="ef-btn small" id="ef-access-btn" type="button" aria-pressed="false"
                 title="仓库协作者可录入 GitHub Token 解锁完整视图">协作者登录</button>
       </div>
+      <button class="ef-app-menu-btn" id="ef-app-menu-btn" type="button"
+              aria-expanded="false" aria-controls="ef-util">设置</button>
     </header>
 
     <nav class="ef-sidenav" id="ef-sidenav" aria-label="分类导航">
@@ -2701,6 +2712,15 @@
       <span class="lb">TOP</span>
     </button>
 
+    <!-- 移动端 App 一级导航：桌面与平板由 CSS 隐藏 -->
+    <nav class="ef-tabbar ef-app-tabbar" id="ef-app-tabbar" aria-label="主导航">
+      <button type="button" data-tab="home" aria-current="page"><small>Home</small>首页</button>
+      <button type="button" data-tab="archive"><small>Archive</small>资料库</button>
+      <button type="button" data-tab="milestones"><small>Versions</small>里程碑</button>
+      <button type="button" data-tab="plan"><small>Plan</small>计划</button>
+      <button type="button" data-tab="spec"><small>Spec</small>规范</button>
+    </nav>
+
     <dialog class="ef-drawer" id="ef-drawer" aria-labelledby="ef-drawer-title">
       <div class="body">
         <div class="grab" aria-hidden="true"></div>
@@ -2774,7 +2794,7 @@
     <!-- 首页门户：运营状态 / 作品 / 正在制作 / 更新公告 / 成员 / 门户入口 -->
     <script src="home.js?v=d04d9f4bab"></script>
 
-    <script src="assets.js?v=3e38bf8930"></script>
+    <script src="assets.js?v=b437870e01"></script>
 
     <!-- 小纸条留言板：配置 + 逻辑（数据层可在本地模式与 CloudBase 云端模式间自动切换） -->
     <script src="notes.js?v=89c4e24cd7"></script>

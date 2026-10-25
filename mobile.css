@@ -1,0 +1,674 @@
+/* ==========================================================================
+   移动端 App 壳层（仅手机尺寸生效；桌面 / 平板保持原布局）
+   - 顶部：品牌印记 + 当前栏目标题 + 设置浮层（原 .util 节点复用）
+   - 第二行：资产项目胶囊（文档入口交给底部标签栏）
+   - 文档栏目：分类 / 章节导航收成吸顶横滑条
+   - 底部：App 标签栏（首页 / 资料库 / 里程碑 / 计划 / 规范）
+   颜色、切角、动效全部沿用 endfield.css 令牌，不新增配色。
+   ========================================================================== */
+
+.ef-app-title,
+.ef-app-menu-btn,
+.ef-app-menu-title {
+  display: none;
+}
+
+.ef-app-tabbar {
+  display: none;
+}
+
+@media (max-width: 719px), (max-width: 1024px) and (max-height: 499px) and (hover: none) {
+  html {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  html {
+    --ef-appbar-h: 3rem;
+    --ef-projrow-h: 3.35rem;
+    --ef-tabbar-h: 4rem;
+    --ef-appbar-total: calc(var(--ef-appbar-h) + env(safe-area-inset-top, 0px));
+  }
+  html[data-proj-kind='asset'] {
+    --ef-appbar-total: calc(var(--ef-appbar-h) + var(--ef-projrow-h) + env(safe-area-inset-top, 0px));
+  }
+
+  body.ef-app {
+    padding-bottom: calc(var(--ef-tabbar-h) + env(safe-area-inset-bottom, 0px) + 0.75rem);
+  }
+
+  /* ---------- 顶部应用栏 ---------- */
+  .ef-cmdbar {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0 0.6rem;
+    min-height: calc(var(--ef-appbar-h) + env(safe-area-inset-top, 0px));
+    padding: env(safe-area-inset-top, 0px)
+      calc(var(--ef-pad) + env(safe-area-inset-right, 0px)) 0
+      calc(var(--ef-pad) + env(safe-area-inset-left, 0px));
+    border-bottom: 1px solid #2e2e2e;
+  }
+
+  .ef-cmdbar .brand {
+    flex: none;
+    width: 2.8rem;
+    min-height: 2.8rem;
+    padding: 0;
+    justify-content: center;
+    gap: 0;
+  }
+  .ef-cmdbar .brand-text {
+    display: none;
+  }
+  .ef-cmdbar .seal {
+    width: 2.25rem;
+    height: 2.25rem;
+    font-size: 1.2rem;
+  }
+
+  .ef-app-title {
+    display: block;
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    color: #ededed;
+    font-family: var(--ef-font-ui);
+    font-size: 0.95rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ef-app-menu-btn {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    min-width: 3.1rem;
+    min-height: 2.8rem;
+    padding: 0 0.55rem;
+    border: 0;
+    background: #262626;
+    color: #ededed;
+    font-family: var(--ef-font-ui);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    transition: background-color 0.18s var(--ef-ease), color 0.18s var(--ef-ease);
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.5rem), calc(100% - 0.5rem) 100%, 0 100%);
+  }
+  .ef-app-menu-btn[aria-expanded='true'],
+  .ef-app-menu-btn:active {
+    background: var(--ef-signal);
+    color: var(--ef-on-signal);
+  }
+
+  /* 资产项目胶囊：深色横滑行；文档类入口不在此行，避免与底部标签栏重复 */
+  .ef-cmdbar .proj-nav {
+    order: 4;
+    flex: 1 0 100%;
+    flex-wrap: nowrap;
+    gap: 0.45rem;
+    margin: 0 calc((var(--ef-pad) + env(safe-area-inset-right, 0px)) * -1) 0
+      calc((var(--ef-pad) + env(safe-area-inset-left, 0px)) * -1);
+    padding: 0.25rem calc(var(--ef-pad) + env(safe-area-inset-right, 0px)) 0.25rem
+      calc(var(--ef-pad) + env(safe-area-inset-left, 0px));
+    border-top: 1px solid #2e2e2e;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .ef-cmdbar .proj-nav::-webkit-scrollbar {
+    display: none;
+  }
+  .ef-cmdbar .proj-nav .ef-chip {
+    --fill: #242424;
+    flex: none;
+    min-height: 2.8rem;
+    padding: 0.35rem calc(0.95rem + var(--ef-cut)) 0.35rem 0.9rem;
+    border: 1px solid #333;
+    color: #d8d8d8;
+    font-size: 0.86rem;
+  }
+  .ef-cmdbar .proj-nav .ef-chip .n {
+    color: #9a9a9a;
+  }
+  .ef-cmdbar .proj-nav .ef-chip[aria-pressed='true'] {
+    --fill: var(--ef-signal);
+    border-color: var(--ef-signal);
+    color: var(--ef-on-signal);
+    font-weight: 800;
+  }
+  .ef-cmdbar .proj-nav .ef-chip[aria-pressed='true'] .n {
+    color: var(--ef-on-signal);
+  }
+  .ef-cmdbar .proj-nav .ef-chip[data-type='doc'] {
+    display: none;
+  }
+  html[data-proj-kind='doc'] .ef-cmdbar .proj-nav {
+    display: none;
+  }
+
+  /* 设置浮层：复用桌面 .util 节点，手机端由「设置」按钮展开 */
+  .ef-cmdbar .util {
+    position: absolute;
+    top: 100%;
+    right: calc(var(--ef-pad) + env(safe-area-inset-right, 0px));
+    left: calc(var(--ef-pad) + env(safe-area-inset-left, 0px));
+    z-index: 80;
+    display: none;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.6rem;
+    max-height: calc(100dvh - var(--ef-appbar-total) - 1rem);
+    padding: 0.85rem;
+    border: 1px solid var(--ef-ink);
+    background: var(--ef-panel);
+    color: var(--ef-ink);
+    overflow-y: auto;
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 0.8rem), calc(100% - 0.8rem) 100%, 0 100%);
+  }
+  .ef-cmdbar.is-menu-open .util {
+    display: flex;
+  }
+  .ef-cmdbar.is-menu-open .util .ef-field {
+    color: var(--ef-ink-2);
+  }
+  .ef-app-menu-title {
+    display: block;
+    color: var(--ef-ink-2);
+    font-family: var(--ef-font-ui);
+    font-size: 0.68rem;
+    font-stretch: var(--ef-wider);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .ef-cmdbar .util #ef-fontsize {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    width: 100%;
+  }
+  .ef-cmdbar .util #ef-fontsize > button {
+    min-height: 2.8rem;
+    min-width: 0;
+    font-size: 0.9rem;
+  }
+  .ef-cmdbar .util .ef-btn {
+    width: 100%;
+    min-height: 2.8rem;
+    justify-content: center;
+    white-space: normal;
+  }
+
+  /* ---------- 分类 / 章节导航：吸顶横滑胶囊条 ---------- */
+  .ef-sidenav {
+    top: var(--ef-appbar-total);
+    z-index: 50;
+    min-height: 3.25rem;
+    padding: 0.25rem calc(var(--ef-pad) + env(safe-area-inset-right, 0px)) 0.25rem
+      calc(var(--ef-pad) + env(safe-area-inset-left, 0px));
+    gap: 0.4rem;
+    border-bottom: 1px solid var(--ef-rule);
+  }
+  .ef-sidenav a {
+    min-height: 2.8rem;
+    padding: 0.4rem 0.9rem;
+    justify-content: center;
+    border: 1px solid var(--ef-rule);
+  }
+  .ef-sidenav a .t {
+    font-size: 0.82rem;
+  }
+  .ef-sidenav a[aria-current='true'] {
+    background: linear-gradient(-45deg, transparent calc(0.5rem - 0.5px), var(--ef-signal) calc(0.5rem + 0.5px));
+    border-color: transparent;
+    color: var(--ef-on-signal);
+    font-weight: 800;
+  }
+  .ef-sidenav a[aria-current='true'] .n {
+    color: var(--ef-on-signal);
+    opacity: 1;
+  }
+  /* 资产栏目：分类筛选已在正文内提供，隐藏重复的第二导航，让内容更靠上 */
+  html[data-proj-kind='asset'] .ef-sidenav {
+    display: none;
+  }
+
+  /* ---------- 正文 ---------- */
+  .wrap {
+    padding: 0.85rem calc(var(--ef-pad) + env(safe-area-inset-right, 0px)) 1.75rem
+      calc(var(--ef-pad) + env(safe-area-inset-left, 0px));
+  }
+  .ef-panel {
+    padding: 0.85rem 0.9rem 1rem;
+  }
+
+  .ef-head {
+    gap: 0.6rem 0.8rem;
+    margin-bottom: 1rem;
+  }
+  .ef-head.has-meta h1 {
+    font-size: 1.7rem;
+    letter-spacing: 0.04em;
+  }
+  .ef-head h1 small {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+  }
+  .ef-head p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+  .ef-head-meta {
+    gap: 0.35rem 0.8rem;
+  }
+  .ef-head-meta .ef-field {
+    font-size: 0.72rem;
+  }
+
+  .ef-doc-head {
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .ef-doc-head h1 {
+    margin: 0.3rem 0 0.6rem;
+    font-size: 1.85rem;
+    letter-spacing: 0.04em;
+  }
+  .ef-doc-head h1 small {
+    font-size: 0.76rem;
+    letter-spacing: 0.12em;
+  }
+  .ef-doc-meta {
+    gap: 0.35rem 0.8rem;
+  }
+  .ef-doc-head p {
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  /* 触摸目标：按钮 / 分段 / 胶囊 / 折叠头至少 44px */
+  .ef-btn {
+    min-height: 2.8rem;
+  }
+  .ef-btn.small {
+    min-height: 2.8rem;
+    padding: 0.45rem 1.05rem 0.45rem 0.75rem;
+  }
+  /* 触屏上主操作静止即黄底：小纸条提交 / 资产弹窗确认 */
+  .notes-actions .ef-btn[type='submit'],
+  .ef-asset-dialog-foot #ef-asset-picker-confirm {
+    --fill: var(--ef-signal);
+    --wipe: color-mix(in srgb, var(--ef-signal), #000 12%);
+    color: var(--ef-on-signal);
+  }
+  .ef-seg > button,
+  .ef-layout-btn,
+  .notes-collapse-btn {
+    min-height: 2.8rem;
+  }
+  button.ef-chip {
+    min-height: 2.8rem;
+  }
+  .ef-node-head {
+    min-height: 2.8rem;
+    padding: 0.65rem 0.5rem;
+  }
+  .ef-leaf {
+    min-height: 2.8rem;
+    padding: 0.5rem;
+  }
+  .ef-search,
+  .ef-search input,
+  .notes-custom,
+  .notes-text,
+  .notes-dropdown-trigger,
+  .notes-compose input,
+  .notes-compose textarea,
+  .pl-field input,
+  .pl-field select,
+  .pl-field textarea {
+    min-height: 2.8rem;
+    font-size: 16px;
+  }
+
+  /* 搜索 / 视图切换 / 筛选 */
+  .bar {
+    gap: 0.55rem;
+  }
+  .bar > .ef-search {
+    flex: 1 1 100%;
+  }
+  .ef-view {
+    margin-top: 0.55rem;
+  }
+  #ef-views {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    flex: 1 1 100%;
+  }
+  #ef-expand {
+    width: 100%;
+    justify-content: center;
+  }
+  .filters {
+    gap: 0.4rem;
+  }
+
+  /* 宽表格只允许自身横向滚动，并留出可见的半截提示 */
+  .ef-table {
+    min-width: 44rem;
+  }
+  .ef-table-wrap,
+  .ef-doc-table-wrap {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+
+  /* 回到顶部：抬到底部标签栏上方 */
+  .ef-totop {
+    right: calc(1rem + env(safe-area-inset-right, 0px));
+    bottom: calc(var(--ef-tabbar-h) + env(safe-area-inset-bottom, 0px) + 0.75rem);
+    width: 2.8rem;
+    height: 2.8rem;
+  }
+  .ef-toast {
+    bottom: calc(var(--ef-tabbar-h) + env(safe-area-inset-bottom, 0px) + 0.75rem);
+  }
+
+  /* 锚点滚动为顶部应用栏（文档栏目再加导航条）预留空间 */
+  #overview,
+  #ef-notes,
+  #ef-z-notes,
+  .ef-view,
+  .ef-doc-sec,
+  .ms-item,
+  .pl-item,
+  .hm-sec {
+    scroll-margin-top: calc(var(--ef-appbar-total) + 0.75rem);
+  }
+  html[data-proj-kind='doc'] #overview,
+  html[data-proj-kind='doc'] #ef-notes,
+  html[data-proj-kind='doc'] #ef-z-notes,
+  html[data-proj-kind='doc'] .ef-view,
+  html[data-proj-kind='doc'] .ef-doc-sec,
+  html[data-proj-kind='doc'] .ms-item,
+  html[data-proj-kind='doc'] .pl-item,
+  html[data-proj-kind='doc'] .hm-sec {
+    scroll-margin-top: calc(var(--ef-appbar-total) + 3.5rem + 0.75rem);
+  }
+
+  /* ---------- 首页门户 ---------- */
+  #proj-view-home {
+    max-width: none;
+  }
+  .hm-head {
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+  }
+  .hm-head .hm-cn {
+    font-size: 2.1rem;
+    letter-spacing: 0.3em;
+    margin-right: -0.3em;
+  }
+  .hm-head .hm-en {
+    font-size: 1.05rem;
+  }
+  .hm-sec {
+    margin-bottom: 1.9rem;
+    padding-top: 1.35rem;
+  }
+  .hm-sec-head h2 {
+    font-size: 1.3rem;
+  }
+  .hm-go {
+    display: inline-flex;
+    align-items: center;
+    min-height: 2.8rem;
+  }
+  /* 手机统一单列：避免字号放大后 rem 最小列宽超过屏宽 */
+  .hm-proj-grid,
+  .hm-ver-grid,
+  .hm-crew-grid,
+  .hm-portal-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  /* ---------- 里程碑 / 开发计划 ---------- */
+  .ms-tabs {
+    flex-wrap: nowrap;
+    gap: 0.4rem;
+    padding-bottom: 0.25rem;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+  }
+  .ms-tabs::-webkit-scrollbar {
+    display: none;
+  }
+  .ms-tabs .ef-chip {
+    flex: none;
+  }
+  .ms-item {
+    padding: 1.1rem 0 1.25rem;
+  }
+  .ms-ver {
+    font-size: 1.25rem;
+  }
+  .ms-theme {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  /* ---------- 小纸条 ---------- */
+  .notes {
+    margin-top: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+  .notes-header {
+    gap: 0.65rem;
+    padding-bottom: 0.7rem;
+  }
+  .notes-header-toggles {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 0.4rem;
+    width: 100%;
+  }
+  .notes-header-toggles .ef-btn {
+    min-width: 0;
+    padding: 0.4rem 0.35rem;
+    justify-content: center;
+    font-size: 0.78rem;
+    white-space: nowrap;
+  }
+  .notes-header-toggles .ef-btn .ic {
+    display: none;
+  }
+  .notes-toolbar {
+    gap: 0.45rem;
+  }
+  .notes-search {
+    flex: 1 1 100%;
+    min-width: 0;
+  }
+  .notes-card {
+    padding: 0.75rem 0.55rem 0.75rem 0.8rem;
+  }
+  .notes-attached-layout-seg {
+    margin-left: 0;
+  }
+
+  /* ---------- 底部标签栏（App 一级导航） ---------- */
+  .ef-app-tabbar {
+    position: fixed;
+    inset: auto auto 0 0;
+    width: 100vw;
+    z-index: 60;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    gap: 4px;
+    padding: 6px calc(6px + env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px))
+      calc(6px + env(safe-area-inset-left, 0px));
+    border-top: 1px solid var(--ef-rule);
+    background: var(--ef-panel);
+  }
+  .ef-app-tabbar button {
+    display: grid;
+    min-width: 0;
+    white-space: nowrap;
+    place-content: center;
+    justify-items: center;
+    min-height: 52px;
+    padding: 0.25rem;
+    border: 0;
+    background: none;
+    color: var(--ef-ink);
+    font-family: var(--ef-font-ui);
+    font-size: 0.78rem;
+    font-weight: 500;
+    line-height: 1.25;
+    cursor: pointer;
+    transition: background-color 0.28s var(--ef-mech), color 0.28s var(--ef-mech);
+  }
+  .ef-app-tabbar button small {
+    max-width: 100%;
+    overflow: hidden;
+    color: var(--ef-ink-2);
+    font-size: 0.5rem;
+    font-stretch: var(--ef-wider);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    text-transform: uppercase;
+  }
+  .ef-app-tabbar button[aria-current='page'] {
+    background: linear-gradient(-45deg, transparent calc(var(--ef-cut) - 0.5px), var(--ef-signal) var(--ef-cut));
+    color: var(--ef-on-signal);
+    font-weight: 800;
+  }
+  .ef-app-tabbar button[aria-current='page'] small {
+    color: var(--ef-on-signal);
+  }
+  html[data-access='guest'] .ef-app-tabbar [data-tab='spec'] {
+    display: none;
+  }
+
+  /* ---------- 资产多选弹窗：手机上全屏 ---------- */
+  .ef-asset-dialog {
+    inset: 0;
+    width: 100vw;
+    max-width: none;
+    height: 100dvh;
+    max-height: none;
+    margin: 0;
+  }
+  .ef-asset-dialog-inner {
+    height: 100dvh;
+    max-height: none;
+    border: 0;
+    box-shadow: none;
+    clip-path: none;
+  }
+  .ef-asset-dialog-head {
+    padding-top: calc(0.65rem + env(safe-area-inset-top, 0px));
+  }
+  .ef-asset-dialog-foot {
+    padding-bottom: calc(0.65rem + env(safe-area-inset-bottom, 0px));
+  }
+  .ef-asset-dialog-title {
+    flex-wrap: wrap;
+    gap: 0.25rem 0.5rem;
+    font-size: 1rem;
+  }
+  .ef-asset-picker-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .ef-asset-picker-quick {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+  }
+  .ef-asset-picker-quick .notes-dropdown-act {
+    min-height: 2.8rem;
+  }
+  .ef-asset-picker-layout-wrap {
+    margin-left: 0;
+    width: 100%;
+  }
+  .ef-asset-picker-layout-wrap .ef-seg {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
+    width: 100%;
+  }
+  .ef-asset-picker-list[data-layout='grid'] {
+    grid-template-columns: 1fr;
+  }
+  .ef-asset-dialog-foot .ef-btn {
+    flex: 1;
+    justify-content: center;
+  }
+}
+
+/* 极窄屏（320px 级）：底部标签只留中文并略收字号，避免英文眉标撑宽 */
+@media (max-width: 359px) {
+  .ef-app-tabbar button {
+    padding: 0.15rem;
+    font-size: 0.72rem;
+  }
+  .ef-app-tabbar button small {
+    display: none;
+  }
+  .notes-header-toggles .ef-btn {
+    padding: 0.3rem 0.2rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ef-app-menu-btn,
+  .ef-app-tabbar button {
+    transition: none;
+  }
+}
+
+/* 矮屏（手机横屏）：压缩顶栏，隐藏章节条，把高度还给内容 */
+@media (max-width: 1024px) and (max-height: 499px) and (hover: none) {
+  html {
+    --ef-appbar-h: 2.8rem;
+    --ef-projrow-h: 2.8rem;
+    --ef-tabbar-h: 3.5rem;
+  }
+  .ef-sidenav {
+    display: none !important;
+  }
+  .ef-app-tabbar button {
+    min-height: 44px;
+  }
+  .ef-app-tabbar button small {
+    display: none;
+  }
+  html[data-proj-kind='doc'] #overview,
+  html[data-proj-kind='doc'] #ef-notes,
+  html[data-proj-kind='doc'] #ef-z-notes,
+  html[data-proj-kind='doc'] .ef-view,
+  html[data-proj-kind='doc'] .ef-doc-sec,
+  html[data-proj-kind='doc'] .ms-item,
+  html[data-proj-kind='doc'] .pl-item,
+  html[data-proj-kind='doc'] .hm-sec {
+    scroll-margin-top: calc(var(--ef-appbar-total) + 0.75rem);
+  }
+}
