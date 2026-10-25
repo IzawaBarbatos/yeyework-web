@@ -1707,9 +1707,24 @@
       .pl-row-meta {
         margin: 0.3rem 0 0;
       }
-      .pl-del {
+      .pl-row-act {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
         align-self: start;
+      }
+      .pl-act {
         --fill: transparent;
+      }
+      .pl-edit {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem;
+        grid-column: 1 / -1;
+        padding: 0.15rem 0 0.3rem;
+      }
+      .pl-edit .pl-edit-msg {
+        align-self: center;
       }
       .pl-empty {
         margin: 0;
@@ -1769,8 +1784,11 @@
         .pl-row {
           grid-template-columns: 1.6rem minmax(0, 1fr);
         }
-        .pl-del {
+        .pl-row-act {
           grid-column: 2;
+        }
+        .pl-edit {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -2149,7 +2167,7 @@
           </h1>
           <p class="ef-doc-lead">
             <b>读法：</b>上半部分是<b>正在开发、尚未结项的版本</b>，按版本列出目标与规模；
-            下半部分是后续排期，按季度排在时间轴上。未定档的计划统一落在「待排期」。
+            下半部分是<b>开发规划排期</b>，按季度排在时间轴上。未定档的计划统一落在「待排期」。
           </p>
         </header>
         <div id="ef-pl-root"></div>
@@ -2716,8 +2734,8 @@
     <script src="access.js?v=20261025"></script>
     <!-- 版本里程碑：已结项版本公告数据与渲染（手写维护；带版本指纹避免旧缓存） -->
     <script src="milestones.js?v=202610241300"></script>
-    <!-- 开发计划：在研版本 + 远期时间轴 + 协作者填写板（写入仓库 Issues） -->
-    <script src="plan.js?v=20261025"></script>
+    <!-- 开发计划：在研版本 + 开发规划排期 + 协作者填写/编辑（写入仓库 Issues） -->
+    <script src="plan.js?v=20261025b"></script>
 
     <script>
       (function () {

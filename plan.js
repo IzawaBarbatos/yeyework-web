@@ -9,6 +9,8 @@
   var GH = { owner: 'IzawaBarbatos', repo: 'yeyework-web', label: 'ef-plan', prefix: '[开发计划]' };
   var UPDATED = '2026.10.25';
   var QUARTERS = ['2026 Q4', '2027 Q1', '2027 Q2', '2027 Q3', '2027 Q4', '待排期'];
+  var STATUS_OPTIONS = [['planned', '规划中'], ['ready', '已定案 · 未开项'], ['live', '开发中'], ['accept', '待验收']];
+  var SCOPES = ['前置库 / 便利店 / 中餐厅', '便利店', '中餐厅', '前置库'];
 
   /* 在研版本（未结项）：内容取自 01_项目来源与版本快照 里程碑表 */
   var VERSIONS = [
@@ -74,7 +76,7 @@
     }
   ];
 
-  var state = { issues: [], loaded: false, error: '', busy: false };
+  var state = { issues: [], overrides: {}, loaded: false, error: '', busy: false, editing: '' };
   var rootEl = null;
 
   /* ---------- 工具 ---------- */
@@ -129,13 +131,19 @@
     }
   }
 
-  /* ---------- 远期时间轴 ---------- */
+  /* ---------- 开发规划排期时间轴 ---------- */
   function issueEntries() {
     return state.issues;
   }
 
+  // 手写种子可被同 id 的 Issues 覆盖记录替换
   function allEntries() {
-    return SEEDS.concat(issueEntries());
+    var seeds = SEEDS.map(function (s) { return state.overrides[s.id] || s; });
+    return seeds.concat(issueEntries());
+  }
+
+  function entryKey(e) {
+    return e.num ? 'i' + e.num : 's' + e.id;
   }
 
   function quarterRank(q) {
@@ -153,10 +161,50 @@
       .map(function (q) { return { quarter: q, items: map[q] }; });
   }
 
+  function statusOptionsHtml(cur) {
+    var c = cur === 'draft' ? 'planned' : cur;
+    return STATUS_OPTIONS.map(function (o) {
+      return '<option value="' + o[0] + '"' + (o[0] === c ? ' selected' : '') + '>' + esc(o[1]) + '</option>';
+    }).join('');
+  }
+
+  function selectOptionsHtml(list, cur) {
+    var arr = list.slice();
+    if (cur && arr.indexOf(cur) < 0) arr.push(cur);
+    return arr.map(function (v) {
+      return '<option' + (v === cur ? ' selected' : '') + '>' + esc(v) + '</option>';
+    }).join('');
+  }
+
+  function editFormHtml(e) {
+    return '<form class="pl-edit" data-pl-edit="' + esc(entryKey(e)) + '"' +
+      ' data-num="' + esc(e.num || '') + '" data-seed="' + esc(e.seed || '') + '" autocomplete="off">' +
+      '<label class="pl-field"><span>条目名称</span>' +
+      '<input name="title" type="text" maxlength="60" required value="' + esc(e.title) + '"></label>' +
+      '<label class="pl-field"><span>所属范围</span><select name="scope">' + selectOptionsHtml(SCOPES, e.scope) + '</select></label>' +
+      '<label class="pl-field"><span>计划季度</span><select name="quarter">' + selectOptionsHtml(QUARTERS, e.quarter) + '</select></label>' +
+      '<label class="pl-field"><span>状态</span><select name="status">' + statusOptionsHtml(e.state) + '</select></label>' +
+      '<label class="pl-field pl-field-wide"><span>说明</span>' +
+      '<textarea name="note" rows="2" maxlength="500">' + esc(e.note || '') + '</textarea></label>' +
+      '<div class="pl-form-act"><button class="ef-btn" type="submit">保存修改</button>' +
+      '<button class="ef-btn small" type="button" data-pl-cancel="1">取消</button>' +
+      '<span class="ef-field pl-edit-msg"></span></div>' +
+      '</form>';
+  }
+
   function entryHtml(e, i) {
-    var del = e.own && isMember()
-      ? '<button class="ef-btn small pl-del" type="button" data-pl-del="' + esc(e.num) + '">移除</button>'
-      : '';
+    var key = entryKey(e);
+    if (state.editing === key) {
+      return '<article class="pl-row is-editing">' + editFormHtml(e) + '</article>';
+    }
+    var acts = '';
+    if (isMember()) {
+      acts += '<button class="ef-btn small pl-act" type="button" data-pl-edit-btn="' + esc(key) + '">编辑</button>';
+      if (e.num) {
+        acts += '<button class="ef-btn small pl-act" type="button" data-pl-del="' + esc(e.num) + '"' +
+          (e.seed ? ' data-pl-seed="1"' : '') + '>' + (e.seed ? '恢复默认' : '移除') + '</button>';
+      }
+    }
     return '<article class="pl-row">' +
       '<span class="pl-no">' + pad(i + 1) + '</span>' +
       '<div class="pl-row-main">' +
@@ -164,7 +212,9 @@
       '<span class="ef-state pl-st" data-state="' + esc(e.state) + '">' + esc(e.status) + '</span></h3>' +
       (e.note ? '<p class="pl-row-note">' + esc(e.note) + '</p>' : '') +
       '<p class="ef-field pl-row-meta">' + esc(e.scope) + ' │ 来源 ' + esc(e.src) + '</p>' +
-      '</div>' + del + '</article>';
+      '</div>' +
+      (acts ? '<div class="pl-row-act">' + acts + '</div>' : '') +
+      '</article>';
   }
 
   function renderTimeline() {
@@ -201,14 +251,11 @@
       '<label class="pl-field"><span>条目名称</span>' +
       '<input name="title" type="text" maxlength="60" required placeholder="例如：货架赊账与收银机"></label>' +
       '<label class="pl-field"><span>所属范围</span><select name="scope">' +
-      '<option>前置库 / 便利店 / 中餐厅</option><option>便利店</option><option>中餐厅</option><option>前置库</option>' +
-      '</select></label>' +
+      selectOptionsHtml(SCOPES, SCOPES[0]) + '</select></label>' +
       '<label class="pl-field"><span>计划季度</span><select name="quarter">' +
-      QUARTERS.map(function (q) { return '<option' + (q === '待排期' ? ' selected' : '') + '>' + esc(q) + '</option>'; }).join('') +
-      '</select></label>' +
+      selectOptionsHtml(QUARTERS, '待排期') + '</select></label>' +
       '<label class="pl-field"><span>状态</span><select name="status">' +
-      '<option value="planned">规划中</option><option value="ready">已定案 · 未开项</option>' +
-      '<option value="live">开发中</option><option value="accept">待验收</option></select></label>' +
+      statusOptionsHtml('planned') + '</select></label>' +
       '<label class="pl-field pl-field-wide"><span>说明</span>' +
       '<textarea name="note" rows="3" maxlength="500" placeholder="一句话说明这条计划要做什么"></textarea></label>' +
       '<div class="pl-form-act"><button class="ef-btn" type="submit">加入时间轴</button>' +
@@ -241,6 +288,7 @@
       state: meta.state || 'draft',
       quarter: meta.quarter || '待排期',
       note: text,
+      seed: meta.seed || '',
       src: 'GitHub #' + it.number
     };
   }
@@ -259,7 +307,11 @@
       });
     }
     return get(true).then(function (arr) {
-      state.issues = (Array.isArray(arr) ? arr : []).filter(isPlanIssue).map(parseIssue);
+      var all = (Array.isArray(arr) ? arr : []).filter(isPlanIssue).map(parseIssue);
+      // 带 seed 的记录是对手写种子的覆盖，不单独成行
+      state.issues = all.filter(function (e) { return !e.seed; });
+      state.overrides = {};
+      all.forEach(function (e) { if (e.seed) state.overrides[e.seed] = e; });
       state.loaded = true;
       state.error = '';
     }).catch(function (e) {
@@ -310,9 +362,57 @@
     });
   }
 
-  function removeIssue(num) {
+  // 编辑已有条目：Issues 条目 PATCH；手写种子首次编辑时创建覆盖记录（meta.seed）
+  function submitEdit(ev) {
+    ev.preventDefault();
+    if (!isMember() || state.busy) return;
+    var form = ev.target;
+    var fd = new FormData(form);
+    var msgEl = form.querySelector('.pl-edit-msg');
+    function msg(t) { if (msgEl) msgEl.textContent = t; }
+    var title = String(fd.get('title') || '').trim();
+    if (!title) { msg('请先填写条目名称。'); return; }
+    if (!token()) { msg('请先用右上角协作者登录。'); return; }
+    var status = String(fd.get('status') || 'planned');
+    var sel = form.querySelector('select[name="status"]');
+    var labelText = sel ? sel.options[sel.selectedIndex].text : '规划中';
+    var meta = {
+      scope: String(fd.get('scope') || ''),
+      quarter: String(fd.get('quarter') || '待排期'),
+      state: status,
+      statusLabel: labelText
+    };
+    var seed = form.dataset.seed || '';
+    if (seed) meta.seed = seed;
+    var body = '<!-- EF_PLAN ' + JSON.stringify(meta) + ' -->\n' + String(fd.get('note') || '').trim();
+    var num = form.dataset.num || '';
+    var payload = { title: GH.prefix + ' ' + title, body: body };
+    if (!num) payload.labels = [GH.label];
+    state.busy = true;
+    msg('保存中…');
+    fetch(apiBase() + '/issues' + (num ? '/' + num : ''), {
+      method: num ? 'PATCH' : 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, headers(true)),
+      body: JSON.stringify(payload)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('保存失败 (' + r.status + ')');
+      return r.json();
+    }).then(function () {
+      state.editing = '';
+      return loadIssues();
+    }).catch(function (e) {
+      msg('保存失败：' + (e && e.message ? e.message : '网络异常'));
+    }).then(function () {
+      state.busy = false;
+    });
+  }
+
+  function removeIssue(num, isSeed) {
     if (!isMember() || !token()) return;
-    if (!window.confirm('从时间轴移除这条计划？（对应 GitHub Issue 会被关闭）')) return;
+    var ask = isSeed
+      ? '恢复这条计划的手写默认内容？（当前修改会被撤销）'
+      : '从时间轴移除这条计划？（对应 GitHub Issue 会被关闭）';
+    if (!window.confirm(ask)) return;
     fetch(apiBase() + '/issues/' + num, {
       method: 'PATCH',
       headers: Object.assign({ 'Content-Type': 'application/json' }, headers(true)),
@@ -328,8 +428,14 @@
 
   /* ---------- 装配 ---------- */
   function syncCompose() {
+    var member = isMember();
     var box = rootEl && rootEl.querySelector('#ef-pl-compose');
-    if (box) box.hidden = !isMember();
+    if (box) box.hidden = !member;
+    // 失去协作者身份时收起正在编辑的表单
+    if (!member && state.editing) {
+      state.editing = '';
+      renderTimeline();
+    }
   }
 
   function render(root) {
@@ -341,19 +447,32 @@
       '<ol class="pl-list" id="ef-pl-list"></ol>' +
       '<section class="pl-sec" id="pl-timeline">' +
       '<header class="pl-sec-head"><span class="ef-eyebrow slash">Roadmap</span>' +
-      '<h2>远期排期</h2></header>' +
+      '<h2>开发规划排期</h2></header>' +
       '<p class="ef-field pl-sec-note">上方为在研版本，本段时间轴只排后续计划；' +
-      '季度按实际排期填写，未定档的条目统一落在「待排期」。</p>' +
+      '季度按实际排期填写，未定档的条目统一落在「待排期」。协作者可直接编辑条目。</p>' +
       '<div class="pl-tl" id="ef-pl-tl"><p class="ef-field pl-empty">正在读取排期…</p></div>' +
       '</section>' +
       composeHtml();
 
     rootEl.addEventListener('submit', function (ev) {
-      if (ev.target && ev.target.id === 'ef-pl-form') submitIssue(ev);
+      if (!ev.target) return;
+      if (ev.target.id === 'ef-pl-form') submitIssue(ev);
+      else if (ev.target.classList.contains('pl-edit')) submitEdit(ev);
     });
     rootEl.addEventListener('click', function (ev) {
+      var editBtn = ev.target.closest('[data-pl-edit-btn]');
+      if (editBtn) {
+        state.editing = editBtn.dataset.plEditBtn;
+        renderTimeline();
+        return;
+      }
+      if (ev.target.closest('[data-pl-cancel]')) {
+        state.editing = '';
+        renderTimeline();
+        return;
+      }
       var del = ev.target.closest('[data-pl-del]');
-      if (del) removeIssue(del.dataset.plDel);
+      if (del) removeIssue(del.dataset.plDel, del.dataset.plSeed === '1');
     });
 
     renderVersions();
@@ -377,7 +496,7 @@
     var out = VERSIONS.map(function (v, i) {
       return { n: pad(i + 1), t: v.short + ' ' + v.version, href: '#pl-v-' + v.key };
     });
-    out.push({ n: pad(VERSIONS.length + 1), t: '远期排期', href: '#pl-timeline' });
+    out.push({ n: pad(VERSIONS.length + 1), t: '开发规划排期', href: '#pl-timeline' });
     if (isMember()) out.push({ n: pad(VERSIONS.length + 2), t: '填写排期', href: '#ef-pl-compose' });
     return out;
   }
