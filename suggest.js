@@ -119,7 +119,7 @@
       var h = Math.max(480, Number(s.embedHeight) || 900);
       box.innerHTML = '<div class="sg-frame">' +
         '<iframe src="' + esc(src) + '" title="' + esc(s.title || '内容征集问卷') +
-        '" loading="lazy" allowfullscreen ' +
+        '" allowfullscreen ' +
         'sandbox="allow-same-origin allow-scripts allow-modals allow-downloads allow-forms allow-popups" ' +
         'style="height:' + h + 'px"></iframe></div>';
     }
