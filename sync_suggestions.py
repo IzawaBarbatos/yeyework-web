@@ -435,11 +435,13 @@ def main():
         status_counts[status] = status_counts.get(status, 0) + 1
 
     for key in ("yybld", "yyzct"):
-        # 同一次导出里出现重复行时按 key 去重；保持表格原始行序（从前向后）
+        # 同一次导出里出现重复行时按 key 去重；按日期 + 编号升序（从前向后）
         dedup = {}
         for it in new_by_project[key]:
             dedup[it["key"]] = it
-        existing["projects"][key] = list(dedup.values())
+        items = list(dedup.values())
+        items.sort(key=lambda it: (it.get("date", ""), it.get("id", "")))
+        existing["projects"][key] = items
 
     # 数据没有变化时保留原更新时间，避免每日定时任务产生空提交
     if existing["projects"] != old_projects:
