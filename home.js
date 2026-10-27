@@ -16,7 +16,7 @@
     ],
     /* role 为分工，bio 为个人简介（留空时页面显示「待补充」） */
     crew: [
-      { name: '伊茶Izawa', role: '程序 · 主策', bio: '负责抽 某吃货 和 某猫娘 陀螺' },
+      { name: '伊茶Izawa', role: '程序 · 主策', bio: '负责抽 某吃货 和 某猫娘 陀螺（bushi' },
       { name: 'Maks怜悯', role: '美工 · 策划', bio: '吃吃吃吃吃吃吃吃吃' },
       { name: 'YK', role: '动画', bio: '喵' }
     ]
