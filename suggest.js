@@ -60,7 +60,7 @@
     return sorted(itemsOf(state.project)).filter(function (it) {
       if (state.type !== 'all' && String(it.type || '') !== state.type) return false;
       if (!q) return true;
-      return (String(it.content || '') + ' ' + String(it.type || '') + ' ' + String(it.status || ''))
+      return (String(it.content || '') + ' ' + String(it.type || '') + ' ' + String(it.status || '') + ' ' + String(it.note || ''))
         .toLowerCase().indexOf(q) >= 0;
     });
   }
@@ -164,7 +164,9 @@
       '<td data-label="类型"><span class="sg-type">' + esc(it.type || '未分类') + '</span></td>' +
       '<td data-label="状态"><span class="sg-status' +
         (status === '已实装' ? ' is-done' : '') + '">' + status + '</span></td>' +
-      '<td data-label="内容"><div class="sg-content">' + esc(it.content || '') + '</div></td>' +
+      '<td data-label="内容"><div class="sg-content">' + esc(it.content || '') + '</div>' +
+        (it.note ? '<div class="sg-note"><b>制作组留言</b>' + esc(it.note) + '</div>' : '') +
+      '</td>' +
       '</tr>';
   }
 

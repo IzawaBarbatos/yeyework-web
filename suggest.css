@@ -201,6 +201,23 @@
   line-height: 1.7;
   word-break: break-word;
 }
+.sg-note {
+  margin-top: 0.55rem;
+  padding: 0.45rem 0.6rem;
+  border-left: 2px solid var(--ef-signal);
+  background: color-mix(in srgb, var(--ef-signal) 8%, transparent);
+  color: var(--ef-ink-2);
+  font-size: 0.85rem;
+  line-height: 1.65;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.sg-note b {
+  display: block;
+  margin-bottom: 0.2rem;
+  color: var(--ef-ink);
+  font-weight: 700;
+}
 
 /* ---------- 分页 ---------- */
 .sg-pager {

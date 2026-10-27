@@ -48,6 +48,7 @@ SEATABLE_COLS = {
     "content": "想添加的内容",
     "date": "提交时间",
     "audit": "审核状态",
+    "note": "制作组留言",
     "source_id": "_id",
 }
 
@@ -66,6 +67,7 @@ HEADER_ALIASES = {
     "date": ["提交时间", "提交日期", "时间", "日期"],
     "source_id": ["答卷id", "答卷编号", "序号", "id"],
     "audit": ["审核状态", "审核结果", "审核"],
+    "note": ["制作组留言", "制作组备注", "组内留言"],
 }
 
 APPROVED_WORDS = ("有效", "通过", "采纳", "是", "y", "yes", "true", "1")
@@ -105,7 +107,7 @@ def map_columns(headers):
     used = set()
     cols = {}
     # 先占用更具体的列，避免「内容类型」抢走「内容」
-    for key in ("project", "type", "source_id", "date", "audit", "content"):
+    for key in ("project", "type", "source_id", "date", "audit", "note", "content"):
         cols[key] = pick_column(headers, HEADER_ALIASES[key], used)
     return cols
 
@@ -307,13 +309,14 @@ def next_id_number(items, prefix):
     return (max(nums) + 1) if nums else 1
 
 
-def make_item(project, type_name, content, date, key, item_id, status):
+def make_item(project, type_name, content, date, key, item_id, status, note):
     return {
         "id": item_id,
         "date": date,
         "type": type_name,
         "status": status,
         "content": content,
+        "note": note,
         "key": key,
     }
 
@@ -412,6 +415,7 @@ def main():
 
         type_name = map_type(row.get(cols["type"], ""), project) or "未分类"
         date = normalize_date(row.get(cols["date"], ""))
+        note = normalize_content(row.get(cols.get("note", ""), "")) if cols.get("note") else ""
         source_id = str(row.get(cols["source_id"], "")).strip() if cols["source_id"] else ""
         key = make_key(project, source_id, content, date)
 
@@ -425,7 +429,7 @@ def main():
             next_num[project] += 1
 
         new_by_project[project].append(
-            make_item(project, type_name, content, date, key, item_id, status)
+            make_item(project, type_name, content, date, key, item_id, status, note)
         )
         counts[project] += 1
         status_counts[status] = status_counts.get(status, 0) + 1
