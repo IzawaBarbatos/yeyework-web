@@ -140,6 +140,26 @@ def fetch_seatable_auth(server, api_token):
     return access_token, dtable_uuid
 
 
+def list_seatable_tables(server, base_uuid, base_token):
+    """读取 Base 元数据里的表名，用于表名错误时诊断。"""
+    base = server.rstrip("/")
+    url = "%s/api-gateway/api/v2/dtables/%s/metadata/" % (base, urllib.parse.quote(base_uuid))
+    req = urllib.request.Request(url, headers={
+        "Authorization": "Token " + base_token,
+        "Accept": "application/json",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            payload = json.loads(resp.read().decode("utf-8"))
+    except (urllib.error.HTTPError, urllib.error.URLError, ValueError):
+        return []
+    meta = payload.get("metadata")
+    if not isinstance(meta, dict) and isinstance(payload.get("data"), dict):
+        meta = payload["data"].get("metadata")
+    tables = (meta or {}).get("tables") or []
+    return [t.get("name") for t in tables if isinstance(t, dict) and t.get("name")]
+
+
 def fetch_seatable_rows(server, base_uuid, table_name, base_token):
     """分页读取 SeaTable 记录；base_token 来自 fetch_seatable_auth。"""
     base = server.rstrip("/")
@@ -164,6 +184,13 @@ def fetch_seatable_rows(server, base_uuid, table_name, base_token):
                 payload = json.loads(resp.read().decode("utf-8"))
         except urllib.error.HTTPError as e:
             detail = e.read().decode("utf-8", "ignore")[:300]
+            if e.code == 404:
+                names = list_seatable_tables(server, base_uuid, base_token)
+                if len(names) == 1 and names[0] != table_name:
+                    print("[i] 表名「%s」不存在，自动改用唯一表「%s」" % (table_name, names[0]))
+                    return fetch_seatable_rows(server, base_uuid, names[0], base_token)
+                if names:
+                    detail += "；可用表：%s" % "、".join(names)
             raise SystemExit("[!] SeaTable API 请求失败 (%s)：%s" % (e.code, detail))
         except (urllib.error.URLError, ValueError) as e:
             raise SystemExit("[!] SeaTable API 连接失败：%s" % e)
