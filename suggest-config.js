@@ -22,12 +22,12 @@ window.EF_SUGGEST_CONFIG = {
   dataUrl: 'suggestions.json',
   pageSize: 10,
 
-  /* 两个玩法分别公示 */
+  /* 两个玩法分别公示；分类按项目分开，避免食品与菜品混在一起 */
   projects: [
-    { key: 'yybld', name: '便利店' },
-    { key: 'yyzct', name: '中餐厅' }
+    { key: 'yybld', name: '便利店', types: ['食品·饮料', '家具 / 建材 / 装饰', '玩法·功能'] },
+    { key: 'yyzct', name: '中餐厅', types: ['菜品·主食', '家具 / 建材 / 装饰', '玩法·功能'] }
   ],
 
-  /* 与问卷第 2 题选项保持一致 */
-  types: ['食品·饮料 / 菜品·主食', '家具 / 建材 / 装饰', '玩法·功能']
+  /* 兜底分类（项目未配置 types 时使用） */
+  types: ['食品·饮料', '菜品·主食', '家具 / 建材 / 装饰', '玩法·功能']
 };

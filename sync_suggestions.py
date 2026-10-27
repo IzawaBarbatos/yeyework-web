@@ -52,11 +52,11 @@ SEATABLE_COLS = {
 }
 
 PROJECT_KEYS = {"便利店": "yybld", "中餐厅": "yyzct"}
-TYPE_GROUPS = [
-    ("食品·饮料 / 菜品·主食", ("食品", "饮料", "菜品", "主食")),
+COMMON_TYPE_GROUPS = [
     ("家具 / 建材 / 装饰", ("家具", "建材", "装饰")),
     ("玩法·功能", ("玩法", "功能")),
 ]
+FOOD_WORDS = ("食品", "饮料", "菜品", "主食")
 
 # 表头别名，按优先级匹配；匹配后会标记为已占用，避免「内容类型」被当成「内容」
 HEADER_ALIASES = {
@@ -216,9 +216,16 @@ def map_project(value):
     return ""
 
 
-def map_type(value):
+def map_type(value, project):
     s = str(value or "").strip()
-    for name, words in TYPE_GROUPS:
+    # 食品/菜品按项目分开：便利店只归食品·饮料，中餐厅只归菜品·主食
+    if any(w in s for w in FOOD_WORDS):
+        if project == "yybld":
+            return "食品·饮料"
+        if project == "yyzct":
+            return "菜品·主食"
+        return s
+    for name, words in COMMON_TYPE_GROUPS:
         if any(w in s for w in words):
             return name
     return s
@@ -385,7 +392,7 @@ def main():
             skipped += 1
             continue
 
-        type_name = map_type(row.get(cols["type"], "")) or "未分类"
+        type_name = map_type(row.get(cols["type"], ""), project) or "未分类"
         date = normalize_date(row.get(cols["date"], ""))
         source_id = str(row.get(cols["source_id"], "")).strip() if cols["source_id"] else ""
         key = make_key(project, source_id, content, date)

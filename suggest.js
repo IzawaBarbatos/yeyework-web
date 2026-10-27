@@ -139,9 +139,14 @@
     }).join('');
   }
 
+  function typesOf(key) {
+    var p = PROJECTS.filter(function (x) { return x.key === key; })[0];
+    return p && Array.isArray(p.types) && p.types.length ? p.types : TYPES;
+  }
+
   function renderTypes() {
     var el = rootEl.querySelector('#sg-types');
-    var opts = [{ key: 'all', name: '全部' }].concat(TYPES.map(function (t) {
+    var opts = [{ key: 'all', name: '全部' }].concat(typesOf(state.project).map(function (t) {
       return { key: t, name: t };
     }));
     el.innerHTML = opts.map(function (o) {
@@ -273,8 +278,10 @@
       var tab = ev.target.closest('[data-sg-project]');
       if (tab) {
         state.project = tab.dataset.sgProject;
+        state.type = 'all';
         state.page = 1;
         renderTabs();
+        renderTypes();
         renderList();
         return;
       }
