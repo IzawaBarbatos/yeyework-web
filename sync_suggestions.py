@@ -326,6 +326,18 @@ def main():
             if missing_fields:
                 raise SystemExit("[!] SeaTable 表格缺少字段：%s" % "、".join(missing_fields))
         print("[i] SeaTable 读取到 %d 条记录" % len(rows))
+        if rows:
+            status_counts = {}
+            for r in rows:
+                label = str(r.get(cols["audit"], "")).strip() or "(空)"
+                status_counts[label] = status_counts.get(label, 0) + 1
+            print("[i] 审核状态分布：%s" % "，".join(
+                "%s=%d" % (k, v) for k, v in status_counts.items()))
+            blank = sum(1 for r in rows
+                        if not str(r.get(cols["project"], "")).strip()
+                        or not str(r.get(cols["content"], "")).strip())
+            if blank:
+                print("[i] 缺少项目或内容：%d 条" % blank)
         has_audit = bool(cols["audit"])
     else:
         if not args.csv_path:
