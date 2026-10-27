@@ -46,18 +46,14 @@
     return PROJECTS.reduce(function (n, p) { return n + itemsOf(p.key).length; }, 0);
   }
 
-  function sorted(items) {
-    return items.slice().sort(function (a, b) {
-      var da = String(a.date || '');
-      var db = String(b.date || '');
-      if (da !== db) return da < db ? 1 : -1;
-      return String(b.id || '').localeCompare(String(a.id || ''));
-    });
+  function inListOrder(items) {
+    // 保持 suggestions.json 的原始顺序（= 表格行序，从前向后），不再二次排序
+    return items.slice();
   }
 
   function filtered() {
     var q = state.q.trim().toLowerCase();
-    return sorted(itemsOf(state.project)).filter(function (it) {
+    return inListOrder(itemsOf(state.project)).filter(function (it) {
       if (state.type !== 'all' && String(it.type || '') !== state.type) return false;
       if (!q) return true;
       return (String(it.content || '') + ' ' + String(it.type || '') + ' ' + String(it.status || '') + ' ' + String(it.note || ''))

@@ -385,7 +385,8 @@
     for (var i = 0; i < arr.length; i++) {
       if (String(arr[i].num) === String(e.num)) { arr[i] = e; return; }
     }
-    arr.unshift(e);
+    // 新条目追加到末尾：排期默认排在已有条目之后，而不是插到列表顶端
+    arr.push(e);
   }
 
   function setOrderMsg(t) {
