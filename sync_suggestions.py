@@ -11,10 +11,10 @@ r"""
     python sync_suggestions.py 导出文件.csv --dry-run
 
 SeaTable 环境变量：
-    SEATABLE_API_TOKEN    只读 API Token
-    SEATABLE_BASE_UUID    表格 base_uuid
+    SEATABLE_API_TOKEN    只读 API Token（必填）
     SEATABLE_TABLE        表名，默认「内容征集」
     SEATABLE_SERVER       服务地址，默认 https://cloud.seatable.cn
+    SEATABLE_BASE_UUID    可选兜底；正常由 API 认证响应返回 dtable_uuid
 
 规则：
 - 按「项目」字段分流到 yybld / yyzct
@@ -117,8 +117,31 @@ def read_csv(path):
     raise SystemExit("[!] 无法识别 CSV 编码，请用 Excel 另存为 UTF-8 CSV 后重试")
 
 
-def fetch_seatable_rows(server, base_uuid, table_name, token):
-    """分页读取 SeaTable 记录；只读 Token 即可。"""
+def fetch_seatable_auth(server, api_token):
+    """用 API Token 换取 Base-Token 与 dtable_uuid（Base-Token 有效期 3 天）。"""
+    base = server.rstrip("/")
+    url = base + "/api/v2.1/dtable/app-access-token/"
+    req = urllib.request.Request(url, headers={
+        "Authorization": "Token " + api_token,
+        "Accept": "application/json",
+    })
+    try:
+        with urllib.request.urlopen(req, timeout=30) as resp:
+            payload = json.loads(resp.read().decode("utf-8"))
+    except urllib.error.HTTPError as e:
+        detail = e.read().decode("utf-8", "ignore")[:300]
+        raise SystemExit("[!] SeaTable 认证失败 (%s)：%s" % (e.code, detail))
+    except (urllib.error.URLError, ValueError) as e:
+        raise SystemExit("[!] SeaTable 认证连接失败：%s" % e)
+    access_token = payload.get("access_token")
+    dtable_uuid = payload.get("dtable_uuid")
+    if not access_token:
+        raise SystemExit("[!] SeaTable 认证响应缺少 access_token：%s" % str(payload)[:300])
+    return access_token, dtable_uuid
+
+
+def fetch_seatable_rows(server, base_uuid, table_name, base_token):
+    """分页读取 SeaTable 记录；base_token 来自 fetch_seatable_auth。"""
     base = server.rstrip("/")
     # SeaTable 5.3+ 统一走 api-gateway；convert_keys=true 让字段按中文列名返回
     endpoint = "%s/api-gateway/api/v2/dtables/%s/rows/" % (base, urllib.parse.quote(base_uuid))
@@ -133,8 +156,7 @@ def fetch_seatable_rows(server, base_uuid, table_name, token):
             "convert_keys": "true",
         })
         req = urllib.request.Request(endpoint + "?" + query, headers={
-            # api-gateway v2 使用 Bearer，不是旧版 v1 的 Token 前缀
-            "Authorization": "Bearer " + token,
+            "Authorization": "Token " + base_token,
             "Accept": "application/json",
         })
         try:
@@ -257,13 +279,18 @@ def main():
     args = parser.parse_args()
 
     if args.seatable:
-        token = os.environ.get("SEATABLE_API_TOKEN", "").strip()
-        base_uuid = os.environ.get("SEATABLE_BASE_UUID", "").strip()
+        api_token = os.environ.get("SEATABLE_API_TOKEN", "").strip()
+        env_base_uuid = os.environ.get("SEATABLE_BASE_UUID", "").strip()
         table_name = (os.environ.get("SEATABLE_TABLE", "").strip() or "内容征集")
         server = (os.environ.get("SEATABLE_SERVER", "").strip() or DEFAULT_SEATABLE_SERVER)
-        if not token or not base_uuid:
-            raise SystemExit("[!] 请设置 SEATABLE_API_TOKEN 和 SEATABLE_BASE_UUID")
-        rows = fetch_seatable_rows(server, base_uuid, table_name, token)
+        if not api_token:
+            raise SystemExit("[!] 请设置 SEATABLE_API_TOKEN")
+        base_token, auth_base_uuid = fetch_seatable_auth(server, api_token)
+        # 认证响应里的 dtable_uuid 最可靠；环境变量仅作兜底
+        base_uuid = auth_base_uuid or env_base_uuid
+        if not base_uuid:
+            raise SystemExit("[!] SeaTable 认证响应没有 dtable_uuid，请设置 SEATABLE_BASE_UUID")
+        rows = fetch_seatable_rows(server, base_uuid, table_name, base_token)
         cols = dict(SEATABLE_COLS)
         if rows:
             keys = set(rows[0].keys())
