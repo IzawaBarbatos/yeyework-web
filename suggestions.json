@@ -1,16 +1,36 @@
 {
-  "updated_at": "2026-10-27 04:26:05",
+  "updated_at": "2026-10-27 06:03:50",
   "projects": {
     "yybld": [
+      {
+        "id": "B-002",
+        "date": "2026-10-27",
+        "type": "食品·饮料",
+        "status": "待实装",
+        "content": "关东煮",
+        "note": "",
+        "key": "9f2a9b0e3fe8"
+      },
       {
         "id": "B-001",
         "date": "2026-10-27",
         "type": "食品·饮料",
         "status": "待实装",
         "content": "自热火锅/自热米饭",
+        "note": "",
         "key": "01ed918a1160"
       }
     ],
-    "yyzct": []
+    "yyzct": [
+      {
+        "id": "Z-001",
+        "date": "2026-10-27",
+        "type": "玩法·功能",
+        "status": "待实装",
+        "content": "烹饪玩法",
+        "note": "",
+        "key": "d26b67cf2e4f"
+      }
+    ]
   }
 }
