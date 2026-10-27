@@ -25,6 +25,7 @@ SeaTable 环境变量：
 """
 
 import argparse
+import copy
 import csv
 import datetime
 import hashlib
@@ -354,6 +355,8 @@ def main():
             print("[i] 未检测到有效的审核状态列：CSV 中全部行都按「已通过」处理，请确认导出前已剔除无效答卷")
 
     existing = load_existing(args.json)
+    old_updated_at = existing.get("updated_at", "")
+    old_projects = copy.deepcopy(existing.get("projects", {}))
     existing_by_key = {}
     for key, items in existing["projects"].items():
         for it in items:
@@ -408,7 +411,11 @@ def main():
         items.sort(key=lambda it: (it.get("date", ""), it.get("id", "")), reverse=True)
         existing["projects"][key] = items
 
-    existing["updated_at"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    # 数据没有变化时保留原更新时间，避免每日定时任务产生空提交
+    if existing["projects"] != old_projects:
+        existing["updated_at"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    else:
+        existing["updated_at"] = old_updated_at
 
     print("[=] 便利店 %d 条，中餐厅 %d 条，跳过 %d 条" % (counts["yybld"], counts["yyzct"], skipped))
     if args.dry_run:
