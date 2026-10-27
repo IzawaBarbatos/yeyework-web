@@ -133,7 +133,8 @@ def fetch_seatable_rows(server, base_uuid, table_name, token):
             "convert_keys": "true",
         })
         req = urllib.request.Request(endpoint + "?" + query, headers={
-            "Authorization": "Token " + token,
+            # api-gateway v2 使用 Bearer，不是旧版 v1 的 Token 前缀
+            "Authorization": "Bearer " + token,
             "Accept": "application/json",
         })
         try:
