@@ -1,4 +1,4 @@
-/* 意见征集：提交问卷（腾讯问卷 iframe）+ 便利店 / 中餐厅分项目公示
+/* 内容征集：提交问卷（腾讯问卷 iframe）+ 便利店 / 中餐厅分项目公示
    数据来源：suggestions.json（由 sync_suggestions.py 按审核结果生成）
    公示表只读取已审核通过的数据，未通过内容不会进入本文件。 */
 (function () {
@@ -257,7 +257,7 @@
       '<header class="hm-sec-head">' +
       '<span class="ef-eyebrow slash">Submit</span><h2>提交征集</h2></header>' +
       '<p class="ef-field hm-sec-note">问卷第 1 题请选择「便利店」或「中餐厅」；' +
-      '提交内容经协作者审核通过后会显示在下方公示表，默认标记「待实装」，实装后更新为「已实装」。</p>' +
+      '每份问卷只写一个目前最想添加的内容。审核与公示规则见页面顶部说明。</p>' +
       '<div id="sg-embed"></div>' +
       '<p class="sg-links" id="sg-links"></p>' +
       '</section>' +

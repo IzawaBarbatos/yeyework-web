@@ -763,9 +763,9 @@
         // 开发计划：与版本里程碑同级，插在文档类之前
         var PLAN_VIEW = window.EF_PLAN_VIEW || null;
         var PLAN_ENTRY = { key: 'plan', name: '开发计划', count: PLAN_VIEW ? PLAN_VIEW.count() : 0, type: 'doc' };
-        // 意见征集：与版本里程碑 / 开发计划同级
+        // 内容征集：与版本里程碑 / 开发计划同级
         var SUGGEST_VIEW = window.EF_SUGGEST_VIEW || null;
-        var SUGGEST_ENTRY = { key: 'suggest', name: '意见征集', count: SUGGEST_VIEW ? SUGGEST_VIEW.count() : 0, type: 'doc' };
+        var SUGGEST_ENTRY = { key: 'suggest', name: '内容征集', count: SUGGEST_VIEW ? SUGGEST_VIEW.count() : 0, type: 'doc' };
         PROJ_LIST.unshift(HOME_ENTRY);
         (function () {
           var specIdx = -1;
@@ -1178,7 +1178,7 @@
         }
 
         // 移动端 App 壳层：顶部标题、资产/文档形态与底部标签栏高亮
-        var APP_TITLES = { home: '首页', milestones: '版本里程碑', plan: '开发计划', suggest: '意见征集', spec: '美术资产规范' };
+        var APP_TITLES = { home: '首页', milestones: '版本里程碑', plan: '开发计划', suggest: '内容征集', spec: '美术资产规范' };
         function syncAppShell(key) {
           var isDoc = key === 'home' || key === 'milestones' || key === 'plan' || key === 'suggest' || key === 'spec';
           document.documentElement.dataset.projKind = isDoc ? 'doc' : 'asset';

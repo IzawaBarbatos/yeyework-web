@@ -217,7 +217,7 @@
       { href: '#tree', en: 'Asset Archive', cn: '资产对照', desc: '全部已实装资源按中文名归类，可查文件路径与关联配置。' },
       { href: '#milestones', en: 'Version Log', cn: '版本里程碑', desc: '已结项版本的更新重点、新增内容与问题修复。' },
       { href: '#plan', en: 'Dev Plan', cn: '开发计划', desc: '正在制作的版本与后续排期。' },
-      { href: '#suggest', en: 'Content Wishlist', cn: '意见征集', desc: '提交想让便利店或中餐厅在下一个版本添加的内容，审核通过后公示。' },
+      { href: '#suggest', en: 'Content Wishlist', cn: '内容征集', desc: '提交想让便利店或中餐厅在下一个版本添加的内容，审核通过后公示。' },
       { href: '#spec', en: 'Spec', cn: '美术资产规范', desc: '命名规则、资源链清单与交付自检表。', memberOnly: true }
     ].filter(function (x) { return !x.memberOnly || isMember(); });
     var cards = items.map(function (x, i) {
