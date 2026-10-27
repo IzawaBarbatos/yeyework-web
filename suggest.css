@@ -154,6 +154,7 @@
 .sg-table th:nth-child(1) { width: 5.2rem; }
 .sg-table th:nth-child(2) { width: 7rem; }
 .sg-table th:nth-child(3) { width: 11rem; }
+.sg-table th:nth-child(4) { width: 6.5rem; }
 .sg-table td {
   padding: 0.75rem 0.6rem;
   border-bottom: 1px solid var(--ef-rule);
@@ -171,6 +172,21 @@
   border: 1px solid var(--ef-rule);
   font-size: 0.75rem;
   line-height: 1.45;
+}
+.sg-status {
+  display: inline-block;
+  padding: 0.1rem 0.4rem;
+  border: 1px solid var(--ef-rule);
+  color: var(--ef-ink-2);
+  font-size: 0.75rem;
+  line-height: 1.45;
+  white-space: nowrap;
+}
+.sg-status.is-done {
+  border-color: var(--ef-signal);
+  background: var(--ef-signal);
+  color: var(--ef-ink);
+  font-weight: 600;
 }
 .sg-content {
   white-space: pre-wrap;

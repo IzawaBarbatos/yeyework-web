@@ -60,7 +60,7 @@
     return sorted(itemsOf(state.project)).filter(function (it) {
       if (state.type !== 'all' && String(it.type || '') !== state.type) return false;
       if (!q) return true;
-      return (String(it.content || '') + ' ' + String(it.type || ''))
+      return (String(it.content || '') + ' ' + String(it.type || '') + ' ' + String(it.status || ''))
         .toLowerCase().indexOf(q) >= 0;
     });
   }
@@ -157,10 +157,13 @@
   }
 
   function rowHtml(it) {
+    var status = it.status === '已实装' ? '已实装' : '待实装';
     return '<tr class="sg-row">' +
       '<td data-label="编号"><span class="ef-tag">' + esc(it.id || '—') + '</span></td>' +
       '<td data-label="日期"><span class="ef-field">' + esc(it.date || '—') + '</span></td>' +
       '<td data-label="类型"><span class="sg-type">' + esc(it.type || '未分类') + '</span></td>' +
+      '<td data-label="状态"><span class="sg-status' +
+        (status === '已实装' ? ' is-done' : '') + '">' + status + '</span></td>' +
       '<td data-label="内容"><div class="sg-content">' + esc(it.content || '') + '</div></td>' +
       '</tr>';
   }
@@ -197,7 +200,7 @@
     }
 
     listEl.innerHTML = '<div class="sg-table-wrap"><table class="sg-table">' +
-      '<thead><tr><th>编号</th><th>日期</th><th>类型</th><th>内容</th></tr></thead>' +
+      '<thead><tr><th>编号</th><th>日期</th><th>类型</th><th>状态</th><th>内容</th></tr></thead>' +
       '<tbody>' + pageRows.map(rowHtml).join('') + '</tbody></table></div>';
 
     pagerEl.innerHTML = pages > 1
@@ -254,7 +257,7 @@
       '<header class="hm-sec-head">' +
       '<span class="ef-eyebrow slash">Submit</span><h2>提交征集</h2></header>' +
       '<p class="ef-field hm-sec-note">问卷第 1 题请选择「便利店」或「中餐厅」；' +
-      '提交内容经协作者审核通过后，会显示在下方对应项目的公示表。</p>' +
+      '提交内容经协作者审核通过后会显示在下方公示表，默认标记「待实装」，实装后更新为「已实装」。</p>' +
       '<div id="sg-embed"></div>' +
       '<p class="sg-links" id="sg-links"></p>' +
       '</section>' +

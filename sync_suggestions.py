@@ -70,6 +70,9 @@ HEADER_ALIASES = {
 
 APPROVED_WORDS = ("有效", "通过", "采纳", "是", "y", "yes", "true", "1")
 REJECTED_WORDS = ("无效", "不通过", "未通过", "未审核", "待审核", "否", "n", "no", "false", "0")
+INSTALLED_WORD = "已实装"
+PENDING_STATUS = "待实装"
+INSTALLED_STATUS = "已实装"
 
 
 def norm_header(value):
@@ -255,16 +258,25 @@ def normalize_content(value):
     return "\n".join([ln for ln in lines if ln])
 
 
-def is_approved(value):
+def audit_status(value):
+    """审核状态 → '已实装' / '待实装' / None（未通过、不公开）。
+
+    「已实装」是审核通过后的进阶状态；其余通过态统一归为「待实装」。
+    """
     s = str(value or "").strip().lower()
     if not s:
-        return False
+        return None
     # 先判否定词：避免「未通过」因为包含「通过」被误判为通过
     if any(w in s for w in REJECTED_WORDS):
-        return False
+        return None
+    if INSTALLED_WORD in s:
+        return INSTALLED_STATUS
+    # 兼容「待实装」等已通过但未实装的写法
+    if "实装" in s:
+        return PENDING_STATUS
     if any(w in s for w in APPROVED_WORDS):
-        return True
-    return False
+        return PENDING_STATUS
+    return None
 
 
 def make_key(project, source_id, content, date):
@@ -295,11 +307,12 @@ def next_id_number(items, prefix):
     return (max(nums) + 1) if nums else 1
 
 
-def make_item(project, type_name, content, date, key, item_id):
+def make_item(project, type_name, content, date, key, item_id, status):
     return {
         "id": item_id,
         "date": date,
         "type": type_name,
+        "status": status,
         "content": content,
         "key": key,
     }
@@ -371,6 +384,7 @@ def main():
                 existing_by_key[it["key"]] = it
 
     counts = {"yybld": 0, "yyzct": 0}
+    status_counts = {PENDING_STATUS: 0, INSTALLED_STATUS: 0}
     skipped = 0
     new_by_project = {"yybld": [], "yyzct": []}
     next_num = {
@@ -384,9 +398,13 @@ def main():
         if not project or not content:
             skipped += 1
             continue
-        if has_audit and not is_approved(row.get(cols["audit"], "")):
-            skipped += 1
-            continue
+        # 有审核列时只保留已通过内容；「已实装」优先于其他通过态
+        status = PENDING_STATUS
+        if has_audit:
+            status = audit_status(row.get(cols["audit"], ""))
+            if status is None:
+                skipped += 1
+                continue
         if len(content) > 500:
             print("[!] 跳过超长内容（>500 字）：%s" % content[:30])
             skipped += 1
@@ -406,8 +424,11 @@ def main():
             item_id = "%s-%03d" % ("B" if project == "yybld" else "Z", next_num[project])
             next_num[project] += 1
 
-        new_by_project[project].append(make_item(project, type_name, content, date, key, item_id))
+        new_by_project[project].append(
+            make_item(project, type_name, content, date, key, item_id, status)
+        )
         counts[project] += 1
+        status_counts[status] = status_counts.get(status, 0) + 1
 
     for key in ("yybld", "yyzct"):
         # 同一次导出里出现重复行时按 key 去重
@@ -425,6 +446,8 @@ def main():
         existing["updated_at"] = old_updated_at
 
     print("[=] 便利店 %d 条，中餐厅 %d 条，跳过 %d 条" % (counts["yybld"], counts["yyzct"], skipped))
+    print("[i] 公示状态：已实装 %d 条，待实装 %d 条" % (
+        status_counts.get(INSTALLED_STATUS, 0), status_counts.get(PENDING_STATUS, 0)))
     if args.dry_run:
         print("[i] dry-run：未写入 %s" % args.json)
         return
