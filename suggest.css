@@ -3,6 +3,14 @@
  * 颜色、切角、字体全部复用 endfield.css 的 token
  * ============================================================ */
 
+/* 顶部四段说明：按语义分段并拉开行间距 */
+.sg-lead > span {
+  display: block;
+}
+.sg-lead > span + span {
+  margin-top: 0.55rem;
+}
+
 .sg-submit {
   padding-top: 0;
   border-top: 0;
