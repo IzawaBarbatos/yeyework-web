@@ -24,6 +24,7 @@
     <link rel="stylesheet" href="endfield.css?v=937c72d9d2" />
     <link rel="stylesheet" href="notes.css?v=efeee6c9e1" />
     <link rel="stylesheet" href="home.css?v=77738070a2" />
+    <link rel="stylesheet" href="suggest.css?v=3039d0e2a9" />
     <!-- 站点图标：与主导航栏 seal 同款「黄底 + 右下斜切 + 深色 Y」 -->
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 36 36'%3E%3Cpath d='M0 0h36v28.8L28.8 36H0z' fill='%23fffa00'/%3E%3Ctext x='16.4' y='26' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-size='23' font-weight='800' fill='%23161616'%3EY%3C/text%3E%3C/svg%3E" />
     <style>
@@ -2234,6 +2235,27 @@
       </section>
       <!-- ===== /大分类：开发计划 ===== -->
 
+      <!-- ===== 大分类：意见征集（按项目征集下一版本内容 · 展示视图） ===== -->
+      <section class="proj-view ef-doc" id="proj-view-suggest" aria-label="意见征集" hidden>
+        <header class="ef-doc-head ef-in-drive">
+          <div class="ef-doc-meta">
+            <span class="ef-eyebrow slash">Content Wishlist</span>
+            <span class="ef-field">便利店 / 中餐厅 · 内容征集</span>
+            <span class="ef-field" id="ef-sg-updated">数据更新于 —</span>
+          </div>
+          <h1>
+            意见征集
+            <small>WHAT TO BUILD NEXT</small>
+          </h1>
+          <p class="ef-doc-lead">
+            想让下一个版本加什么？在问卷里选择<b>便利店</b>或<b>中餐厅</b>，写下想添加的内容。
+            提交内容经协作者审核通过后，会显示在下方对应项目的公示表里；未通过的内容不会公开。
+          </p>
+        </header>
+        <div id="ef-sg-root"></div>
+      </section>
+      <!-- ===== /大分类：意见征集 ===== -->
+
       <!-- ===== 大分类：美术资产规范（规范文档资料文本 · 阅读视图） ===== -->
       <section class="proj-view ef-doc" id="proj-view-spec" aria-label="美术资产命名与制作规范" hidden>
         <header class="ef-doc-head ef-in-drive">
@@ -2732,6 +2754,7 @@
       <button type="button" data-tab="archive"><small>Archive</small>资料库</button>
       <button type="button" data-tab="milestones"><small>Versions</small>版本公告</button>
       <button type="button" data-tab="plan"><small>Plan</small>计划</button>
+      <button type="button" data-tab="suggest"><small>Wishlist</small>征集</button>
       <button type="button" data-tab="spec"><small>Spec</small>规范</button>
     </nav>
 
@@ -2806,9 +2829,12 @@
     <!-- 开发计划：在研版本 + 开发规划排期 + 协作者填写/编辑（写入仓库 Issues） -->
     <script src="plan.js?v=655b353906"></script>
     <!-- 首页门户：运营状态 / 作品 / 正在制作 / 更新公告 / 成员 / 门户入口 -->
-    <script src="home.js?v=d04d9f4bab"></script>
+    <script src="home.js?v=65d797b55e"></script>
+    <!-- 意见征集：问卷嵌入 + 便利店 / 中餐厅分项目公示（数据来自 suggestions.json） -->
+    <script src="suggest-config.js?v=9775cb8a23"></script>
+    <script src="suggest.js?v=5acd824a63"></script>
 
-    <script src="assets.js?v=62113c76d8"></script>
+    <script src="assets.js?v=62e2adba40"></script>
 
     <!-- 小纸条留言板：配置 + 逻辑（数据层可在本地模式与 CloudBase 云端模式间自动切换） -->
     <script src="notes.js?v=89c4e24cd7"></script>

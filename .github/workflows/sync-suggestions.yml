@@ -1,0 +1,53 @@
+name: Sync suggestions
+
+on:
+  schedule:
+    # 每天 09:00（北京时间）拉取 SeaTable 中已审核通过的内容
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-suggestions
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check secrets
+        env:
+          SEATABLE_API_TOKEN: ${{ secrets.SEATABLE_API_TOKEN }}
+          SEATABLE_BASE_UUID: ${{ secrets.SEATABLE_BASE_UUID }}
+        run: |
+          if [ -z "$SEATABLE_API_TOKEN" ] || [ -z "$SEATABLE_BASE_UUID" ]; then
+            echo "::error::请先在仓库 Secrets 配置 SEATABLE_API_TOKEN / SEATABLE_BASE_UUID"
+            exit 1
+          fi
+
+      - name: Pull approved rows from SeaTable
+        env:
+          SEATABLE_API_TOKEN: ${{ secrets.SEATABLE_API_TOKEN }}
+          SEATABLE_BASE_UUID: ${{ secrets.SEATABLE_BASE_UUID }}
+          SEATABLE_TABLE: ${{ secrets.SEATABLE_TABLE }}
+        run: python sync_suggestions.py --seatable
+
+      - name: Commit and push
+        run: |
+          if git diff --quiet -- suggestions.json; then
+            echo "公示数据没有变化，跳过提交"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add suggestions.json
+          git commit -m "chore: 更新意见征集公示"
+          git push

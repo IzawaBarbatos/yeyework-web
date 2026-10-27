@@ -763,11 +763,14 @@
         // 开发计划：与版本里程碑同级，插在文档类之前
         var PLAN_VIEW = window.EF_PLAN_VIEW || null;
         var PLAN_ENTRY = { key: 'plan', name: '开发计划', count: PLAN_VIEW ? PLAN_VIEW.count() : 0, type: 'doc' };
+        // 意见征集：与版本里程碑 / 开发计划同级
+        var SUGGEST_VIEW = window.EF_SUGGEST_VIEW || null;
+        var SUGGEST_ENTRY = { key: 'suggest', name: '意见征集', count: SUGGEST_VIEW ? SUGGEST_VIEW.count() : 0, type: 'doc' };
         PROJ_LIST.unshift(HOME_ENTRY);
         (function () {
           var specIdx = -1;
           PROJ_LIST.forEach(function (p, i) { if (p.key === 'spec') specIdx = i; });
-          var docs = [MS_ENTRY, PLAN_ENTRY];
+          var docs = [MS_ENTRY, PLAN_ENTRY, SUGGEST_ENTRY];
           if (specIdx >= 0) PROJ_LIST.splice.apply(PROJ_LIST, [specIdx, 0].concat(docs));
           else PROJ_LIST.push.apply(PROJ_LIST, docs);
         })();
@@ -780,6 +783,7 @@
         var viewMs = document.getElementById('proj-view-milestones');
         var viewPlan = document.getElementById('proj-view-plan');
         var viewHome = document.getElementById('proj-view-home');
+        var viewSuggest = document.getElementById('proj-view-suggest');
         var brandEl = document.querySelector('.ef-cmdbar .brand');
         var cmdbarEl = document.querySelector('.ef-cmdbar');
         var appMenuBtn = document.getElementById('ef-app-menu-btn');
@@ -806,7 +810,9 @@
                 (p.key === state.proj ? 'true' : 'false') + '">' +
                 esc(p.name) + '</button>';
             }
-            var n = (p.type === 'doc' && p.key !== 'milestones' && p.key !== 'plan') ? '资料' : p.count;
+            var n = (p.type === 'doc' && p.key !== 'milestones' && p.key !== 'plan' && p.key !== 'suggest')
+              ? '资料'
+              : (p.key === 'suggest' && SUGGEST_VIEW ? SUGGEST_VIEW.count() : p.count);
             return '<button class="ef-chip" type="button" data-type="' + esc(p.type || 'asset') + '" data-proj="' + esc(p.key) + '" aria-pressed="' +
               (p.key === state.proj ? 'true' : 'false') + '">' +
               esc(p.name) + ' <span class="n">' + n + '</span></button>';
@@ -850,6 +856,7 @@
           if (state.proj === 'milestones') buildMsSidenav();
           else if (state.proj === 'plan') buildPlanSidenav();
           else if (state.proj === 'home') buildHomeSidenav();
+          else if (state.proj === 'suggest') buildSuggestSidenav();
           else { buildSidenav(); syncSidenav(); filterSidenavGroups(state.proj); }
           if (active) render(false);
           syncAccessBtn();
@@ -986,6 +993,21 @@
         function renderPlan() {
           var root = document.getElementById('ef-pl-root');
           if (PLAN_VIEW && root) PLAN_VIEW.render(root);
+        }
+
+        // 意见征集侧边栏：提交入口 + 公示结果
+        function buildSuggestSidenav() {
+          if (!sidenavEl || !SUGGEST_VIEW) return;
+          sidenavEl.innerHTML = SUGGEST_VIEW.sidenav().map(function (s) {
+            return '<a href="' + esc(s.href) + '"><span class="n">' + esc(s.n) + '</span>' +
+              '<span class="t">' + esc(s.t) + '</span></a>';
+          }).join('');
+        }
+
+        // 首次进入意见征集页时才渲染（数据由 suggestions.json 异步载入）
+        function renderSuggest() {
+          var root = document.getElementById('ef-sg-root');
+          if (SUGGEST_VIEW && root) SUGGEST_VIEW.render(root);
         }
 
         // 首页门户侧边栏：工作总览 → 作品矩阵 → 在研 → 项目组 → 门户入口
@@ -1142,6 +1164,10 @@
             groups.push({ els: viewHome.querySelectorAll('.ef-figs'), cls: 'ef-in-power', cap: 0 });
             groups.push({ els: viewHome.querySelectorAll('.hm-sec-head, .hm-sec-note'), cls: 'ef-in-rise', cap: 8 });
             groups.push({ els: viewHome.querySelectorAll('.hm-proj, .hm-ver, .hm-crew-card, .hm-portal'), cls: 'ef-in-come', cap: 10 });
+          } else if (key === 'suggest' && viewSuggest) {
+            groups.push({ els: viewSuggest.querySelectorAll('.ef-doc-head'), cls: 'ef-in-drive' });
+            groups.push({ els: viewSuggest.querySelectorAll('.hm-sec-head, .sg-tabs, .sg-toolbar'), cls: 'ef-in-rise', cap: 8 });
+            groups.push({ els: viewSuggest.querySelectorAll('.sg-frame, .sg-placeholder, .sg-row'), cls: 'ef-in-come', cap: 10 });
           } else {
             // 资产项目栏：标题擦入 → 总览通电 → 条目错峰入场（与首屏一致）
             groups.push({ els: viewMain.querySelectorAll('.ef-head'), cls: 'ef-in-drive' });
@@ -1152,9 +1178,9 @@
         }
 
         // 移动端 App 壳层：顶部标题、资产/文档形态与底部标签栏高亮
-        var APP_TITLES = { home: '首页', milestones: '版本里程碑', plan: '开发计划', spec: '美术资产规范' };
+        var APP_TITLES = { home: '首页', milestones: '版本里程碑', plan: '开发计划', suggest: '意见征集', spec: '美术资产规范' };
         function syncAppShell(key) {
-          var isDoc = key === 'home' || key === 'milestones' || key === 'plan' || key === 'spec';
+          var isDoc = key === 'home' || key === 'milestones' || key === 'plan' || key === 'suggest' || key === 'spec';
           document.documentElement.dataset.projKind = isDoc ? 'doc' : 'asset';
           var titleEl = document.getElementById('ef-app-title');
           if (titleEl) {
@@ -1201,18 +1227,21 @@
           var isMs = key === 'milestones';
           var isPlan = key === 'plan';
           var isHome = key === 'home';
+          var isSuggest = key === 'suggest';
           var wasMs = state.proj === 'milestones';
           var wasPlan = state.proj === 'plan';
           var wasHome = state.proj === 'home';
-          if (!isSpec && !isMs && !isPlan && !isHome && SPEC_KEYS.indexOf(key) < 0) key = SPEC_KEYS[0] || 'yybld';
+          var wasSuggest = state.proj === 'suggest';
+          if (!isSpec && !isMs && !isPlan && !isHome && !isSuggest && SPEC_KEYS.indexOf(key) < 0) key = SPEC_KEYS[0] || 'yybld';
           state.proj = key;
           syncAppShell(key);
           closeAppMenu();
-          if (viewMain) viewMain.hidden = isSpec || isMs || isPlan || isHome;
+          if (viewMain) viewMain.hidden = isSpec || isMs || isPlan || isHome || isSuggest;
           if (viewSpec) viewSpec.hidden = !isSpec;
           if (viewMs) viewMs.hidden = !isMs;
           if (viewPlan) viewPlan.hidden = !isPlan;
           if (viewHome) viewHome.hidden = !isHome;
+          if (viewSuggest) viewSuggest.hidden = !isSuggest;
           projNavEl.querySelectorAll('[data-proj]').forEach(function (b) {
             b.setAttribute('aria-pressed', b.dataset.proj === key ? 'true' : 'false');
           });
@@ -1221,9 +1250,9 @@
             var el = document.getElementById(NOTES_IDS[k] || '');
             if (el) el.hidden = !isMember() || k !== key;
           });
-          if (!isSpec && !isMs && !isPlan && !isHome && (!active || active.key !== key)) switchProject(key);
-          // 里程碑 / 开发计划 / 首页会接管侧边栏，离开时重建资产/文档导航，避免残留旧链接
-          if ((wasMs || wasPlan || wasHome) && !isMs && !isPlan && !isHome) buildSidenav();
+          if (!isSpec && !isMs && !isPlan && !isHome && !isSuggest && (!active || active.key !== key)) switchProject(key);
+          // 里程碑 / 开发计划 / 首页 / 意见征集会接管侧边栏，离开时重建资产/文档导航，避免残留旧链接
+          if ((wasMs || wasPlan || wasHome || wasSuggest) && !isMs && !isPlan && !isHome && !isSuggest) buildSidenav();
           if (isMs) {
             renderMs();
             buildMsSidenav();
@@ -1235,6 +1264,10 @@
           } else if (isHome) {
             renderHome();
             buildHomeSidenav();
+            syncSectionNav();
+          } else if (isSuggest) {
+            renderSuggest();
+            buildSuggestSidenav();
             syncSectionNav();
           } else if (sidenavEl) {
             // 侧边栏联动：按分组显隐导航项
@@ -1250,17 +1283,19 @@
                   ? '<span class="seal">Y</span><span class="brand-text">YY · DEV PLAN</span>'
                   : isHome
                     ? '<span class="seal">Y</span><span class="brand-text">YY · WORKSHOP</span>'
-                    : '<span class="seal">Y</span><span class="brand-text">YY · PROJECT ARCHIVE</span>';
+                    : isSuggest
+                      ? '<span class="seal">Y</span><span class="brand-text">YY · CONTENT WISHLIST</span>'
+                      : '<span class="seal">Y</span><span class="brand-text">YY · PROJECT ARCHIVE</span>';
           }
           if (isSpec) {
             state.view = 'tree';
             syncViewBtns();
             syncDocNav();
-          } else if (!isMs && !isPlan && !isHome) {
+          } else if (!isMs && !isPlan && !isHome && !isSuggest) {
             syncSidenav();
           }
           if (history.replaceState) {
-            history.replaceState(null, '', '#' + (isSpec ? 'spec' : isMs ? 'milestones' : isPlan ? 'plan' : isHome ? 'home' : state.view));
+            history.replaceState(null, '', '#' + (isSpec ? 'spec' : isMs ? 'milestones' : isPlan ? 'plan' : isHome ? 'home' : isSuggest ? 'suggest' : state.view));
           }
           // 切栏重放入场动效（首次进入也走这里，保证文档栏同样有展开效果）
           playEnter(key);
@@ -1304,7 +1339,8 @@
         setProj(hash === 'spec' ? 'spec'
           : hash === 'milestones' ? 'milestones'
             : hash === 'plan' ? 'plan'
-              : (hash === 'home' || homeAnchor) ? 'home'
+              : hash === 'suggest' ? 'suggest'
+                : (hash === 'home' || homeAnchor) ? 'home'
                 : (hash === 'tree' || hash === 'models' || hash === 'anims')
                   ? (SPEC_KEYS[0] || 'yybld')
                   : (SPEC_KEYS.indexOf(hash) >= 0 ? hash : 'home'));
@@ -1317,10 +1353,10 @@
         /* hash 直达：站内改变地址栏 hash 时同步切换项目 / 视图（整页加载已在上方处理） */
         window.addEventListener('hashchange', function () {
           var h = (location.hash || '').replace('#', '');
-          if (h === 'spec' || h === 'milestones' || h === 'plan' || h === 'home' || SPEC_KEYS.indexOf(h) >= 0) setProj(h);
+          if (h === 'spec' || h === 'milestones' || h === 'plan' || h === 'suggest' || h === 'home' || SPEC_KEYS.indexOf(h) >= 0) setProj(h);
           else if (h === 'tree' || h === 'models' || h === 'anims') {
             // 文档类 / 首页栏目下改 hash 到资产视图时，先退回资产栏（否则主视图仍隐藏）
-            if (state.proj === 'spec' || state.proj === 'milestones' || state.proj === 'plan' || state.proj === 'home') {
+            if (state.proj === 'spec' || state.proj === 'milestones' || state.proj === 'plan' || state.proj === 'suggest' || state.proj === 'home') {
               setProj(SPEC_KEYS[0] || 'yybld');
             }
             setView(h);
