@@ -10,12 +10,12 @@
       {
         "key": "yyzct",
         "name": "椰椰工坊：中餐厅",
-        "count": 55
+        "count": 74
       },
       {
         "key": "yycore",
         "name": "椰椰工坊：前置库",
-        "count": 4
+        "count": 5
       },
       {
         "key": "spec",
@@ -124,10 +124,10 @@
         "project_key": "yyzct",
         "project_name": "椰椰工坊：中餐厅",
         "project_rel_path": "QuModProject/椰椰工坊：中餐厅",
-        "total_entries": 55,
-        "total_models": 98,
+        "total_entries": 74,
+        "total_models": 108,
         "total_animations": 42,
-        "total_textures": 171,
+        "total_textures": 182,
         "icon_hit": 48,
         "categories": [
           {
@@ -164,7 +164,7 @@
             "key": "item",
             "name": "物品",
             "desc": "其余物品资源链（介绍书等）",
-            "count": 28
+            "count": 47
           }
         ],
         "chains": [
@@ -225,11 +225,11 @@
         "project_key": "yycore",
         "project_name": "椰椰工坊：前置库",
         "project_rel_path": "QuModProject/椰椰工坊：前置库",
-        "total_entries": 4,
+        "total_entries": 5,
         "total_models": 2,
         "total_animations": 1,
-        "total_textures": 5,
-        "icon_hit": 1,
+        "total_textures": 6,
+        "icon_hit": 2,
         "categories": [
           {
             "key": "food",
@@ -253,7 +253,7 @@
             "key": "item",
             "name": "物品",
             "desc": "所有物品（道具 / 工具 / 手册等）资源链",
-            "count": 3
+            "count": 4
           },
           {
             "key": "entity",
@@ -306,7 +306,7 @@
         }
       }
     },
-    "last_sync_time": "2026-10-28 16:02:00"
+    "last_sync_time": "2026-10-28 20:36:02"
   },
   "entries": {
     "yybld": [
@@ -17093,21 +17093,6 @@
         "animations": [],
         "textures": [
           {
-            "key": "yybld_coin",
-            "identifier": "yybld:yybld_coin",
-            "path": "textures/items/yybld_coin",
-            "file_name": "yybld_coin.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yybld_coin.png",
-            "size_str": "391 B",
-            "size_bytes": 391,
-            "mtime": "2026-10-28 13:04:48",
-            "exists": true,
-            "thumb": "thumbs/yybld/8ab945ffd4b2.png",
-            "source": "items-file",
-            "stem": "yybld_coin",
-            "group": "block"
-          },
-          {
             "key": "yybld_coin_hand",
             "identifier": "yybld:yybld_coin_hand",
             "path": "textures/entity/yybld_coin_hand",
@@ -17134,7 +17119,7 @@
         "category_name": "装饰与建筑",
         "model_count": 0,
         "anim_count": 0,
-        "texture_count": 2,
+        "texture_count": 1,
         "icon": "thumbs/yybld/8ab945ffd4b2.png"
       },
       {
@@ -17332,9 +17317,9 @@
             "file_stem": "yybld_coin_golden_0",
             "file_key": "yybld_coin_golden_0",
             "rel_path": "\\resource_pack\\models\\entity\\yybld_coin_golden_0.json",
-            "size_str": "4.1 KB",
-            "size_bytes": 4238,
-            "mtime": "2026-10-28 10:54:26",
+            "size_str": "4.2 KB",
+            "size_bytes": 4322,
+            "mtime": "2026-10-28 17:04:28",
             "geometry_ids": [
               "geometry.yybld_coin_golden_0"
             ],
@@ -17357,6 +17342,21 @@
             "mtime": "2026-10-28 13:04:48",
             "exists": true,
             "thumb": "thumbs/yybld/8ab945ffd4b2.png",
+            "source": "item",
+            "stem": "yybld_coin_golden_0",
+            "group": "block"
+          },
+          {
+            "key": "yybld_coin_golden_0_item",
+            "identifier": "yybld:yybld_coin_golden_0_item",
+            "path": "textures/items/yybld_coin_golden_0_item",
+            "file_name": "yybld_coin_golden_0_item.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_coin_golden_0_item.png",
+            "size_str": "29.3 KB",
+            "size_bytes": 29999,
+            "mtime": "2026-10-27 18:21:44",
+            "exists": true,
+            "thumb": "thumbs/yybld/d6393e94bc85.png",
             "source": "item",
             "stem": "yybld_coin_golden_0",
             "group": "block"
@@ -17388,7 +17388,7 @@
         "category_name": "物品道具",
         "model_count": 1,
         "anim_count": 0,
-        "texture_count": 2,
+        "texture_count": 3,
         "icon": "thumbs/yybld/8ab945ffd4b2.png"
       },
       {
@@ -22446,9 +22446,9 @@
             "file_stem": "yyzct_coin_golden_0",
             "file_key": "yyzct_coin_golden_0",
             "rel_path": "\\resource_pack\\models\\entity\\yyzct_coin_golden_0.json",
-            "size_str": "4.1 KB",
-            "size_bytes": 4238,
-            "mtime": "2026-10-28 10:54:26",
+            "size_str": "4.2 KB",
+            "size_bytes": 4322,
+            "mtime": "2026-10-28 17:05:42",
             "geometry_ids": [
               "geometry.yyzct_coin_golden_0"
             ],
@@ -22471,6 +22471,21 @@
             "mtime": "2026-10-28 13:04:48",
             "exists": true,
             "thumb": "thumbs/yyzct/b9132943d8c3.png",
+            "source": "item",
+            "stem": "yyzct_coin_golden_0",
+            "group": "item"
+          },
+          {
+            "key": "yyzct_coin_golden_0_item",
+            "identifier": "yyzct:yyzct_coin_golden_0_item",
+            "path": "textures/items/yyzct_coin_golden_0_item",
+            "file_name": "yyzct_coin_golden_0_item.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_coin_golden_0_item.png",
+            "size_str": "29.6 KB",
+            "size_bytes": 30307,
+            "mtime": "2026-10-27 18:21:44",
+            "exists": true,
+            "thumb": "thumbs/yyzct/50071a4c2c18.png",
             "source": "item",
             "stem": "yyzct_coin_golden_0",
             "group": "item"
@@ -22517,7 +22532,7 @@
         "category_name": "功能",
         "model_count": 1,
         "anim_count": 0,
-        "texture_count": 3,
+        "texture_count": 4,
         "icon": "thumbs/yyzct/b9132943d8c3.png"
       },
       {
@@ -23053,8 +23068,8 @@
         "icon": "thumbs/yyzct/3ecd447af93d.png"
       },
       {
-        "id": "yyzct_pidandoufu_2",
-        "identifier": "yyzct:yyzct_pidandoufu_2",
+        "id": "yyzct_pidandoufu_1",
+        "identifier": "yyzct:yyzct_pidandoufu_1",
         "chinese_name": "皮蛋豆腐",
         "models": [
           {
@@ -23121,18 +23136,18 @@
         ],
         "textures": [
           {
-            "key": "yyzct_pidandoufu_2",
-            "identifier": "yyzct:yyzct_pidandoufu_2",
-            "path": "textures/items/yyzct_pidandoufu_2",
-            "file_name": "yyzct_pidandoufu_2.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_pidandoufu_2.png",
+            "key": "yyzct_pidandoufu_1",
+            "identifier": "yyzct:yyzct_pidandoufu_1",
+            "path": "textures/items/yyzct_pidandoufu_1",
+            "file_name": "yyzct_pidandoufu_1.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_pidandoufu_1.png",
             "size_str": "4.5 KB",
             "size_bytes": 4564,
             "mtime": "2026-10-28 15:35:11",
             "exists": true,
             "thumb": "thumbs/yyzct/c3c05218c270.png",
             "source": "item",
-            "stem": "yyzct_pidandoufu_2",
+            "stem": "yyzct_pidandoufu_1",
             "group": "item"
           },
           {
@@ -23279,119 +23294,6 @@
         "icon": "thumbs/yyzct/c3c05218c270.png"
       },
       {
-        "id": "yyzct_pidandoufu_1",
-        "identifier": "yyzct:yyzct_pidandoufu_1",
-        "chinese_name": "皮蛋豆腐",
-        "models": [
-          {
-            "file_name": "yyzct_pidandoufu_1.geo.json",
-            "file_stem": "yyzct_pidandoufu_1",
-            "file_key": "yyzct_pidandoufu_1",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_pidandoufu_1.geo.json",
-            "size_str": "221.2 KB",
-            "size_bytes": 226473,
-            "mtime": "2026-10-28 15:35:11",
-            "geometry_ids": [
-              "geometry.yyzct_pidandoufu_1"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_pidandoufu_1",
-            "tag": "normal",
-            "group": "block"
-          },
-          {
-            "file_name": "yyzct_pidandoufu_hand.geo.json",
-            "file_stem": "yyzct_pidandoufu_hand",
-            "file_key": "yyzct_pidandoufu_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_pidandoufu_hand.geo.json",
-            "size_str": "246.4 KB",
-            "size_bytes": 252320,
-            "mtime": "2026-10-28 15:35:11",
-            "geometry_ids": [
-              "geometry.yyzct_pidandoufu_hand"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_pidandoufu",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yyzct_pidandoufu_hand.animation.json",
-            "file_stem": "yyzct_pidandoufu_hand",
-            "rel_path": "\\resource_pack\\animations\\yyzct_pidandoufu_hand.animation.json",
-            "size_str": "88.4 KB",
-            "size_bytes": 90533,
-            "mtime": "2026-10-28 15:35:11",
-            "animation_ids": [
-              "animation.yyzct_pidandoufu_hand.first_hold",
-              "animation.yyzct_pidandoufu_hand.first_scale",
-              "animation.yyzct_pidandoufu_hand.idle",
-              "animation.yyzct_pidandoufu_hand.take",
-              "animation.yyzct_pidandoufu_hand.watch",
-              "animation.yyzct_pidandoufu_hand.eat1",
-              "animation.yyzct_pidandoufu_hand.eat2",
-              "animation.yyzct_pidandoufu_hand.eat3",
-              "animation.yyzct_pidandoufu_hand.eat4",
-              "animation.yyzct_pidandoufu_hand.state2",
-              "animation.yyzct_pidandoufu_hand.state3",
-              "animation.yyzct_pidandoufu_hand.state4",
-              "animation.yyzct_pidandoufu_hand.state5"
-            ],
-            "prefix": "animation.yyzct_pidandoufu_hand",
-            "stem": "yyzct_pidandoufu",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yyzct_pidandoufu_1",
-            "identifier": "yyzct:yyzct_pidandoufu_1",
-            "path": "textures/items/yyzct_pidandoufu_1",
-            "file_name": "yyzct_pidandoufu_1.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_pidandoufu_1.png",
-            "size_str": "4.5 KB",
-            "size_bytes": 4564,
-            "mtime": "2026-10-28 15:35:11",
-            "exists": true,
-            "thumb": "thumbs/yyzct/c3c05218c270.png",
-            "source": "item",
-            "stem": "yyzct_pidandoufu_1",
-            "group": "item"
-          },
-          {
-            "key": "yyzct_pidandoufu",
-            "identifier": "yyzct:yyzct_pidandoufu",
-            "path": "textures/entity/yyzct_pidandoufu",
-            "file_name": "yyzct_pidandoufu.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_pidandoufu.png",
-            "size_str": "4.2 KB",
-            "size_bytes": 4346,
-            "mtime": "2026-10-28 15:35:11",
-            "exists": true,
-            "thumb": "thumbs/yyzct/bb2ddb1f42bd.png",
-            "source": "entity-file",
-            "stem": "yyzct_pidandoufu",
-            "group": "hand"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "item",
-        "category_name": "物品",
-        "model_count": 2,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yyzct/c3c05218c270.png"
-      },
-      {
         "id": "yyzct_pidandoufu_4",
         "identifier": "yyzct:yyzct_pidandoufu_4",
         "chinese_name": "皮蛋豆腐",
@@ -23505,101 +23407,101 @@
         "icon": "thumbs/yyzct/c3c05218c270.png"
       },
       {
-        "id": "yyzct_guobaorou_2",
-        "identifier": "yyzct:yyzct_guobaorou_2",
-        "chinese_name": "锅包肉",
+        "id": "yyzct_pidandoufu_2",
+        "identifier": "yyzct:yyzct_pidandoufu_2",
+        "chinese_name": "皮蛋豆腐",
         "models": [
           {
-            "file_name": "yyzct_guobaorou_1.geo.json",
-            "file_stem": "yyzct_guobaorou_1",
-            "file_key": "yyzct_guobaorou_1",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_1.geo.json",
-            "size_str": "275.4 KB",
-            "size_bytes": 281998,
+            "file_name": "yyzct_pidandoufu_1.geo.json",
+            "file_stem": "yyzct_pidandoufu_1",
+            "file_key": "yyzct_pidandoufu_1",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_pidandoufu_1.geo.json",
+            "size_str": "221.2 KB",
+            "size_bytes": 226473,
             "mtime": "2026-10-28 15:35:11",
             "geometry_ids": [
-              "geometry.yyzct_guobaorou_1"
+              "geometry.yyzct_pidandoufu_1"
             ],
             "kind": "entity",
-            "stem": "yyzct_guobaorou_1",
+            "stem": "yyzct_pidandoufu_1",
             "tag": "normal",
             "group": "block"
           },
           {
-            "file_name": "yyzct_guobaorou_hand.geo.json",
-            "file_stem": "yyzct_guobaorou_hand",
-            "file_key": "yyzct_guobaorou_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_hand.geo.json",
-            "size_str": "305.4 KB",
-            "size_bytes": 312682,
+            "file_name": "yyzct_pidandoufu_hand.geo.json",
+            "file_stem": "yyzct_pidandoufu_hand",
+            "file_key": "yyzct_pidandoufu_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_pidandoufu_hand.geo.json",
+            "size_str": "246.4 KB",
+            "size_bytes": 252320,
             "mtime": "2026-10-28 15:35:11",
             "geometry_ids": [
-              "geometry.yyzct_guobaorou_hand"
+              "geometry.yyzct_pidandoufu_hand"
             ],
             "kind": "entity",
-            "stem": "yyzct_guobaorou",
+            "stem": "yyzct_pidandoufu",
             "tag": "hand",
             "group": "hand"
           }
         ],
         "animations": [
           {
-            "file_name": "yyzct_guobaorou_hand.animation.json",
-            "file_stem": "yyzct_guobaorou_hand",
-            "rel_path": "\\resource_pack\\animations\\yyzct_guobaorou_hand.animation.json",
-            "size_str": "101.3 KB",
-            "size_bytes": 103741,
+            "file_name": "yyzct_pidandoufu_hand.animation.json",
+            "file_stem": "yyzct_pidandoufu_hand",
+            "rel_path": "\\resource_pack\\animations\\yyzct_pidandoufu_hand.animation.json",
+            "size_str": "88.4 KB",
+            "size_bytes": 90533,
             "mtime": "2026-10-28 15:35:11",
             "animation_ids": [
-              "animation.yyzct_guobaorou_hand.first_hold",
-              "animation.yyzct_guobaorou_hand.first_scale",
-              "animation.yyzct_guobaorou_hand.idle",
-              "animation.yyzct_guobaorou_hand.take",
-              "animation.yyzct_guobaorou_hand.watch",
-              "animation.yyzct_guobaorou_hand.eat1",
-              "animation.yyzct_guobaorou_hand.eat2",
-              "animation.yyzct_guobaorou_hand.eat3",
-              "animation.yyzct_guobaorou_hand.eat4",
-              "animation.yyzct_guobaorou_hand.state2",
-              "animation.yyzct_guobaorou_hand.state3",
-              "animation.yyzct_guobaorou_hand.state4",
-              "animation.yyzct_guobaorou_hand.state5"
+              "animation.yyzct_pidandoufu_hand.first_hold",
+              "animation.yyzct_pidandoufu_hand.first_scale",
+              "animation.yyzct_pidandoufu_hand.idle",
+              "animation.yyzct_pidandoufu_hand.take",
+              "animation.yyzct_pidandoufu_hand.watch",
+              "animation.yyzct_pidandoufu_hand.eat1",
+              "animation.yyzct_pidandoufu_hand.eat2",
+              "animation.yyzct_pidandoufu_hand.eat3",
+              "animation.yyzct_pidandoufu_hand.eat4",
+              "animation.yyzct_pidandoufu_hand.state2",
+              "animation.yyzct_pidandoufu_hand.state3",
+              "animation.yyzct_pidandoufu_hand.state4",
+              "animation.yyzct_pidandoufu_hand.state5"
             ],
-            "prefix": "animation.yyzct_guobaorou_hand",
-            "stem": "yyzct_guobaorou",
+            "prefix": "animation.yyzct_pidandoufu_hand",
+            "stem": "yyzct_pidandoufu",
             "tag": "hand",
             "group": "hand"
           }
         ],
         "textures": [
           {
-            "key": "yyzct_guobaorou_2",
-            "identifier": "yyzct:yyzct_guobaorou_2",
-            "path": "textures/items/yyzct_guobaorou_2",
-            "file_name": "yyzct_guobaorou_2.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_guobaorou_2.png",
-            "size_str": "5.8 KB",
-            "size_bytes": 5909,
+            "key": "yyzct_pidandoufu_2",
+            "identifier": "yyzct:yyzct_pidandoufu_2",
+            "path": "textures/items/yyzct_pidandoufu_2",
+            "file_name": "yyzct_pidandoufu_2.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_pidandoufu_2.png",
+            "size_str": "4.5 KB",
+            "size_bytes": 4564,
             "mtime": "2026-10-28 15:35:11",
             "exists": true,
-            "thumb": "thumbs/yyzct/ec75367f308a.png",
+            "thumb": "thumbs/yyzct/c3c05218c270.png",
             "source": "item",
-            "stem": "yyzct_guobaorou_2",
+            "stem": "yyzct_pidandoufu_2",
             "group": "item"
           },
           {
-            "key": "yyzct_guobaorou",
-            "identifier": "yyzct:yyzct_guobaorou",
-            "path": "textures/entity/yyzct_guobaorou",
-            "file_name": "yyzct_guobaorou.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_guobaorou.png",
-            "size_str": "4.9 KB",
-            "size_bytes": 4969,
+            "key": "yyzct_pidandoufu",
+            "identifier": "yyzct:yyzct_pidandoufu",
+            "path": "textures/entity/yyzct_pidandoufu",
+            "file_name": "yyzct_pidandoufu.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_pidandoufu.png",
+            "size_str": "4.2 KB",
+            "size_bytes": 4346,
             "mtime": "2026-10-28 15:35:11",
             "exists": true,
-            "thumb": "thumbs/yyzct/8110a922ef6f.png",
+            "thumb": "thumbs/yyzct/bb2ddb1f42bd.png",
             "source": "entity-file",
-            "stem": "yyzct_guobaorou",
+            "stem": "yyzct_pidandoufu",
             "group": "hand"
           }
         ],
@@ -23615,120 +23517,7 @@
         "model_count": 2,
         "anim_count": 1,
         "texture_count": 2,
-        "icon": "thumbs/yyzct/ec75367f308a.png"
-      },
-      {
-        "id": "yyzct_guobaorou_4",
-        "identifier": "yyzct:yyzct_guobaorou_4",
-        "chinese_name": "锅包肉",
-        "models": [
-          {
-            "file_name": "yyzct_guobaorou_1.geo.json",
-            "file_stem": "yyzct_guobaorou_1",
-            "file_key": "yyzct_guobaorou_1",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_1.geo.json",
-            "size_str": "275.4 KB",
-            "size_bytes": 281998,
-            "mtime": "2026-10-28 15:35:11",
-            "geometry_ids": [
-              "geometry.yyzct_guobaorou_1"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_guobaorou_1",
-            "tag": "normal",
-            "group": "block"
-          },
-          {
-            "file_name": "yyzct_guobaorou_hand.geo.json",
-            "file_stem": "yyzct_guobaorou_hand",
-            "file_key": "yyzct_guobaorou_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_hand.geo.json",
-            "size_str": "305.4 KB",
-            "size_bytes": 312682,
-            "mtime": "2026-10-28 15:35:11",
-            "geometry_ids": [
-              "geometry.yyzct_guobaorou_hand"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_guobaorou",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yyzct_guobaorou_hand.animation.json",
-            "file_stem": "yyzct_guobaorou_hand",
-            "rel_path": "\\resource_pack\\animations\\yyzct_guobaorou_hand.animation.json",
-            "size_str": "101.3 KB",
-            "size_bytes": 103741,
-            "mtime": "2026-10-28 15:35:11",
-            "animation_ids": [
-              "animation.yyzct_guobaorou_hand.first_hold",
-              "animation.yyzct_guobaorou_hand.first_scale",
-              "animation.yyzct_guobaorou_hand.idle",
-              "animation.yyzct_guobaorou_hand.take",
-              "animation.yyzct_guobaorou_hand.watch",
-              "animation.yyzct_guobaorou_hand.eat1",
-              "animation.yyzct_guobaorou_hand.eat2",
-              "animation.yyzct_guobaorou_hand.eat3",
-              "animation.yyzct_guobaorou_hand.eat4",
-              "animation.yyzct_guobaorou_hand.state2",
-              "animation.yyzct_guobaorou_hand.state3",
-              "animation.yyzct_guobaorou_hand.state4",
-              "animation.yyzct_guobaorou_hand.state5"
-            ],
-            "prefix": "animation.yyzct_guobaorou_hand",
-            "stem": "yyzct_guobaorou",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yyzct_guobaorou_4",
-            "identifier": "yyzct:yyzct_guobaorou_4",
-            "path": "textures/items/yyzct_guobaorou_4",
-            "file_name": "yyzct_guobaorou_4.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_guobaorou_4.png",
-            "size_str": "5.8 KB",
-            "size_bytes": 5909,
-            "mtime": "2026-10-28 15:35:11",
-            "exists": true,
-            "thumb": "thumbs/yyzct/ec75367f308a.png",
-            "source": "item",
-            "stem": "yyzct_guobaorou_4",
-            "group": "item"
-          },
-          {
-            "key": "yyzct_guobaorou",
-            "identifier": "yyzct:yyzct_guobaorou",
-            "path": "textures/entity/yyzct_guobaorou",
-            "file_name": "yyzct_guobaorou.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_guobaorou.png",
-            "size_str": "4.9 KB",
-            "size_bytes": 4969,
-            "mtime": "2026-10-28 15:35:11",
-            "exists": true,
-            "thumb": "thumbs/yyzct/8110a922ef6f.png",
-            "source": "entity-file",
-            "stem": "yyzct_guobaorou",
-            "group": "hand"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "item",
-        "category_name": "物品",
-        "model_count": 2,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yyzct/ec75367f308a.png"
+        "icon": "thumbs/yyzct/c3c05218c270.png"
       },
       {
         "id": "yyzct_guobaorou_1",
@@ -23811,6 +23600,119 @@
             "thumb": "thumbs/yyzct/ec75367f308a.png",
             "source": "item",
             "stem": "yyzct_guobaorou_1",
+            "group": "item"
+          },
+          {
+            "key": "yyzct_guobaorou",
+            "identifier": "yyzct:yyzct_guobaorou",
+            "path": "textures/entity/yyzct_guobaorou",
+            "file_name": "yyzct_guobaorou.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_guobaorou.png",
+            "size_str": "4.9 KB",
+            "size_bytes": 4969,
+            "mtime": "2026-10-28 15:35:11",
+            "exists": true,
+            "thumb": "thumbs/yyzct/8110a922ef6f.png",
+            "source": "entity-file",
+            "stem": "yyzct_guobaorou",
+            "group": "hand"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 2,
+        "icon": "thumbs/yyzct/ec75367f308a.png"
+      },
+      {
+        "id": "yyzct_guobaorou_2",
+        "identifier": "yyzct:yyzct_guobaorou_2",
+        "chinese_name": "锅包肉",
+        "models": [
+          {
+            "file_name": "yyzct_guobaorou_1.geo.json",
+            "file_stem": "yyzct_guobaorou_1",
+            "file_key": "yyzct_guobaorou_1",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_1.geo.json",
+            "size_str": "275.4 KB",
+            "size_bytes": 281998,
+            "mtime": "2026-10-28 15:35:11",
+            "geometry_ids": [
+              "geometry.yyzct_guobaorou_1"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_guobaorou_1",
+            "tag": "normal",
+            "group": "block"
+          },
+          {
+            "file_name": "yyzct_guobaorou_hand.geo.json",
+            "file_stem": "yyzct_guobaorou_hand",
+            "file_key": "yyzct_guobaorou_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_hand.geo.json",
+            "size_str": "305.4 KB",
+            "size_bytes": 312682,
+            "mtime": "2026-10-28 15:35:11",
+            "geometry_ids": [
+              "geometry.yyzct_guobaorou_hand"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_guobaorou",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yyzct_guobaorou_hand.animation.json",
+            "file_stem": "yyzct_guobaorou_hand",
+            "rel_path": "\\resource_pack\\animations\\yyzct_guobaorou_hand.animation.json",
+            "size_str": "101.3 KB",
+            "size_bytes": 103741,
+            "mtime": "2026-10-28 15:35:11",
+            "animation_ids": [
+              "animation.yyzct_guobaorou_hand.first_hold",
+              "animation.yyzct_guobaorou_hand.first_scale",
+              "animation.yyzct_guobaorou_hand.idle",
+              "animation.yyzct_guobaorou_hand.take",
+              "animation.yyzct_guobaorou_hand.watch",
+              "animation.yyzct_guobaorou_hand.eat1",
+              "animation.yyzct_guobaorou_hand.eat2",
+              "animation.yyzct_guobaorou_hand.eat3",
+              "animation.yyzct_guobaorou_hand.eat4",
+              "animation.yyzct_guobaorou_hand.state2",
+              "animation.yyzct_guobaorou_hand.state3",
+              "animation.yyzct_guobaorou_hand.state4",
+              "animation.yyzct_guobaorou_hand.state5"
+            ],
+            "prefix": "animation.yyzct_guobaorou_hand",
+            "stem": "yyzct_guobaorou",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yyzct_guobaorou_2",
+            "identifier": "yyzct:yyzct_guobaorou_2",
+            "path": "textures/items/yyzct_guobaorou_2",
+            "file_name": "yyzct_guobaorou_2.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_guobaorou_2.png",
+            "size_str": "5.8 KB",
+            "size_bytes": 5909,
+            "mtime": "2026-10-28 15:35:11",
+            "exists": true,
+            "thumb": "thumbs/yyzct/ec75367f308a.png",
+            "source": "item",
+            "stem": "yyzct_guobaorou_2",
             "group": "item"
           },
           {
@@ -23957,101 +23859,101 @@
         "icon": "thumbs/yyzct/ec75367f308a.png"
       },
       {
-        "id": "yyzct_xianroubaozi_4",
-        "identifier": "yyzct:yyzct_xianroubaozi_4",
-        "chinese_name": "鲜肉包子",
+        "id": "yyzct_guobaorou_4",
+        "identifier": "yyzct:yyzct_guobaorou_4",
+        "chinese_name": "锅包肉",
         "models": [
           {
-            "file_name": "yyzct_xianroubaozi_1.geo.json",
-            "file_stem": "yyzct_xianroubaozi_1",
-            "file_key": "yyzct_xianroubaozi_1",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_1.geo.json",
-            "size_str": "623.0 KB",
-            "size_bytes": 637956,
+            "file_name": "yyzct_guobaorou_1.geo.json",
+            "file_stem": "yyzct_guobaorou_1",
+            "file_key": "yyzct_guobaorou_1",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_1.geo.json",
+            "size_str": "275.4 KB",
+            "size_bytes": 281998,
             "mtime": "2026-10-28 15:35:11",
             "geometry_ids": [
-              "geometry.yyzct_xianroubaozi_1"
+              "geometry.yyzct_guobaorou_1"
             ],
             "kind": "entity",
-            "stem": "yyzct_xianroubaozi_1",
+            "stem": "yyzct_guobaorou_1",
             "tag": "normal",
             "group": "block"
           },
           {
-            "file_name": "yyzct_xianroubaozi_hand.geo.json",
-            "file_stem": "yyzct_xianroubaozi_hand",
-            "file_key": "yyzct_xianroubaozi_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_hand.geo.json",
-            "size_str": "786.5 KB",
-            "size_bytes": 805394,
+            "file_name": "yyzct_guobaorou_hand.geo.json",
+            "file_stem": "yyzct_guobaorou_hand",
+            "file_key": "yyzct_guobaorou_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_hand.geo.json",
+            "size_str": "305.4 KB",
+            "size_bytes": 312682,
             "mtime": "2026-10-28 15:35:11",
             "geometry_ids": [
-              "geometry.yyzct_xianroubaozi_hand"
+              "geometry.yyzct_guobaorou_hand"
             ],
             "kind": "entity",
-            "stem": "yyzct_xianroubaozi",
+            "stem": "yyzct_guobaorou",
             "tag": "hand",
             "group": "hand"
           }
         ],
         "animations": [
           {
-            "file_name": "yyzct_xianroubaozi_hand.animation.json",
-            "file_stem": "yyzct_xianroubaozi_hand",
-            "rel_path": "\\resource_pack\\animations\\yyzct_xianroubaozi_hand.animation.json",
-            "size_str": "85.2 KB",
-            "size_bytes": 87239,
+            "file_name": "yyzct_guobaorou_hand.animation.json",
+            "file_stem": "yyzct_guobaorou_hand",
+            "rel_path": "\\resource_pack\\animations\\yyzct_guobaorou_hand.animation.json",
+            "size_str": "101.3 KB",
+            "size_bytes": 103741,
             "mtime": "2026-10-28 15:35:11",
             "animation_ids": [
-              "animation.yyzct_xianroubaozi_hand.first_hold",
-              "animation.yyzct_xianroubaozi_hand.first_scale",
-              "animation.yyzct_xianroubaozi_hand.idle",
-              "animation.yyzct_xianroubaozi_hand.take",
-              "animation.yyzct_xianroubaozi_hand.watch",
-              "animation.yyzct_xianroubaozi_hand.eat1",
-              "animation.yyzct_xianroubaozi_hand.eat2",
-              "animation.yyzct_xianroubaozi_hand.eat3",
-              "animation.yyzct_xianroubaozi_hand.eat4",
-              "animation.yyzct_xianroubaozi_hand.state2",
-              "animation.yyzct_xianroubaozi_hand.state3",
-              "animation.yyzct_xianroubaozi_hand.state4",
-              "animation.yyzct_xianroubaozi_hand.state5"
+              "animation.yyzct_guobaorou_hand.first_hold",
+              "animation.yyzct_guobaorou_hand.first_scale",
+              "animation.yyzct_guobaorou_hand.idle",
+              "animation.yyzct_guobaorou_hand.take",
+              "animation.yyzct_guobaorou_hand.watch",
+              "animation.yyzct_guobaorou_hand.eat1",
+              "animation.yyzct_guobaorou_hand.eat2",
+              "animation.yyzct_guobaorou_hand.eat3",
+              "animation.yyzct_guobaorou_hand.eat4",
+              "animation.yyzct_guobaorou_hand.state2",
+              "animation.yyzct_guobaorou_hand.state3",
+              "animation.yyzct_guobaorou_hand.state4",
+              "animation.yyzct_guobaorou_hand.state5"
             ],
-            "prefix": "animation.yyzct_xianroubaozi_hand",
-            "stem": "yyzct_xianroubaozi",
+            "prefix": "animation.yyzct_guobaorou_hand",
+            "stem": "yyzct_guobaorou",
             "tag": "hand",
             "group": "hand"
           }
         ],
         "textures": [
           {
-            "key": "yyzct_xianroubaozi_4",
-            "identifier": "yyzct:yyzct_xianroubaozi_4",
-            "path": "textures/items/yyzct_xianroubaozi_4",
-            "file_name": "yyzct_xianroubaozi_4.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_xianroubaozi_4.png",
-            "size_str": "6.2 KB",
-            "size_bytes": 6314,
+            "key": "yyzct_guobaorou_4",
+            "identifier": "yyzct:yyzct_guobaorou_4",
+            "path": "textures/items/yyzct_guobaorou_4",
+            "file_name": "yyzct_guobaorou_4.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_guobaorou_4.png",
+            "size_str": "5.8 KB",
+            "size_bytes": 5909,
             "mtime": "2026-10-28 15:35:11",
             "exists": true,
-            "thumb": "thumbs/yyzct/3ecd447af93d.png",
+            "thumb": "thumbs/yyzct/ec75367f308a.png",
             "source": "item",
-            "stem": "yyzct_xianroubaozi_4",
+            "stem": "yyzct_guobaorou_4",
             "group": "item"
           },
           {
-            "key": "yyzct_xianroubaozi",
-            "identifier": "yyzct:yyzct_xianroubaozi",
-            "path": "textures/entity/yyzct_xianroubaozi",
-            "file_name": "yyzct_xianroubaozi.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_xianroubaozi.png",
+            "key": "yyzct_guobaorou",
+            "identifier": "yyzct:yyzct_guobaorou",
+            "path": "textures/entity/yyzct_guobaorou",
+            "file_name": "yyzct_guobaorou.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_guobaorou.png",
             "size_str": "4.9 KB",
-            "size_bytes": 4985,
+            "size_bytes": 4969,
             "mtime": "2026-10-28 15:35:11",
             "exists": true,
-            "thumb": "thumbs/yyzct/bf7f434f4c95.png",
+            "thumb": "thumbs/yyzct/8110a922ef6f.png",
             "source": "entity-file",
-            "stem": "yyzct_xianroubaozi",
+            "stem": "yyzct_guobaorou",
             "group": "hand"
           }
         ],
@@ -24067,7 +23969,7 @@
         "model_count": 2,
         "anim_count": 1,
         "texture_count": 2,
-        "icon": "thumbs/yyzct/3ecd447af93d.png"
+        "icon": "thumbs/yyzct/ec75367f308a.png"
       },
       {
         "id": "yyzct_xianroubaozi_2",
@@ -24150,6 +24052,232 @@
             "thumb": "thumbs/yyzct/3ecd447af93d.png",
             "source": "item",
             "stem": "yyzct_xianroubaozi_2",
+            "group": "item"
+          },
+          {
+            "key": "yyzct_xianroubaozi",
+            "identifier": "yyzct:yyzct_xianroubaozi",
+            "path": "textures/entity/yyzct_xianroubaozi",
+            "file_name": "yyzct_xianroubaozi.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_xianroubaozi.png",
+            "size_str": "4.9 KB",
+            "size_bytes": 4985,
+            "mtime": "2026-10-28 15:35:11",
+            "exists": true,
+            "thumb": "thumbs/yyzct/bf7f434f4c95.png",
+            "source": "entity-file",
+            "stem": "yyzct_xianroubaozi",
+            "group": "hand"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 2,
+        "icon": "thumbs/yyzct/3ecd447af93d.png"
+      },
+      {
+        "id": "yyzct_xianroubaozi_3",
+        "identifier": "yyzct:yyzct_xianroubaozi_3",
+        "chinese_name": "鲜肉包子",
+        "models": [
+          {
+            "file_name": "yyzct_xianroubaozi_1.geo.json",
+            "file_stem": "yyzct_xianroubaozi_1",
+            "file_key": "yyzct_xianroubaozi_1",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_1.geo.json",
+            "size_str": "623.0 KB",
+            "size_bytes": 637956,
+            "mtime": "2026-10-28 15:35:11",
+            "geometry_ids": [
+              "geometry.yyzct_xianroubaozi_1"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_xianroubaozi_1",
+            "tag": "normal",
+            "group": "block"
+          },
+          {
+            "file_name": "yyzct_xianroubaozi_hand.geo.json",
+            "file_stem": "yyzct_xianroubaozi_hand",
+            "file_key": "yyzct_xianroubaozi_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_hand.geo.json",
+            "size_str": "786.5 KB",
+            "size_bytes": 805394,
+            "mtime": "2026-10-28 15:35:11",
+            "geometry_ids": [
+              "geometry.yyzct_xianroubaozi_hand"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_xianroubaozi",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yyzct_xianroubaozi_hand.animation.json",
+            "file_stem": "yyzct_xianroubaozi_hand",
+            "rel_path": "\\resource_pack\\animations\\yyzct_xianroubaozi_hand.animation.json",
+            "size_str": "85.2 KB",
+            "size_bytes": 87239,
+            "mtime": "2026-10-28 15:35:11",
+            "animation_ids": [
+              "animation.yyzct_xianroubaozi_hand.first_hold",
+              "animation.yyzct_xianroubaozi_hand.first_scale",
+              "animation.yyzct_xianroubaozi_hand.idle",
+              "animation.yyzct_xianroubaozi_hand.take",
+              "animation.yyzct_xianroubaozi_hand.watch",
+              "animation.yyzct_xianroubaozi_hand.eat1",
+              "animation.yyzct_xianroubaozi_hand.eat2",
+              "animation.yyzct_xianroubaozi_hand.eat3",
+              "animation.yyzct_xianroubaozi_hand.eat4",
+              "animation.yyzct_xianroubaozi_hand.state2",
+              "animation.yyzct_xianroubaozi_hand.state3",
+              "animation.yyzct_xianroubaozi_hand.state4",
+              "animation.yyzct_xianroubaozi_hand.state5"
+            ],
+            "prefix": "animation.yyzct_xianroubaozi_hand",
+            "stem": "yyzct_xianroubaozi",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yyzct_xianroubaozi_3",
+            "identifier": "yyzct:yyzct_xianroubaozi_3",
+            "path": "textures/items/yyzct_xianroubaozi_3",
+            "file_name": "yyzct_xianroubaozi_3.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_xianroubaozi_3.png",
+            "size_str": "6.2 KB",
+            "size_bytes": 6314,
+            "mtime": "2026-10-28 15:35:11",
+            "exists": true,
+            "thumb": "thumbs/yyzct/3ecd447af93d.png",
+            "source": "item",
+            "stem": "yyzct_xianroubaozi_3",
+            "group": "item"
+          },
+          {
+            "key": "yyzct_xianroubaozi",
+            "identifier": "yyzct:yyzct_xianroubaozi",
+            "path": "textures/entity/yyzct_xianroubaozi",
+            "file_name": "yyzct_xianroubaozi.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_xianroubaozi.png",
+            "size_str": "4.9 KB",
+            "size_bytes": 4985,
+            "mtime": "2026-10-28 15:35:11",
+            "exists": true,
+            "thumb": "thumbs/yyzct/bf7f434f4c95.png",
+            "source": "entity-file",
+            "stem": "yyzct_xianroubaozi",
+            "group": "hand"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 2,
+        "icon": "thumbs/yyzct/3ecd447af93d.png"
+      },
+      {
+        "id": "yyzct_xianroubaozi_4",
+        "identifier": "yyzct:yyzct_xianroubaozi_4",
+        "chinese_name": "鲜肉包子",
+        "models": [
+          {
+            "file_name": "yyzct_xianroubaozi_1.geo.json",
+            "file_stem": "yyzct_xianroubaozi_1",
+            "file_key": "yyzct_xianroubaozi_1",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_1.geo.json",
+            "size_str": "623.0 KB",
+            "size_bytes": 637956,
+            "mtime": "2026-10-28 15:35:11",
+            "geometry_ids": [
+              "geometry.yyzct_xianroubaozi_1"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_xianroubaozi_1",
+            "tag": "normal",
+            "group": "block"
+          },
+          {
+            "file_name": "yyzct_xianroubaozi_hand.geo.json",
+            "file_stem": "yyzct_xianroubaozi_hand",
+            "file_key": "yyzct_xianroubaozi_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_hand.geo.json",
+            "size_str": "786.5 KB",
+            "size_bytes": 805394,
+            "mtime": "2026-10-28 15:35:11",
+            "geometry_ids": [
+              "geometry.yyzct_xianroubaozi_hand"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_xianroubaozi",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yyzct_xianroubaozi_hand.animation.json",
+            "file_stem": "yyzct_xianroubaozi_hand",
+            "rel_path": "\\resource_pack\\animations\\yyzct_xianroubaozi_hand.animation.json",
+            "size_str": "85.2 KB",
+            "size_bytes": 87239,
+            "mtime": "2026-10-28 15:35:11",
+            "animation_ids": [
+              "animation.yyzct_xianroubaozi_hand.first_hold",
+              "animation.yyzct_xianroubaozi_hand.first_scale",
+              "animation.yyzct_xianroubaozi_hand.idle",
+              "animation.yyzct_xianroubaozi_hand.take",
+              "animation.yyzct_xianroubaozi_hand.watch",
+              "animation.yyzct_xianroubaozi_hand.eat1",
+              "animation.yyzct_xianroubaozi_hand.eat2",
+              "animation.yyzct_xianroubaozi_hand.eat3",
+              "animation.yyzct_xianroubaozi_hand.eat4",
+              "animation.yyzct_xianroubaozi_hand.state2",
+              "animation.yyzct_xianroubaozi_hand.state3",
+              "animation.yyzct_xianroubaozi_hand.state4",
+              "animation.yyzct_xianroubaozi_hand.state5"
+            ],
+            "prefix": "animation.yyzct_xianroubaozi_hand",
+            "stem": "yyzct_xianroubaozi",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yyzct_xianroubaozi_4",
+            "identifier": "yyzct:yyzct_xianroubaozi_4",
+            "path": "textures/items/yyzct_xianroubaozi_4",
+            "file_name": "yyzct_xianroubaozi_4.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_xianroubaozi_4.png",
+            "size_str": "6.2 KB",
+            "size_bytes": 6314,
+            "mtime": "2026-10-28 15:35:11",
+            "exists": true,
+            "thumb": "thumbs/yyzct/3ecd447af93d.png",
+            "source": "item",
+            "stem": "yyzct_xianroubaozi_4",
             "group": "item"
           },
           {
@@ -24296,101 +24424,101 @@
         "icon": "thumbs/yyzct/3ecd447af93d.png"
       },
       {
-        "id": "yyzct_xianroubaozi_3",
-        "identifier": "yyzct:yyzct_xianroubaozi_3",
-        "chinese_name": "鲜肉包子",
+        "id": "yyzct_mapodoufu_1",
+        "identifier": "yyzct:yyzct_mapodoufu_1",
+        "chinese_name": "麻婆豆腐",
         "models": [
           {
-            "file_name": "yyzct_xianroubaozi_1.geo.json",
-            "file_stem": "yyzct_xianroubaozi_1",
-            "file_key": "yyzct_xianroubaozi_1",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_1.geo.json",
-            "size_str": "623.0 KB",
-            "size_bytes": 637956,
+            "file_name": "yyzct_mapodoufu_1.geo.json",
+            "file_stem": "yyzct_mapodoufu_1",
+            "file_key": "yyzct_mapodoufu_1",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_mapodoufu_1.geo.json",
+            "size_str": "133.5 KB",
+            "size_bytes": 136729,
             "mtime": "2026-10-28 15:35:11",
             "geometry_ids": [
-              "geometry.yyzct_xianroubaozi_1"
+              "geometry.yyzct_mapodoufu_1"
             ],
             "kind": "entity",
-            "stem": "yyzct_xianroubaozi_1",
+            "stem": "yyzct_mapodoufu_1",
             "tag": "normal",
             "group": "block"
           },
           {
-            "file_name": "yyzct_xianroubaozi_hand.geo.json",
-            "file_stem": "yyzct_xianroubaozi_hand",
-            "file_key": "yyzct_xianroubaozi_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_hand.geo.json",
-            "size_str": "786.5 KB",
-            "size_bytes": 805394,
+            "file_name": "yyzct_mapodoufu_hand.geo.json",
+            "file_stem": "yyzct_mapodoufu_hand",
+            "file_key": "yyzct_mapodoufu_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_mapodoufu_hand.geo.json",
+            "size_str": "153.8 KB",
+            "size_bytes": 157502,
             "mtime": "2026-10-28 15:35:11",
             "geometry_ids": [
-              "geometry.yyzct_xianroubaozi_hand"
+              "geometry.yyzct_mapodoufu_hand"
             ],
             "kind": "entity",
-            "stem": "yyzct_xianroubaozi",
+            "stem": "yyzct_mapodoufu",
             "tag": "hand",
             "group": "hand"
           }
         ],
         "animations": [
           {
-            "file_name": "yyzct_xianroubaozi_hand.animation.json",
-            "file_stem": "yyzct_xianroubaozi_hand",
-            "rel_path": "\\resource_pack\\animations\\yyzct_xianroubaozi_hand.animation.json",
-            "size_str": "85.2 KB",
-            "size_bytes": 87239,
+            "file_name": "yyzct_mapodoufu_hand.animation.json",
+            "file_stem": "yyzct_mapodoufu_hand",
+            "rel_path": "\\resource_pack\\animations\\yyzct_mapodoufu_hand.animation.json",
+            "size_str": "101.5 KB",
+            "size_bytes": 103889,
             "mtime": "2026-10-28 15:35:11",
             "animation_ids": [
-              "animation.yyzct_xianroubaozi_hand.first_hold",
-              "animation.yyzct_xianroubaozi_hand.first_scale",
-              "animation.yyzct_xianroubaozi_hand.idle",
-              "animation.yyzct_xianroubaozi_hand.take",
-              "animation.yyzct_xianroubaozi_hand.watch",
-              "animation.yyzct_xianroubaozi_hand.eat1",
-              "animation.yyzct_xianroubaozi_hand.eat2",
-              "animation.yyzct_xianroubaozi_hand.eat3",
-              "animation.yyzct_xianroubaozi_hand.eat4",
-              "animation.yyzct_xianroubaozi_hand.state2",
-              "animation.yyzct_xianroubaozi_hand.state3",
-              "animation.yyzct_xianroubaozi_hand.state4",
-              "animation.yyzct_xianroubaozi_hand.state5"
+              "animation.yyzct_mapodoufu_hand.first_hold",
+              "animation.yyzct_mapodoufu_hand.first_scale",
+              "animation.yyzct_mapodoufu_hand.idle",
+              "animation.yyzct_mapodoufu_hand.take",
+              "animation.yyzct_mapodoufu_hand.watch",
+              "animation.yyzct_mapodoufu_hand.eat1",
+              "animation.yyzct_mapodoufu_hand.eat2",
+              "animation.yyzct_mapodoufu_hand.eat3",
+              "animation.yyzct_mapodoufu_hand.eat4",
+              "animation.yyzct_mapodoufu_hand.state2",
+              "animation.yyzct_mapodoufu_hand.state3",
+              "animation.yyzct_mapodoufu_hand.state4",
+              "animation.yyzct_mapodoufu_hand.state5"
             ],
-            "prefix": "animation.yyzct_xianroubaozi_hand",
-            "stem": "yyzct_xianroubaozi",
+            "prefix": "animation.yyzct_mapodoufu_hand",
+            "stem": "yyzct_mapodoufu",
             "tag": "hand",
             "group": "hand"
           }
         ],
         "textures": [
           {
-            "key": "yyzct_xianroubaozi_3",
-            "identifier": "yyzct:yyzct_xianroubaozi_3",
-            "path": "textures/items/yyzct_xianroubaozi_3",
-            "file_name": "yyzct_xianroubaozi_3.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_xianroubaozi_3.png",
-            "size_str": "6.2 KB",
-            "size_bytes": 6314,
+            "key": "yyzct_mapodoufu_1",
+            "identifier": "yyzct:yyzct_mapodoufu_1",
+            "path": "textures/items/yyzct_mapodoufu_1",
+            "file_name": "yyzct_mapodoufu_1.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_mapodoufu_1.png",
+            "size_str": "4.7 KB",
+            "size_bytes": 4848,
             "mtime": "2026-10-28 15:35:11",
             "exists": true,
-            "thumb": "thumbs/yyzct/3ecd447af93d.png",
+            "thumb": "thumbs/yyzct/a2454892a344.png",
             "source": "item",
-            "stem": "yyzct_xianroubaozi_3",
+            "stem": "yyzct_mapodoufu_1",
             "group": "item"
           },
           {
-            "key": "yyzct_xianroubaozi",
-            "identifier": "yyzct:yyzct_xianroubaozi",
-            "path": "textures/entity/yyzct_xianroubaozi",
-            "file_name": "yyzct_xianroubaozi.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_xianroubaozi.png",
-            "size_str": "4.9 KB",
-            "size_bytes": 4985,
+            "key": "yyzct_mapodoufu",
+            "identifier": "yyzct:yyzct_mapodoufu",
+            "path": "textures/entity/yyzct_mapodoufu",
+            "file_name": "yyzct_mapodoufu.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_mapodoufu.png",
+            "size_str": "4.7 KB",
+            "size_bytes": 4815,
             "mtime": "2026-10-28 15:35:11",
             "exists": true,
-            "thumb": "thumbs/yyzct/bf7f434f4c95.png",
+            "thumb": "thumbs/yyzct/12fb67b4b5f6.png",
             "source": "entity-file",
-            "stem": "yyzct_xianroubaozi",
+            "stem": "yyzct_mapodoufu",
             "group": "hand"
           }
         ],
@@ -24406,7 +24534,120 @@
         "model_count": 2,
         "anim_count": 1,
         "texture_count": 2,
-        "icon": "thumbs/yyzct/3ecd447af93d.png"
+        "icon": "thumbs/yyzct/a2454892a344.png"
+      },
+      {
+        "id": "yyzct_mapodoufu_2",
+        "identifier": "yyzct:yyzct_mapodoufu_2",
+        "chinese_name": "麻婆豆腐",
+        "models": [
+          {
+            "file_name": "yyzct_mapodoufu_1.geo.json",
+            "file_stem": "yyzct_mapodoufu_1",
+            "file_key": "yyzct_mapodoufu_1",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_mapodoufu_1.geo.json",
+            "size_str": "133.5 KB",
+            "size_bytes": 136729,
+            "mtime": "2026-10-28 15:35:11",
+            "geometry_ids": [
+              "geometry.yyzct_mapodoufu_1"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_mapodoufu_1",
+            "tag": "normal",
+            "group": "block"
+          },
+          {
+            "file_name": "yyzct_mapodoufu_hand.geo.json",
+            "file_stem": "yyzct_mapodoufu_hand",
+            "file_key": "yyzct_mapodoufu_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_mapodoufu_hand.geo.json",
+            "size_str": "153.8 KB",
+            "size_bytes": 157502,
+            "mtime": "2026-10-28 15:35:11",
+            "geometry_ids": [
+              "geometry.yyzct_mapodoufu_hand"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_mapodoufu",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yyzct_mapodoufu_hand.animation.json",
+            "file_stem": "yyzct_mapodoufu_hand",
+            "rel_path": "\\resource_pack\\animations\\yyzct_mapodoufu_hand.animation.json",
+            "size_str": "101.5 KB",
+            "size_bytes": 103889,
+            "mtime": "2026-10-28 15:35:11",
+            "animation_ids": [
+              "animation.yyzct_mapodoufu_hand.first_hold",
+              "animation.yyzct_mapodoufu_hand.first_scale",
+              "animation.yyzct_mapodoufu_hand.idle",
+              "animation.yyzct_mapodoufu_hand.take",
+              "animation.yyzct_mapodoufu_hand.watch",
+              "animation.yyzct_mapodoufu_hand.eat1",
+              "animation.yyzct_mapodoufu_hand.eat2",
+              "animation.yyzct_mapodoufu_hand.eat3",
+              "animation.yyzct_mapodoufu_hand.eat4",
+              "animation.yyzct_mapodoufu_hand.state2",
+              "animation.yyzct_mapodoufu_hand.state3",
+              "animation.yyzct_mapodoufu_hand.state4",
+              "animation.yyzct_mapodoufu_hand.state5"
+            ],
+            "prefix": "animation.yyzct_mapodoufu_hand",
+            "stem": "yyzct_mapodoufu",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yyzct_mapodoufu_2",
+            "identifier": "yyzct:yyzct_mapodoufu_2",
+            "path": "textures/items/yyzct_mapodoufu_2",
+            "file_name": "yyzct_mapodoufu_2.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_mapodoufu_2.png",
+            "size_str": "4.7 KB",
+            "size_bytes": 4848,
+            "mtime": "2026-10-28 15:35:11",
+            "exists": true,
+            "thumb": "thumbs/yyzct/a2454892a344.png",
+            "source": "item",
+            "stem": "yyzct_mapodoufu_2",
+            "group": "item"
+          },
+          {
+            "key": "yyzct_mapodoufu",
+            "identifier": "yyzct:yyzct_mapodoufu",
+            "path": "textures/entity/yyzct_mapodoufu",
+            "file_name": "yyzct_mapodoufu.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_mapodoufu.png",
+            "size_str": "4.7 KB",
+            "size_bytes": 4815,
+            "mtime": "2026-10-28 15:35:11",
+            "exists": true,
+            "thumb": "thumbs/yyzct/12fb67b4b5f6.png",
+            "source": "entity-file",
+            "stem": "yyzct_mapodoufu",
+            "group": "hand"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 2,
+        "icon": "thumbs/yyzct/a2454892a344.png"
       },
       {
         "id": "yyzct_mapodoufu_3",
@@ -24635,232 +24876,6 @@
         "icon": "thumbs/yyzct/a2454892a344.png"
       },
       {
-        "id": "yyzct_mapodoufu_2",
-        "identifier": "yyzct:yyzct_mapodoufu_2",
-        "chinese_name": "麻婆豆腐",
-        "models": [
-          {
-            "file_name": "yyzct_mapodoufu_1.geo.json",
-            "file_stem": "yyzct_mapodoufu_1",
-            "file_key": "yyzct_mapodoufu_1",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_mapodoufu_1.geo.json",
-            "size_str": "133.5 KB",
-            "size_bytes": 136729,
-            "mtime": "2026-10-28 15:35:11",
-            "geometry_ids": [
-              "geometry.yyzct_mapodoufu_1"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_mapodoufu_1",
-            "tag": "normal",
-            "group": "block"
-          },
-          {
-            "file_name": "yyzct_mapodoufu_hand.geo.json",
-            "file_stem": "yyzct_mapodoufu_hand",
-            "file_key": "yyzct_mapodoufu_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_mapodoufu_hand.geo.json",
-            "size_str": "153.8 KB",
-            "size_bytes": 157502,
-            "mtime": "2026-10-28 15:35:11",
-            "geometry_ids": [
-              "geometry.yyzct_mapodoufu_hand"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_mapodoufu",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yyzct_mapodoufu_hand.animation.json",
-            "file_stem": "yyzct_mapodoufu_hand",
-            "rel_path": "\\resource_pack\\animations\\yyzct_mapodoufu_hand.animation.json",
-            "size_str": "101.5 KB",
-            "size_bytes": 103889,
-            "mtime": "2026-10-28 15:35:11",
-            "animation_ids": [
-              "animation.yyzct_mapodoufu_hand.first_hold",
-              "animation.yyzct_mapodoufu_hand.first_scale",
-              "animation.yyzct_mapodoufu_hand.idle",
-              "animation.yyzct_mapodoufu_hand.take",
-              "animation.yyzct_mapodoufu_hand.watch",
-              "animation.yyzct_mapodoufu_hand.eat1",
-              "animation.yyzct_mapodoufu_hand.eat2",
-              "animation.yyzct_mapodoufu_hand.eat3",
-              "animation.yyzct_mapodoufu_hand.eat4",
-              "animation.yyzct_mapodoufu_hand.state2",
-              "animation.yyzct_mapodoufu_hand.state3",
-              "animation.yyzct_mapodoufu_hand.state4",
-              "animation.yyzct_mapodoufu_hand.state5"
-            ],
-            "prefix": "animation.yyzct_mapodoufu_hand",
-            "stem": "yyzct_mapodoufu",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yyzct_mapodoufu_2",
-            "identifier": "yyzct:yyzct_mapodoufu_2",
-            "path": "textures/items/yyzct_mapodoufu_2",
-            "file_name": "yyzct_mapodoufu_2.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_mapodoufu_2.png",
-            "size_str": "4.7 KB",
-            "size_bytes": 4848,
-            "mtime": "2026-10-28 15:35:11",
-            "exists": true,
-            "thumb": "thumbs/yyzct/a2454892a344.png",
-            "source": "item",
-            "stem": "yyzct_mapodoufu_2",
-            "group": "item"
-          },
-          {
-            "key": "yyzct_mapodoufu",
-            "identifier": "yyzct:yyzct_mapodoufu",
-            "path": "textures/entity/yyzct_mapodoufu",
-            "file_name": "yyzct_mapodoufu.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_mapodoufu.png",
-            "size_str": "4.7 KB",
-            "size_bytes": 4815,
-            "mtime": "2026-10-28 15:35:11",
-            "exists": true,
-            "thumb": "thumbs/yyzct/12fb67b4b5f6.png",
-            "source": "entity-file",
-            "stem": "yyzct_mapodoufu",
-            "group": "hand"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "item",
-        "category_name": "物品",
-        "model_count": 2,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yyzct/a2454892a344.png"
-      },
-      {
-        "id": "yyzct_mapodoufu_1",
-        "identifier": "yyzct:yyzct_mapodoufu_1",
-        "chinese_name": "麻婆豆腐",
-        "models": [
-          {
-            "file_name": "yyzct_mapodoufu_1.geo.json",
-            "file_stem": "yyzct_mapodoufu_1",
-            "file_key": "yyzct_mapodoufu_1",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_mapodoufu_1.geo.json",
-            "size_str": "133.5 KB",
-            "size_bytes": 136729,
-            "mtime": "2026-10-28 15:35:11",
-            "geometry_ids": [
-              "geometry.yyzct_mapodoufu_1"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_mapodoufu_1",
-            "tag": "normal",
-            "group": "block"
-          },
-          {
-            "file_name": "yyzct_mapodoufu_hand.geo.json",
-            "file_stem": "yyzct_mapodoufu_hand",
-            "file_key": "yyzct_mapodoufu_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_mapodoufu_hand.geo.json",
-            "size_str": "153.8 KB",
-            "size_bytes": 157502,
-            "mtime": "2026-10-28 15:35:11",
-            "geometry_ids": [
-              "geometry.yyzct_mapodoufu_hand"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_mapodoufu",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yyzct_mapodoufu_hand.animation.json",
-            "file_stem": "yyzct_mapodoufu_hand",
-            "rel_path": "\\resource_pack\\animations\\yyzct_mapodoufu_hand.animation.json",
-            "size_str": "101.5 KB",
-            "size_bytes": 103889,
-            "mtime": "2026-10-28 15:35:11",
-            "animation_ids": [
-              "animation.yyzct_mapodoufu_hand.first_hold",
-              "animation.yyzct_mapodoufu_hand.first_scale",
-              "animation.yyzct_mapodoufu_hand.idle",
-              "animation.yyzct_mapodoufu_hand.take",
-              "animation.yyzct_mapodoufu_hand.watch",
-              "animation.yyzct_mapodoufu_hand.eat1",
-              "animation.yyzct_mapodoufu_hand.eat2",
-              "animation.yyzct_mapodoufu_hand.eat3",
-              "animation.yyzct_mapodoufu_hand.eat4",
-              "animation.yyzct_mapodoufu_hand.state2",
-              "animation.yyzct_mapodoufu_hand.state3",
-              "animation.yyzct_mapodoufu_hand.state4",
-              "animation.yyzct_mapodoufu_hand.state5"
-            ],
-            "prefix": "animation.yyzct_mapodoufu_hand",
-            "stem": "yyzct_mapodoufu",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yyzct_mapodoufu_1",
-            "identifier": "yyzct:yyzct_mapodoufu_1",
-            "path": "textures/items/yyzct_mapodoufu_1",
-            "file_name": "yyzct_mapodoufu_1.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_mapodoufu_1.png",
-            "size_str": "4.7 KB",
-            "size_bytes": 4848,
-            "mtime": "2026-10-28 15:35:11",
-            "exists": true,
-            "thumb": "thumbs/yyzct/a2454892a344.png",
-            "source": "item",
-            "stem": "yyzct_mapodoufu_1",
-            "group": "item"
-          },
-          {
-            "key": "yyzct_mapodoufu",
-            "identifier": "yyzct:yyzct_mapodoufu",
-            "path": "textures/entity/yyzct_mapodoufu",
-            "file_name": "yyzct_mapodoufu.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_mapodoufu.png",
-            "size_str": "4.7 KB",
-            "size_bytes": 4815,
-            "mtime": "2026-10-28 15:35:11",
-            "exists": true,
-            "thumb": "thumbs/yyzct/12fb67b4b5f6.png",
-            "source": "entity-file",
-            "stem": "yyzct_mapodoufu",
-            "group": "hand"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "item",
-        "category_name": "物品",
-        "model_count": 2,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yyzct/a2454892a344.png"
-      },
-      {
         "id": "yycore_coin",
         "identifier": "yyzct:yycore_coin",
         "chinese_name": "中餐厅资产-yycore_coin",
@@ -24933,6 +24948,402 @@
         "model_count": 1,
         "anim_count": 1,
         "texture_count": 1,
+        "icon": null
+      },
+      {
+        "id": "yyzct_wood_light",
+        "identifier": "yyzct:yyzct_wood_light",
+        "chinese_name": "原木方块（浅色）",
+        "models": [
+          {
+            "file_name": "yyzct_wood_light.json",
+            "file_stem": "yyzct_wood_light",
+            "file_key": "yyzct_wood_light",
+            "rel_path": "\\resource_pack\\models\\netease_block\\yyzct_wood_light.json",
+            "size_str": "876 B",
+            "size_bytes": 876,
+            "mtime": "2026-10-28 20:19:10",
+            "geometry_ids": [
+              "netease:block_geometry(yyzct_wood_light)"
+            ],
+            "kind": "netease_block",
+            "stem": "yyzct_wood_light",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yyzct_wood_light",
+            "identifier": "yyzct:yyzct_wood_light",
+            "path": "textures/blocks/yyzct_wood_light",
+            "file_name": "yyzct_wood_light.png",
+            "rel_path": "\\resource_pack\\textures\\blocks\\yyzct_wood_light.png",
+            "size_str": "562 B",
+            "size_bytes": 562,
+            "mtime": "2026-10-28 09:33:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/86a93f18d9b6.png",
+            "source": "terrain",
+            "stem": "yyzct_wood_light",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 1,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": null
+      },
+      {
+        "id": "yyzct_wood",
+        "identifier": "yyzct:yyzct_wood",
+        "chinese_name": "原木方块（深色）",
+        "models": [
+          {
+            "file_name": "yyzct_wood.json",
+            "file_stem": "yyzct_wood",
+            "file_key": "yyzct_wood",
+            "rel_path": "\\resource_pack\\models\\netease_block\\yyzct_wood.json",
+            "size_str": "869 B",
+            "size_bytes": 869,
+            "mtime": "2026-10-28 19:36:56",
+            "geometry_ids": [
+              "netease:block_geometry(yyzct_wood)"
+            ],
+            "kind": "netease_block",
+            "stem": "yyzct_wood",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 1,
+        "anim_count": 0,
+        "texture_count": 0,
+        "icon": null
+      },
+      {
+        "id": "yyzct_chuangtai",
+        "identifier": "yyzct:yyzct_chuangtai",
+        "chinese_name": "原木窗台（浅色）",
+        "models": [
+          {
+            "file_name": "yyzct_chuangtai.json",
+            "file_stem": "yyzct_chuangtai",
+            "file_key": "yyzct_chuangtai",
+            "rel_path": "\\resource_pack\\models\\netease_block\\yyzct_chuangtai.json",
+            "size_str": "1.7 KB",
+            "size_bytes": 1755,
+            "mtime": "2026-10-28 19:36:54",
+            "geometry_ids": [
+              "netease:block_geometry(yyzct_chuangtai)"
+            ],
+            "kind": "netease_block",
+            "stem": "yyzct_chuangtai",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 1,
+        "anim_count": 0,
+        "texture_count": 0,
+        "icon": null
+      },
+      {
+        "id": "yyzct_chuangtai_dark",
+        "identifier": "yyzct:yyzct_chuangtai_dark",
+        "chinese_name": "原木窗台（深色）",
+        "models": [
+          {
+            "file_name": "yyzct_chuangtai_dark.json",
+            "file_stem": "yyzct_chuangtai_dark",
+            "file_key": "yyzct_chuangtai_dark",
+            "rel_path": "\\resource_pack\\models\\netease_block\\yyzct_chuangtai_dark.json",
+            "size_str": "1.7 KB",
+            "size_bytes": 1759,
+            "mtime": "2026-10-28 20:19:08",
+            "geometry_ids": [
+              "netease:block_geometry(yyzct_chuangtai_dark)"
+            ],
+            "kind": "netease_block",
+            "stem": "yyzct_chuangtai_dark",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 1,
+        "anim_count": 0,
+        "texture_count": 0,
+        "icon": null
+      },
+      {
+        "id": "yyzct_zhaopaifangkuai_up_light",
+        "identifier": "yyzct:yyzct_zhaopaifangkuai_up_light",
+        "chinese_name": "招牌方块-上半（浅色）",
+        "models": [
+          {
+            "file_name": "yyzct_zhaopaifangkuai_up_light.json",
+            "file_stem": "yyzct_zhaopaifangkuai_up_light",
+            "file_key": "yyzct_zhaopaifangkuai_up_light",
+            "rel_path": "\\resource_pack\\models\\netease_block\\yyzct_zhaopaifangkuai_up_light.json",
+            "size_str": "921 B",
+            "size_bytes": 921,
+            "mtime": "2026-10-28 20:19:15",
+            "geometry_ids": [
+              "netease:block_geometry(yyzct_zhaopaifangkuai_up_light)"
+            ],
+            "kind": "netease_block",
+            "stem": "yyzct_zhaopaifangkuai_up_light",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 1,
+        "anim_count": 0,
+        "texture_count": 0,
+        "icon": null
+      },
+      {
+        "id": "yyzct_zhaopaifangkuai_up",
+        "identifier": "yyzct:yyzct_zhaopaifangkuai_up",
+        "chinese_name": "招牌方块-上半（深色）",
+        "models": [
+          {
+            "file_name": "yyzct_zhaopaifangkuai_up.json",
+            "file_stem": "yyzct_zhaopaifangkuai_up",
+            "file_key": "yyzct_zhaopaifangkuai_up",
+            "rel_path": "\\resource_pack\\models\\netease_block\\yyzct_zhaopaifangkuai_up.json",
+            "size_str": "926 B",
+            "size_bytes": 926,
+            "mtime": "2026-10-28 20:07:58",
+            "geometry_ids": [
+              "netease:block_geometry(yyzct_zhaopaifangkuai_up)"
+            ],
+            "kind": "netease_block",
+            "stem": "yyzct_zhaopaifangkuai_up",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 1,
+        "anim_count": 0,
+        "texture_count": 0,
+        "icon": null
+      },
+      {
+        "id": "yyzct_zhaopaifangkuai_down_light",
+        "identifier": "yyzct:yyzct_zhaopaifangkuai_down_light",
+        "chinese_name": "招牌方块-下半（浅色）",
+        "models": [
+          {
+            "file_name": "yyzct_zhaopaifangkuai_down_light.json",
+            "file_stem": "yyzct_zhaopaifangkuai_down_light",
+            "file_key": "yyzct_zhaopaifangkuai_down_light",
+            "rel_path": "\\resource_pack\\models\\netease_block\\yyzct_zhaopaifangkuai_down_light.json",
+            "size_str": "920 B",
+            "size_bytes": 920,
+            "mtime": "2026-10-28 20:19:17",
+            "geometry_ids": [
+              "netease:block_geometry(yyzct_zhaopaifangkuai_down_light)"
+            ],
+            "kind": "netease_block",
+            "stem": "yyzct_zhaopaifangkuai_down_light",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 1,
+        "anim_count": 0,
+        "texture_count": 0,
+        "icon": null
+      },
+      {
+        "id": "yyzct_zhaopaifangkuai_down",
+        "identifier": "yyzct:yyzct_zhaopaifangkuai_down",
+        "chinese_name": "招牌方块-下半（深色）",
+        "models": [
+          {
+            "file_name": "yyzct_zhaopaifangkuai_down.json",
+            "file_stem": "yyzct_zhaopaifangkuai_down",
+            "file_key": "yyzct_zhaopaifangkuai_down",
+            "rel_path": "\\resource_pack\\models\\netease_block\\yyzct_zhaopaifangkuai_down.json",
+            "size_str": "912 B",
+            "size_bytes": 912,
+            "mtime": "2026-10-28 19:37:06",
+            "geometry_ids": [
+              "netease:block_geometry(yyzct_zhaopaifangkuai_down)"
+            ],
+            "kind": "netease_block",
+            "stem": "yyzct_zhaopaifangkuai_down",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 1,
+        "anim_count": 0,
+        "texture_count": 0,
+        "icon": null
+      },
+      {
+        "id": "yyzct_zhaopaifangkuai_all_light",
+        "identifier": "yyzct:yyzct_zhaopaifangkuai_all_light",
+        "chinese_name": "招牌方块（浅色）",
+        "models": [
+          {
+            "file_name": "yyzct_zhaopaifangkuai_all_light.json",
+            "file_stem": "yyzct_zhaopaifangkuai_all_light",
+            "file_key": "yyzct_zhaopaifangkuai_all_light",
+            "rel_path": "\\resource_pack\\models\\netease_block\\yyzct_zhaopaifangkuai_all_light.json",
+            "size_str": "1.3 KB",
+            "size_bytes": 1349,
+            "mtime": "2026-10-28 20:19:13",
+            "geometry_ids": [
+              "netease:block_geometry(yyzct_zhaopaifangkuai_all_light)"
+            ],
+            "kind": "netease_block",
+            "stem": "yyzct_zhaopaifangkuai_all_light",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 1,
+        "anim_count": 0,
+        "texture_count": 0,
+        "icon": null
+      },
+      {
+        "id": "yyzct_zhaopaifangkuai_all",
+        "identifier": "yyzct:yyzct_zhaopaifangkuai_all",
+        "chinese_name": "招牌方块（深色）",
+        "models": [
+          {
+            "file_name": "yyzct_zhaopaifangkuai_all.json",
+            "file_stem": "yyzct_zhaopaifangkuai_all",
+            "file_key": "yyzct_zhaopaifangkuai_all",
+            "rel_path": "\\resource_pack\\models\\netease_block\\yyzct_zhaopaifangkuai_all.json",
+            "size_str": "1.3 KB",
+            "size_bytes": 1341,
+            "mtime": "2026-10-28 19:37:06",
+            "geometry_ids": [
+              "netease:block_geometry(yyzct_zhaopaifangkuai_all)"
+            ],
+            "kind": "netease_block",
+            "stem": "yyzct_zhaopaifangkuai_all",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 1,
+        "anim_count": 0,
+        "texture_count": 0,
         "icon": null
       },
       {
@@ -25249,6 +25660,80 @@
         "icon": null
       },
       {
+        "id": "yyzct_chuangtai_wood_dark",
+        "identifier": "yyzct:yyzct_chuangtai_wood_dark",
+        "chinese_name": "中餐厅资产-yyzct_chuangtai_wood_dark",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yyzct_chuangtai_wood_dark",
+            "identifier": "yyzct:yyzct_chuangtai_wood_dark",
+            "path": "textures/blocks/yyzct_chuangtai_wood_dark",
+            "file_name": "yyzct_chuangtai_wood_dark.png",
+            "rel_path": "\\resource_pack\\textures\\blocks\\yyzct_chuangtai_wood_dark.png",
+            "size_str": "1.2 KB",
+            "size_bytes": 1191,
+            "mtime": "2026-10-28 09:33:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/cac301243dbf.png",
+            "source": "terrain",
+            "stem": "yyzct_chuangtai_wood_dark",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": false,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": null
+      },
+      {
+        "id": "yyzct_chuangtai_wood_light",
+        "identifier": "yyzct:yyzct_chuangtai_wood_light",
+        "chinese_name": "中餐厅资产-yyzct_chuangtai_wood_light",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yyzct_chuangtai_wood_light",
+            "identifier": "yyzct:yyzct_chuangtai_wood_light",
+            "path": "textures/blocks/yyzct_chuangtai_wood_light",
+            "file_name": "yyzct_chuangtai_wood_light.png",
+            "rel_path": "\\resource_pack\\textures\\blocks\\yyzct_chuangtai_wood_light.png",
+            "size_str": "1.2 KB",
+            "size_bytes": 1187,
+            "mtime": "2026-10-28 09:33:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/cb83fd435d81.png",
+            "source": "terrain",
+            "stem": "yyzct_chuangtai_wood_light",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": false,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": null
+      },
+      {
         "id": "yyzct_coin",
         "identifier": "yyzct:yyzct_coin",
         "chinese_name": "中餐厅资产-yyzct_coin",
@@ -25316,6 +25801,265 @@
         "icon": "thumbs/yyzct/b9132943d8c3.png"
       },
       {
+        "id": "yyzct_wood_dark",
+        "identifier": "yyzct:yyzct_wood_dark",
+        "chinese_name": "中餐厅资产-yyzct_wood_dark",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yyzct_wood_dark",
+            "identifier": "yyzct:yyzct_wood_dark",
+            "path": "textures/blocks/yyzct_wood_dark",
+            "file_name": "yyzct_wood_dark.png",
+            "rel_path": "\\resource_pack\\textures\\blocks\\yyzct_wood_dark.png",
+            "size_str": "560 B",
+            "size_bytes": 560,
+            "mtime": "2026-10-28 09:33:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/0d175a55fbce.png",
+            "source": "terrain",
+            "stem": "yyzct_wood_dark",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": false,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": null
+      },
+      {
+        "id": "yyzct_zhaopaifangkuai_wood_dark",
+        "identifier": "yyzct:yyzct_zhaopaifangkuai_wood_dark",
+        "chinese_name": "中餐厅资产-yyzct_zhaopaifangkuai_wood_dark",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yyzct_zhaopaifangkuai_wood_dark",
+            "identifier": "yyzct:yyzct_zhaopaifangkuai_wood_dark",
+            "path": "textures/blocks/yyzct_zhaopaifangkuai_wood_dark",
+            "file_name": "yyzct_zhaopaifangkuai_wood_dark.png",
+            "rel_path": "\\resource_pack\\textures\\blocks\\yyzct_zhaopaifangkuai_wood_dark.png",
+            "size_str": "851 B",
+            "size_bytes": 851,
+            "mtime": "2026-10-28 09:33:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/364761363357.png",
+            "source": "terrain",
+            "stem": "yyzct_zhaopaifangkuai_wood_dark",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": false,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": null
+      },
+      {
+        "id": "yyzct_zhaopaifangkuai_wood_light",
+        "identifier": "yyzct:yyzct_zhaopaifangkuai_wood_light",
+        "chinese_name": "中餐厅资产-yyzct_zhaopaifangkuai_wood_light",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yyzct_zhaopaifangkuai_wood_light",
+            "identifier": "yyzct:yyzct_zhaopaifangkuai_wood_light",
+            "path": "textures/blocks/yyzct_zhaopaifangkuai_wood_light",
+            "file_name": "yyzct_zhaopaifangkuai_wood_light.png",
+            "rel_path": "\\resource_pack\\textures\\blocks\\yyzct_zhaopaifangkuai_wood_light.png",
+            "size_str": "846 B",
+            "size_bytes": 846,
+            "mtime": "2026-10-28 09:33:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/97e87aeffdbf.png",
+            "source": "terrain",
+            "stem": "yyzct_zhaopaifangkuai_wood_light",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": false,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": null
+      },
+      {
+        "id": "yyzct_dengxiang_wood_light",
+        "identifier": "yyzct:yyzct_dengxiang_wood_light",
+        "chinese_name": "木灯箱（浅色）",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yyzct_dengxiang_wood_light",
+            "identifier": "yyzct:yyzct_dengxiang_wood_light",
+            "path": "textures/blocks/yyzct_dengxiang_wood_light",
+            "file_name": "yyzct_dengxiang_wood_light.png",
+            "rel_path": "\\resource_pack\\textures\\blocks\\yyzct_dengxiang_wood_light.png",
+            "size_str": "328 B",
+            "size_bytes": 328,
+            "mtime": "2026-10-28 09:33:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/5d1f104eaab5.png",
+            "source": "terrain",
+            "stem": "yyzct_dengxiang_wood_light",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": null
+      },
+      {
+        "id": "yyzct_dengxiang_wood_dark",
+        "identifier": "yyzct:yyzct_dengxiang_wood_dark",
+        "chinese_name": "木灯箱（深色）",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yyzct_dengxiang_wood_dark",
+            "identifier": "yyzct:yyzct_dengxiang_wood_dark",
+            "path": "textures/blocks/yyzct_dengxiang_wood_dark",
+            "file_name": "yyzct_dengxiang_wood_dark.png",
+            "rel_path": "\\resource_pack\\textures\\blocks\\yyzct_dengxiang_wood_dark.png",
+            "size_str": "331 B",
+            "size_bytes": 331,
+            "mtime": "2026-10-28 09:33:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/e23cf804c93a.png",
+            "source": "terrain",
+            "stem": "yyzct_dengxiang_wood_dark",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": null
+      },
+      {
+        "id": "yyzct_window_wood_light",
+        "identifier": "yyzct:yyzct_window_wood_light",
+        "chinese_name": "木窗（浅色）",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yyzct_window_wood_light",
+            "identifier": "yyzct:yyzct_window_wood_light",
+            "path": "textures/blocks/yyzct_window_wood_light",
+            "file_name": "yyzct_window_wood_light.png",
+            "rel_path": "\\resource_pack\\textures\\blocks\\yyzct_window_wood_light.png",
+            "size_str": "217 B",
+            "size_bytes": 217,
+            "mtime": "2026-10-28 09:33:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/35e2bc5418d5.png",
+            "source": "terrain",
+            "stem": "yyzct_window_wood_light",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": null
+      },
+      {
+        "id": "yyzct_window_wood_dark",
+        "identifier": "yyzct:yyzct_window_wood_dark",
+        "chinese_name": "木窗（深色）",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yyzct_window_wood_dark",
+            "identifier": "yyzct:yyzct_window_wood_dark",
+            "path": "textures/blocks/yyzct_window_wood_dark",
+            "file_name": "yyzct_window_wood_dark.png",
+            "rel_path": "\\resource_pack\\textures\\blocks\\yyzct_window_wood_dark.png",
+            "size_str": "205 B",
+            "size_bytes": 205,
+            "mtime": "2026-10-28 09:33:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/d36b6e36740b.png",
+            "source": "terrain",
+            "stem": "yyzct_window_wood_dark",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": true,
+          "item": false,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": null
+      },
+      {
         "id": "yyzct_instbook",
         "identifier": "yyzct:yyzct_instbook",
         "chinese_name": "椰椰工坊：中餐厅-介绍书",
@@ -25379,9 +26123,9 @@
             "file_stem": "yycore_coin",
             "file_key": "yycore_coin",
             "rel_path": "\\resource_pack\\models\\entity\\yycore_coin.json",
-            "size_str": "16.3 KB",
-            "size_bytes": 16728,
-            "mtime": "2026-10-28 13:04:48",
+            "size_str": "4.2 KB",
+            "size_bytes": 4314,
+            "mtime": "2026-10-28 17:03:41",
             "geometry_ids": [
               "geometry.yycore_coin"
             ],
@@ -25586,6 +26330,43 @@
         "anim_count": 0,
         "texture_count": 1,
         "icon": null
+      },
+      {
+        "id": "yycore_coin_item",
+        "identifier": "yycore:yycore_coin_item",
+        "chinese_name": "椰椰金币",
+        "models": [],
+        "animations": [],
+        "textures": [
+          {
+            "key": "yycore_coin_item",
+            "identifier": "yycore:yycore_coin_item",
+            "path": "textures/items/yycore_coin_item",
+            "file_name": "yycore_coin_item.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yycore_coin_item.png",
+            "size_str": "29.9 KB",
+            "size_bytes": 30647,
+            "mtime": "2026-10-27 18:21:44",
+            "exists": true,
+            "thumb": "thumbs/yycore/e133e49b1df2.png",
+            "source": "item",
+            "stem": "yycore_coin_item",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": false,
+          "item": true,
+          "food": false
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 0,
+        "anim_count": 0,
+        "texture_count": 1,
+        "icon": "thumbs/yycore/e133e49b1df2.png"
       }
     ]
   }
