@@ -789,7 +789,7 @@
         var appMenuBtn = document.getElementById('ef-app-menu-btn');
         var appTabbar = document.getElementById('ef-app-tabbar');
         // 各项目留言板容器（侧边栏「小纸条」跳转锚点）
-        var NOTES_IDS = { yybld: 'ef-notes', yyzct: 'ef-z-notes' };
+        var NOTES_IDS = { yybld: 'ef-notes', yyzct: 'ef-z-notes', yycore: 'ef-c-notes' };
         // 规范文档章节目录（侧边栏 spec 分组）
         var SIDENAV_DOC = [['doc-sec-00', '全局铁律'], ['doc-sec-01', '资源链清单'],
           ['doc-sec-02', '动画规范'], ['doc-sec-03', '自检表']];
@@ -941,7 +941,7 @@
               html.push('<a href="#tree" data-proj-group="' + esc(key) + '" data-nav-filter="' + esc(c.key) + '">' +
                 '<span class="n">' + pad(i + 1) + '</span><span class="t">' + esc(c.name) + '</span></a>');
             });
-            // 无留言板实例的项目（如前置库）与访客均不生成小纸条导航
+            // 有留言板实例的项目且为协作者，才生成小纸条导航
             if (NOTES_IDS[key] && member) {
               html.push('<a href="#' + NOTES_IDS[key] + '" data-proj-group="' + esc(key) + '" data-nav-notes="1">' +
                 '<span class="n">' + pad(cats.length + 1) + '</span><span class="t">小纸条</span></a>');

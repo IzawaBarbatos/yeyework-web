@@ -84,7 +84,8 @@
       }
       /* 访客态：留言板整体不展示；条目可见但不可展开 */
       html[data-access="guest"] #ef-notes,
-      html[data-access="guest"] #ef-z-notes {
+      html[data-access="guest"] #ef-z-notes,
+      html[data-access="guest"] #ef-c-notes {
         display: none !important;
       }
       /* 访客不可展开：隐藏箭头并取消头部的点击/悬停反馈 */
@@ -1829,7 +1830,7 @@
       }
     </style>
     <!-- 移动端 App 壳层：必须在页面内联样式之后加载，确保手机端覆盖生效 -->
-    <link rel="stylesheet" href="mobile.css?v=1f93adbab0" />
+    <link rel="stylesheet" href="mobile.css?v=ae64fcdb1e" />
   </head>
   <body class="ef ef-contours ef-app">
     <div class="ef-tri ef-in-sweep" aria-hidden="true"><i></i><i></i><i></i></div>
@@ -2105,6 +2106,126 @@
                   <button class="ef-btn" type="submit" id="ef-z-notes-submit">贴上小纸条</button>
                   <button class="ef-btn small" type="reset" id="ef-z-notes-reset">清空</button>
                   <span class="notes-counter ef-field" id="ef-z-notes-counter">0 / —</span>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 顶置小纸条留言板（前置库）：结构与便利店一致，元素 id 统一加 c- 前缀以便实例化隔离 -->
+      <section class="ef-panel cut-br notes" id="ef-c-notes" aria-labelledby="ef-c-notes-title" data-master-collapsed="false" hidden>
+        <header class="notes-header">
+          <div class="notes-header-main">
+            <h2 class="notes-title" id="ef-c-notes-title">
+              小纸条留言板
+              <small id="ef-c-notes-mode">载入中…</small>
+            </h2>
+            <p class="notes-hint ef-field" id="ef-c-notes-hint"></p>
+          </div>
+          <div class="notes-header-toggles" role="group" aria-label="小纸条开关">
+            <button class="ef-btn small cut-br" type="button" id="ef-c-notes-toggle-list" aria-expanded="true">
+              <span class="ic">☰</span> 查看纸条
+            </button>
+            <button class="ef-btn small cut-br" type="button" id="ef-c-notes-toggle-compose" aria-expanded="true">
+              <span class="ic">✎</span> 编写纸条
+            </button>
+            <button class="ef-btn small cut-br notes-master-btn" type="button" id="ef-c-notes-master-toggle" aria-expanded="true">
+              <span class="ic">▴</span> 收起留言板
+            </button>
+          </div>
+        </header>
+
+        <!-- 留言板主体容器：支持整卡一键展开/收起 -->
+        <div class="notes-main-wrap" id="ef-c-notes-main-wrap">
+          <!-- 子分区 1：查阅与处理（排在上方） -->
+          <div class="notes-collapse-sec" id="ef-c-notes-list-wrap" data-collapsed="false">
+            <div class="notes-sec-head">
+              <div class="notes-sec-title">
+                <span class="ef-mono">// 01 ARCHIVE</span>
+                <span>查看小纸条</span>
+                <span class="ef-field" id="ef-c-notes-count">—</span>
+              </div>
+              <button class="notes-collapse-btn" type="button" data-toggle-sec="list" aria-expanded="true">
+                收起 ▴
+              </button>
+            </div>
+            <div class="notes-collapse-body">
+              <div class="notes-toolbar">
+                <span class="ef-seg" id="ef-c-notes-filter" role="group" aria-label="小纸条筛选">
+                  <button type="button" data-nf="open" aria-pressed="true">待处理</button>
+                  <button type="button" data-nf="resolved" aria-pressed="false">已解决</button>
+                  <button type="button" data-nf="all" aria-pressed="false">全部</button>
+                </span>
+                <label class="ef-search notes-search">
+                  <input type="search" id="ef-c-notes-q" placeholder="搜索小纸条内容、人名或关联文件" aria-label="搜索小纸条" autocomplete="off" />
+                </label>
+                <button class="ef-btn small" type="button" id="ef-c-notes-refresh">刷新</button>
+              </div>
+
+              <ol class="notes-list" id="ef-c-notes-list"></ol>
+              <p class="ef-empty" id="ef-c-notes-empty" hidden>还没有小纸条，来写第一条吧。</p>
+            </div>
+          </div>
+
+          <!-- 子分区 2：创建与编写（排在下方） -->
+          <div class="notes-collapse-sec" id="ef-c-notes-compose-wrap" data-collapsed="false">
+            <div class="notes-sec-head">
+              <div class="notes-sec-title">
+                <span class="ef-mono">// 02 COMPOSE</span>
+                <span>编写小纸条</span>
+              </div>
+              <button class="notes-collapse-btn" type="button" data-toggle-sec="compose" aria-expanded="true">
+                收起 ▴
+              </button>
+            </div>
+            <div class="notes-collapse-body">
+              <form class="notes-compose" id="ef-c-notes-form" autocomplete="off">
+                <p class="ef-notice" id="ef-c-notes-error" hidden data-flag="提示"></p>
+
+                <div class="notes-row">
+                  <span class="notes-label">填写人 <i>/ 多选</i></span>
+                  <div id="ef-c-notes-authors-dropdown"></div>
+                </div>
+
+                <div class="notes-row">
+                  <span class="notes-label">对接人 <i>/ 可选</i></span>
+                  <div class="notes-target-wrap">
+                    <div id="ef-c-notes-targets-dropdown"></div>
+                    <input class="notes-custom" id="ef-c-notes-target-custom" type="text"
+                           list="ef-c-notes-target-options" placeholder="或自由输入对接人"
+                           maxlength="24" aria-label="自由填写对接人" />
+                    <datalist id="ef-c-notes-target-options"></datalist>
+                  </div>
+                </div>
+
+                <div class="notes-row">
+                  <span class="notes-label">关联文件 <i>/ 贴上资产</i></span>
+                  <div class="notes-assets-wrap">
+                    <div class="notes-assets-actions">
+                      <button class="ef-btn small cut-br" type="button" id="ef-c-notes-attach-btn">
+                        <span class="ic">+</span> 贴上/选择文件…
+                      </button>
+                      <span class="ef-field notes-assets-hint" id="ef-c-notes-assets-count">未关联文件</span>
+                      <span class="ef-seg notes-attached-layout-seg" id="ef-c-attached-layout" role="group" aria-label="已贴文件排列方式" style="display: none;">
+                        <button type="button" data-layout="list" class="ef-layout-btn" aria-pressed="true" title="单列详细清单：每项独立一行，完整呈现名字与路径">清单列表 ☰</button>
+                        <button type="button" data-layout="grid" class="ef-layout-btn" aria-pressed="false" title="多列平铺：自适应卡片平铺">多列平铺 ⊞</button>
+                      </span>
+                    </div>
+                    <div class="notes-attached-list" id="ef-c-notes-attached-list" data-layout="list"></div>
+                  </div>
+                </div>
+
+                <div class="notes-row">
+                  <label class="notes-label" for="ef-c-notes-text">内容 <i>/ 正文</i></label>
+                  <textarea class="notes-text" id="ef-c-notes-text" rows="3"
+                            placeholder="写点什么，例如：某张贴图需要重画 / 某个模型朝向不对…（Ctrl 或 ⌘ + Enter 提交）"></textarea>
+                </div>
+
+                <div class="ef-actions notes-actions">
+                  <button class="ef-btn" type="submit" id="ef-c-notes-submit">贴上小纸条</button>
+                  <button class="ef-btn small" type="reset" id="ef-c-notes-reset">清空</button>
+                  <span class="notes-counter ef-field" id="ef-c-notes-counter">0 / —</span>
                 </div>
               </form>
             </div>
@@ -2823,7 +2944,7 @@
     <!-- 资产数据外链：由 sync_data.py 生成的 data.js 注入 window.EF_DATA -->
     <script src="data.js?v=d87244c2c8"></script>
     <!-- 留言板配置先加载：访问控制与留言板共用同一仓库 owner/repo -->
-    <script src="notes-config.js?v=27de14bc9b"></script>
+    <script src="notes-config.js?v=6902b230a2"></script>
     <!-- 访问控制：仓库协作者 / 访客（纯展示层隔离） -->
     <script src="access.js?v=09643f28ba"></script>
     <!-- 版本里程碑：已结项版本公告数据与渲染（手写维护；带版本指纹避免旧缓存） -->
@@ -2836,7 +2957,7 @@
     <script src="suggest-config.js?v=abbe6c7af6"></script>
     <script src="suggest.js?v=09889ca5c4"></script>
 
-    <script src="assets.js?v=67871ed976"></script>
+    <script src="assets.js?v=895b5211ec"></script>
 
     <!-- 小纸条留言板：配置 + 逻辑（数据层可在本地模式与 CloudBase 云端模式间自动切换） -->
     <script src="notes.js?v=89c4e24cd7"></script>

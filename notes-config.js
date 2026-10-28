@@ -43,7 +43,7 @@ window.EF_NOTES_CONFIGS = {
 
     /* 后端隔离：便利店标题不带前缀，读取时排除其它项目的标题前缀 */
     titlePrefix: "",
-    titleExcludePrefixes: ["中餐厅"],
+    titleExcludePrefixes: ["中餐厅", "前置库"],
 
     /* 板标题上显示的项目名，避免成员在默认板里写另一个项目的纸条 */
     boardName: "便利店",
@@ -74,9 +74,39 @@ window.EF_NOTES_CONFIGS = {
 
     /* 标题加项目前缀，与便利店留言板在 GitHub Issues 上相互隔离 */
     titlePrefix: "中餐厅",
+    titleExcludePrefixes: ["前置库"],
 
     /* 板标题上显示的项目名，避免成员在默认板里写另一个项目的纸条 */
     boardName: "中餐厅",
+
+    envId: "",
+    region: "ap-shanghai",
+    collection: "notes",
+    sdkUrl: "https://static.cloudbase.net/cloudbase-js-sdk/2.28.6/cloudbase.full.js"
+  },
+
+  /* 前置库：与便利店/中餐厅共用同一 GitHub 仓库，靠标题项目前缀区分归属 */
+  yycore: {
+    mode: "github",
+    github: {
+      owner: "IzawaBarbatos",
+      repo: "yeyework-web",
+      issueLabel: "ef-note"
+    },
+    authors: ["伊茶Izawa", "Maks怜悯", "YK"],
+    targets: ["伊茶Izawa", "Maks怜悯", "YK"],
+    allowCustomTarget: true,
+    maxLength: 20000,
+    pollInterval: 180000,
+
+    /* 独立本地存储键，避免与其它项目留言板互相覆盖 */
+    localKey: "ef_notes_local_yycore_v1",
+
+    /* 标题加项目前缀，与其它项目留言板在 GitHub Issues 上相互隔离 */
+    titlePrefix: "前置库",
+
+    /* 板标题上显示的项目名，避免成员在默认板里写另一个项目的纸条 */
+    boardName: "前置库",
 
     envId: "",
     region: "ap-shanghai",
@@ -88,5 +118,6 @@ window.EF_NOTES_CONFIGS = {
 /* 留言板实例清单：key = 项目 key（决定配置与资产来源），prefix = DOM id 前缀（'' 为便利店） */
 window.EF_NOTES_INSTANCES = [
   { key: "yybld", prefix: "" },
-  { key: "yyzct", prefix: "z" }
+  { key: "yyzct", prefix: "z" },
+  { key: "yycore", prefix: "c" }
 ];
