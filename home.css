@@ -169,6 +169,34 @@
   font-weight: 800;
   margin-top: 0.1rem;
 }
+/* 模组码：网易客户端搜索下载用，signal 底强烈突出 */
+.hm-proj-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  align-self: flex-start;
+  margin: 0.3rem 0 0.15rem;
+  padding: 0.15rem 0.55rem 0.15rem 0.45rem;
+  background: var(--ef-signal);
+  color: var(--ef-on-signal);
+  border-left: 3px solid var(--ef-ink);
+}
+.hm-proj-code-k {
+  font-family: var(--ef-font-ui);
+  font-size: 0.62rem;
+  font-weight: 700;
+  font-stretch: var(--ef-wider);
+  letter-spacing: 0.16em;
+  opacity: 0.72;
+}
+.hm-proj-code-v {
+  font-family: var(--ef-font-ui);
+  font-size: 1.02rem;
+  font-weight: 800;
+  font-stretch: var(--ef-wider);
+  letter-spacing: 0.06em;
+  line-height: 1.25;
+}
 .hm-proj-desc {
   margin: 0.2rem 0 0.9rem;
   font-size: 0.88rem;

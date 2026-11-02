@@ -26,10 +26,12 @@
   var PROJECT_NOTES = {
     yybld: {
       en: 'Convenience Store',
+      code: '7874331',
       desc: '140 款可互动、可自动连接、自带动画的家具、建材、食品饮品与装饰。全部内容通过介绍书内的合成配方合成「自动贩卖机」，右键购买获取；1 个椰椰金币由 2 个金粒合成。'
     },
     yyzct: {
       en: 'Chinese Restaurant',
+      code: '1997877',
       desc: '多款可互动、可自动连接、自带动画的家具、建材、菜品与装饰。通过介绍书内的合成配方合成「中餐厅点餐机」，右键购买获取；菜品需蹲下放置，手持筷子等餐具方可食用，空手可拿回。'
     },
     yycore: {
@@ -121,10 +123,16 @@
       var meta = p.key === 'yycore'
         ? esc(p.key) + ' │ 内置前置库'
         : esc(p.key) + ' │ ' + fmt(n) + ' 条目 │ ' + fmt(d.total_models || 0) + ' 模型';
+      // 模组码：便利店 / 中餐厅在网易客户端搜索下载用，需醒目展示
+      var codeTag = note.code
+        ? '<span class="hm-proj-code"><span class="hm-proj-code-k">模组码</span>' +
+          '<b class="hm-proj-code-v">' + esc(note.code) + '</b></span>'
+        : '';
       return '<a class="ef-panel cut-br hm-proj" href="#' + esc(p.key) + '">' +
         '<span class="hm-proj-no" aria-hidden="true">' + pad(i + 1) + '</span>' +
         '<span class="ef-eyebrow slash">' + esc(note.en) + '</span>' +
         '<b class="hm-proj-name">' + esc(p.name) + '</b>' +
+        codeTag +
         '<span class="ef-field">' + meta + '</span>' +
         '<p class="hm-proj-desc">' + esc(note.desc) + '</p>' +
         '<span class="hm-go">浏览资产 →</span>' +
