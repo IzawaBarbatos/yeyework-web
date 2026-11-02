@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# 注意：robots.txt 仅对域名根路径生效。本站部署在 GitHub Pages 项目路径
+# （/yeyework-web/）下，该文件不会被搜索引擎读取；保留于此，便于日后绑定
+# 自定义域名或在本地 / 独立托管时直接生效。
+Sitemap: https://izawabarbatos.github.io/yeyework-web/sitemap.xml
