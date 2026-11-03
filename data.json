@@ -30,9 +30,9 @@
         "project_name": "椰椰工坊：便利店",
         "project_rel_path": "QuModProject/椰椰工坊：便利店",
         "total_entries": 215,
-        "total_models": 263,
+        "total_models": 265,
         "total_animations": 38,
-        "total_textures": 317,
+        "total_textures": 326,
         "icon_hit": 145,
         "categories": [
           {
@@ -306,7 +306,7 @@
         }
       }
     },
-    "last_sync_time": "2026-11-04 00:15:56"
+    "last_sync_time": "2026-11-04 00:41:35"
   },
   "entries": {
     "yybld": [
@@ -4063,6 +4063,246 @@
         "icon": null
       },
       {
+        "id": "yybld_tangguo_hamigua",
+        "identifier": "yybld:yybld_tangguo_hamigua",
+        "chinese_name": "哈密瓜味糖果",
+        "models": [
+          {
+            "file_name": "yybld_display_tangguo.geo.json",
+            "file_stem": "yybld_display_tangguo",
+            "file_key": "yybld_display_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_tangguo.geo.json",
+            "size_str": "7.4 KB",
+            "size_bytes": 7586,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_tangguo.geo.json",
+            "file_stem": "yybld_tangguo",
+            "file_key": "yybld_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
+            "size_str": "43.4 KB",
+            "size_bytes": 44409,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yybld_tangguo_eat.animation.json",
+            "file_stem": "yybld_tangguo_eat",
+            "rel_path": "\\resource_pack\\animations\\yybld_tangguo_eat.animation.json",
+            "size_str": "34.8 KB",
+            "size_bytes": 35625,
+            "mtime": "2026-11-03 16:41:20",
+            "animation_ids": [
+              "animation.yybld_tangguo_eat.first_hold",
+              "animation.yybld_tangguo_eat.eat",
+              "animation.yybld_tangguo_eat.first_scale",
+              "animation.yybld_tangguo_eat.idle",
+              "animation.yybld_tangguo_eat.take"
+            ],
+            "prefix": "animation.yybld_tangguo_eat",
+            "stem": "yybld_tangguo_eat",
+            "tag": "normal",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yybld_tangguo_hamigua",
+            "identifier": "yybld:yybld_tangguo_hamigua",
+            "path": "textures/items/yybld_tangguo_hamigua",
+            "file_name": "yybld_tangguo_hamigua.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_tangguo_hamigua.png",
+            "size_str": "5.1 KB",
+            "size_bytes": 5227,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/85830cf63a05.png",
+            "source": "item",
+            "stem": "yybld_tangguo_hamigua",
+            "group": "block"
+          },
+          {
+            "key": "yybld_tangguo_hamigua",
+            "identifier": "yybld:yybld_tangguo_hamigua",
+            "path": "textures/entity/yybld_tangguo_hamigua",
+            "file_name": "yybld_tangguo_hamigua.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yybld_tangguo_hamigua.png",
+            "size_str": "2.4 KB",
+            "size_bytes": 2451,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/7770346f1f90.png",
+            "source": "terrain",
+            "stem": "yybld_tangguo_hamigua",
+            "group": "block"
+          },
+          {
+            "key": "tangguo_hamigua",
+            "identifier": "yybld:tangguo_hamigua",
+            "path": "textures/entity/display/tangguo_hamigua",
+            "file_name": "tangguo_hamigua.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\display\\tangguo_hamigua.png",
+            "size_str": "872 B",
+            "size_bytes": 872,
+            "mtime": "2026-11-04 00:35:25",
+            "exists": true,
+            "thumb": "thumbs/yybld/15170bd8ed8c.png",
+            "source": "entity-file",
+            "stem": "tangguo_hamigua",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "packaged",
+        "category_name": "包装食品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 3,
+        "icon": "thumbs/yybld/85830cf63a05.png"
+      },
+      {
+        "id": "yybld_tangguo_dabaitu",
+        "identifier": "yybld:yybld_tangguo_dabaitu",
+        "chinese_name": "大白兔糖果",
+        "models": [
+          {
+            "file_name": "yybld_display_tangguo.geo.json",
+            "file_stem": "yybld_display_tangguo",
+            "file_key": "yybld_display_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_tangguo.geo.json",
+            "size_str": "7.4 KB",
+            "size_bytes": 7586,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_tangguo.geo.json",
+            "file_stem": "yybld_tangguo",
+            "file_key": "yybld_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
+            "size_str": "43.4 KB",
+            "size_bytes": 44409,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yybld_tangguo_eat.animation.json",
+            "file_stem": "yybld_tangguo_eat",
+            "rel_path": "\\resource_pack\\animations\\yybld_tangguo_eat.animation.json",
+            "size_str": "34.8 KB",
+            "size_bytes": 35625,
+            "mtime": "2026-11-03 16:41:20",
+            "animation_ids": [
+              "animation.yybld_tangguo_eat.first_hold",
+              "animation.yybld_tangguo_eat.eat",
+              "animation.yybld_tangguo_eat.first_scale",
+              "animation.yybld_tangguo_eat.idle",
+              "animation.yybld_tangguo_eat.take"
+            ],
+            "prefix": "animation.yybld_tangguo_eat",
+            "stem": "yybld_tangguo_eat",
+            "tag": "normal",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yybld_tangguo_dabaitu",
+            "identifier": "yybld:yybld_tangguo_dabaitu",
+            "path": "textures/items/yybld_tangguo_dabaitu",
+            "file_name": "yybld_tangguo_dabaitu.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_tangguo_dabaitu.png",
+            "size_str": "5.8 KB",
+            "size_bytes": 5892,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/9830fe8183bf.png",
+            "source": "item",
+            "stem": "yybld_tangguo_dabaitu",
+            "group": "block"
+          },
+          {
+            "key": "yybld_tangguo_dabaitu",
+            "identifier": "yybld:yybld_tangguo_dabaitu",
+            "path": "textures/entity/yybld_tangguo_dabaitu",
+            "file_name": "yybld_tangguo_dabaitu.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yybld_tangguo_dabaitu.png",
+            "size_str": "2.6 KB",
+            "size_bytes": 2676,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/2cef4677a9b7.png",
+            "source": "terrain",
+            "stem": "yybld_tangguo_dabaitu",
+            "group": "block"
+          },
+          {
+            "key": "tangguo_dabaitu",
+            "identifier": "yybld:tangguo_dabaitu",
+            "path": "textures/entity/display/tangguo_dabaitu",
+            "file_name": "tangguo_dabaitu.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\display\\tangguo_dabaitu.png",
+            "size_str": "939 B",
+            "size_bytes": 939,
+            "mtime": "2026-11-04 00:35:25",
+            "exists": true,
+            "thumb": "thumbs/yybld/8647e1f482fa.png",
+            "source": "entity-file",
+            "stem": "tangguo_dabaitu",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "packaged",
+        "category_name": "包装食品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 3,
+        "icon": "thumbs/yybld/9830fe8183bf.png"
+      },
+      {
         "id": "yybld_yuebing_wurenhuotui",
         "identifier": "yybld:yybld_yuebing_wurenhuotui",
         "chinese_name": "月饼-五仁火腿",
@@ -4693,6 +4933,726 @@
         "icon": "thumbs/yybld/de1378d7b07c.png"
       },
       {
+        "id": "yybld_tangguo_taozi",
+        "identifier": "yybld:yybld_tangguo_taozi",
+        "chinese_name": "桃子味糖果",
+        "models": [
+          {
+            "file_name": "yybld_display_tangguo.geo.json",
+            "file_stem": "yybld_display_tangguo",
+            "file_key": "yybld_display_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_tangguo.geo.json",
+            "size_str": "7.4 KB",
+            "size_bytes": 7586,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_tangguo.geo.json",
+            "file_stem": "yybld_tangguo",
+            "file_key": "yybld_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
+            "size_str": "43.4 KB",
+            "size_bytes": 44409,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yybld_tangguo_eat.animation.json",
+            "file_stem": "yybld_tangguo_eat",
+            "rel_path": "\\resource_pack\\animations\\yybld_tangguo_eat.animation.json",
+            "size_str": "34.8 KB",
+            "size_bytes": 35625,
+            "mtime": "2026-11-03 16:41:20",
+            "animation_ids": [
+              "animation.yybld_tangguo_eat.first_hold",
+              "animation.yybld_tangguo_eat.eat",
+              "animation.yybld_tangguo_eat.first_scale",
+              "animation.yybld_tangguo_eat.idle",
+              "animation.yybld_tangguo_eat.take"
+            ],
+            "prefix": "animation.yybld_tangguo_eat",
+            "stem": "yybld_tangguo_eat",
+            "tag": "normal",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yybld_tangguo_taozi",
+            "identifier": "yybld:yybld_tangguo_taozi",
+            "path": "textures/items/yybld_tangguo_taozi",
+            "file_name": "yybld_tangguo_taozi.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_tangguo_taozi.png",
+            "size_str": "5.1 KB",
+            "size_bytes": 5208,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/eb95497b42c8.png",
+            "source": "item",
+            "stem": "yybld_tangguo_taozi",
+            "group": "block"
+          },
+          {
+            "key": "yybld_tangguo_taozi",
+            "identifier": "yybld:yybld_tangguo_taozi",
+            "path": "textures/entity/yybld_tangguo_taozi",
+            "file_name": "yybld_tangguo_taozi.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yybld_tangguo_taozi.png",
+            "size_str": "2.4 KB",
+            "size_bytes": 2421,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/ad8c340bd6b8.png",
+            "source": "terrain",
+            "stem": "yybld_tangguo_taozi",
+            "group": "block"
+          },
+          {
+            "key": "tangguo_taozi",
+            "identifier": "yybld:tangguo_taozi",
+            "path": "textures/entity/display/tangguo_taozi",
+            "file_name": "tangguo_taozi.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\display\\tangguo_taozi.png",
+            "size_str": "828 B",
+            "size_bytes": 828,
+            "mtime": "2026-11-04 00:35:25",
+            "exists": true,
+            "thumb": "thumbs/yybld/0ea9c9736db5.png",
+            "source": "entity-file",
+            "stem": "tangguo_taozi",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "packaged",
+        "category_name": "包装食品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 3,
+        "icon": "thumbs/yybld/eb95497b42c8.png"
+      },
+      {
+        "id": "yybld_tangguo_chengzi",
+        "identifier": "yybld:yybld_tangguo_chengzi",
+        "chinese_name": "橙子味糖果",
+        "models": [
+          {
+            "file_name": "yybld_display_tangguo.geo.json",
+            "file_stem": "yybld_display_tangguo",
+            "file_key": "yybld_display_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_tangguo.geo.json",
+            "size_str": "7.4 KB",
+            "size_bytes": 7586,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_tangguo.geo.json",
+            "file_stem": "yybld_tangguo",
+            "file_key": "yybld_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
+            "size_str": "43.4 KB",
+            "size_bytes": 44409,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yybld_tangguo_eat.animation.json",
+            "file_stem": "yybld_tangguo_eat",
+            "rel_path": "\\resource_pack\\animations\\yybld_tangguo_eat.animation.json",
+            "size_str": "34.8 KB",
+            "size_bytes": 35625,
+            "mtime": "2026-11-03 16:41:20",
+            "animation_ids": [
+              "animation.yybld_tangguo_eat.first_hold",
+              "animation.yybld_tangguo_eat.eat",
+              "animation.yybld_tangguo_eat.first_scale",
+              "animation.yybld_tangguo_eat.idle",
+              "animation.yybld_tangguo_eat.take"
+            ],
+            "prefix": "animation.yybld_tangguo_eat",
+            "stem": "yybld_tangguo_eat",
+            "tag": "normal",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yybld_tangguo_chengzi",
+            "identifier": "yybld:yybld_tangguo_chengzi",
+            "path": "textures/items/yybld_tangguo_chengzi",
+            "file_name": "yybld_tangguo_chengzi.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_tangguo_chengzi.png",
+            "size_str": "5.1 KB",
+            "size_bytes": 5195,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/66820c542742.png",
+            "source": "item",
+            "stem": "yybld_tangguo_chengzi",
+            "group": "block"
+          },
+          {
+            "key": "yybld_tangguo_chengzi",
+            "identifier": "yybld:yybld_tangguo_chengzi",
+            "path": "textures/entity/yybld_tangguo_chengzi",
+            "file_name": "yybld_tangguo_chengzi.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yybld_tangguo_chengzi.png",
+            "size_str": "2.3 KB",
+            "size_bytes": 2405,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/ed44ebd2d219.png",
+            "source": "terrain",
+            "stem": "yybld_tangguo_chengzi",
+            "group": "block"
+          },
+          {
+            "key": "tangguo_chengzi",
+            "identifier": "yybld:tangguo_chengzi",
+            "path": "textures/entity/display/tangguo_chengzi",
+            "file_name": "tangguo_chengzi.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\display\\tangguo_chengzi.png",
+            "size_str": "844 B",
+            "size_bytes": 844,
+            "mtime": "2026-11-04 00:35:25",
+            "exists": true,
+            "thumb": "thumbs/yybld/7fdf59562c80.png",
+            "source": "entity-file",
+            "stem": "tangguo_chengzi",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "packaged",
+        "category_name": "包装食品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 3,
+        "icon": "thumbs/yybld/66820c542742.png"
+      },
+      {
+        "id": "yybld_qiaokeli_niunai",
+        "identifier": "yybld:yybld_qiaokeli_niunai",
+        "chinese_name": "牛奶巧克力",
+        "models": [
+          {
+            "file_name": "yybld_display_qiaokeli.geo.json",
+            "file_stem": "yybld_display_qiaokeli",
+            "file_key": "yybld_display_qiaokeli",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_qiaokeli.geo.json",
+            "size_str": "17.0 KB",
+            "size_bytes": 17415,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_qiaokeli"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_qiaokeli.geo.json",
+            "file_stem": "yybld_qiaokeli",
+            "file_key": "yybld_qiaokeli",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli.geo.json",
+            "size_str": "98.7 KB",
+            "size_bytes": 101055,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_qiaokeli"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yybld_qiaokeli_eat.animation.json",
+            "file_stem": "yybld_qiaokeli_eat",
+            "rel_path": "\\resource_pack\\animations\\yybld_qiaokeli_eat.animation.json",
+            "size_str": "58.2 KB",
+            "size_bytes": 59622,
+            "mtime": "2026-11-03 16:41:20",
+            "animation_ids": [
+              "animation.yybld_qiaokeli_eat.first_hold",
+              "animation.yybld_qiaokeli_eat.eat",
+              "animation.yybld_qiaokeli_eat.first_scale",
+              "animation.yybld_qiaokeli_eat.idle",
+              "animation.yybld_qiaokeli_eat.take"
+            ],
+            "prefix": "animation.yybld_qiaokeli_eat",
+            "stem": "yybld_qiaokeli_eat",
+            "tag": "normal",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yybld_qiaokeli_niunai",
+            "identifier": "yybld:yybld_qiaokeli_niunai",
+            "path": "textures/items/yybld_qiaokeli_niunai",
+            "file_name": "yybld_qiaokeli_niunai.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_qiaokeli_niunai.png",
+            "size_str": "5.2 KB",
+            "size_bytes": 5310,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/517e6db3825f.png",
+            "source": "item",
+            "stem": "yybld_qiaokeli_niunai",
+            "group": "block"
+          },
+          {
+            "key": "yybld_qiaokeli_niunai",
+            "identifier": "yybld:yybld_qiaokeli_niunai",
+            "path": "textures/entity/yybld_qiaokeli_niunai",
+            "file_name": "yybld_qiaokeli_niunai.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yybld_qiaokeli_niunai.png",
+            "size_str": "1.8 KB",
+            "size_bytes": 1812,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/0d637a1ff6ef.png",
+            "source": "terrain",
+            "stem": "yybld_qiaokeli_niunai",
+            "group": "block"
+          },
+          {
+            "key": "qiaokeli_niunai",
+            "identifier": "yybld:qiaokeli_niunai",
+            "path": "textures/entity/display/qiaokeli_niunai",
+            "file_name": "qiaokeli_niunai.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\display\\qiaokeli_niunai.png",
+            "size_str": "685 B",
+            "size_bytes": 685,
+            "mtime": "2026-11-04 00:35:25",
+            "exists": true,
+            "thumb": "thumbs/yybld/112647ee17b2.png",
+            "source": "entity-file",
+            "stem": "qiaokeli_niunai",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "packaged",
+        "category_name": "包装食品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 3,
+        "icon": "thumbs/yybld/517e6db3825f.png"
+      },
+      {
+        "id": "yybld_qiaokeli_baiqiao",
+        "identifier": "yybld:yybld_qiaokeli_baiqiao",
+        "chinese_name": "白巧克力",
+        "models": [
+          {
+            "file_name": "yybld_display_qiaokeli.geo.json",
+            "file_stem": "yybld_display_qiaokeli",
+            "file_key": "yybld_display_qiaokeli",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_qiaokeli.geo.json",
+            "size_str": "17.0 KB",
+            "size_bytes": 17415,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_qiaokeli"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_qiaokeli.geo.json",
+            "file_stem": "yybld_qiaokeli",
+            "file_key": "yybld_qiaokeli",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli.geo.json",
+            "size_str": "98.7 KB",
+            "size_bytes": 101055,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_qiaokeli"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yybld_qiaokeli_eat.animation.json",
+            "file_stem": "yybld_qiaokeli_eat",
+            "rel_path": "\\resource_pack\\animations\\yybld_qiaokeli_eat.animation.json",
+            "size_str": "58.2 KB",
+            "size_bytes": 59622,
+            "mtime": "2026-11-03 16:41:20",
+            "animation_ids": [
+              "animation.yybld_qiaokeli_eat.first_hold",
+              "animation.yybld_qiaokeli_eat.eat",
+              "animation.yybld_qiaokeli_eat.first_scale",
+              "animation.yybld_qiaokeli_eat.idle",
+              "animation.yybld_qiaokeli_eat.take"
+            ],
+            "prefix": "animation.yybld_qiaokeli_eat",
+            "stem": "yybld_qiaokeli_eat",
+            "tag": "normal",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yybld_qiaokeli_baiqiao",
+            "identifier": "yybld:yybld_qiaokeli_baiqiao",
+            "path": "textures/items/yybld_qiaokeli_baiqiao",
+            "file_name": "yybld_qiaokeli_baiqiao.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_qiaokeli_baiqiao.png",
+            "size_str": "5.5 KB",
+            "size_bytes": 5608,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/4c3782159c06.png",
+            "source": "item",
+            "stem": "yybld_qiaokeli_baiqiao",
+            "group": "block"
+          },
+          {
+            "key": "yybld_qiaokeli_baiqiao",
+            "identifier": "yybld:yybld_qiaokeli_baiqiao",
+            "path": "textures/entity/yybld_qiaokeli_baiqiao",
+            "file_name": "yybld_qiaokeli_baiqiao.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yybld_qiaokeli_baiqiao.png",
+            "size_str": "1.8 KB",
+            "size_bytes": 1798,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/77e8f208bd69.png",
+            "source": "terrain",
+            "stem": "yybld_qiaokeli_baiqiao",
+            "group": "block"
+          },
+          {
+            "key": "qiaokeli_baiqiao",
+            "identifier": "yybld:qiaokeli_baiqiao",
+            "path": "textures/entity/display/qiaokeli_baiqiao",
+            "file_name": "qiaokeli_baiqiao.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\display\\qiaokeli_baiqiao.png",
+            "size_str": "628 B",
+            "size_bytes": 628,
+            "mtime": "2026-11-04 00:35:25",
+            "exists": true,
+            "thumb": "thumbs/yybld/1387ab2d7b18.png",
+            "source": "entity-file",
+            "stem": "qiaokeli_baiqiao",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "packaged",
+        "category_name": "包装食品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 3,
+        "icon": "thumbs/yybld/4c3782159c06.png"
+      },
+      {
+        "id": "yybld_qiaokeli_caomei",
+        "identifier": "yybld:yybld_qiaokeli_caomei",
+        "chinese_name": "草莓巧克力",
+        "models": [
+          {
+            "file_name": "yybld_display_qiaokeli.geo.json",
+            "file_stem": "yybld_display_qiaokeli",
+            "file_key": "yybld_display_qiaokeli",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_qiaokeli.geo.json",
+            "size_str": "17.0 KB",
+            "size_bytes": 17415,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_qiaokeli"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_qiaokeli.geo.json",
+            "file_stem": "yybld_qiaokeli",
+            "file_key": "yybld_qiaokeli",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli.geo.json",
+            "size_str": "98.7 KB",
+            "size_bytes": 101055,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_qiaokeli"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yybld_qiaokeli_eat.animation.json",
+            "file_stem": "yybld_qiaokeli_eat",
+            "rel_path": "\\resource_pack\\animations\\yybld_qiaokeli_eat.animation.json",
+            "size_str": "58.2 KB",
+            "size_bytes": 59622,
+            "mtime": "2026-11-03 16:41:20",
+            "animation_ids": [
+              "animation.yybld_qiaokeli_eat.first_hold",
+              "animation.yybld_qiaokeli_eat.eat",
+              "animation.yybld_qiaokeli_eat.first_scale",
+              "animation.yybld_qiaokeli_eat.idle",
+              "animation.yybld_qiaokeli_eat.take"
+            ],
+            "prefix": "animation.yybld_qiaokeli_eat",
+            "stem": "yybld_qiaokeli_eat",
+            "tag": "normal",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yybld_qiaokeli_caomei",
+            "identifier": "yybld:yybld_qiaokeli_caomei",
+            "path": "textures/items/yybld_qiaokeli_caomei",
+            "file_name": "yybld_qiaokeli_caomei.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_qiaokeli_caomei.png",
+            "size_str": "5.5 KB",
+            "size_bytes": 5592,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/04d4a39884f1.png",
+            "source": "item",
+            "stem": "yybld_qiaokeli_caomei",
+            "group": "block"
+          },
+          {
+            "key": "yybld_qiaokeli_caomei",
+            "identifier": "yybld:yybld_qiaokeli_caomei",
+            "path": "textures/entity/yybld_qiaokeli_caomei",
+            "file_name": "yybld_qiaokeli_caomei.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yybld_qiaokeli_caomei.png",
+            "size_str": "1.8 KB",
+            "size_bytes": 1804,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/2e49ad2df8ca.png",
+            "source": "terrain",
+            "stem": "yybld_qiaokeli_caomei",
+            "group": "block"
+          },
+          {
+            "key": "qiaokeli_caomei",
+            "identifier": "yybld:qiaokeli_caomei",
+            "path": "textures/entity/display/qiaokeli_caomei",
+            "file_name": "qiaokeli_caomei.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\display\\qiaokeli_caomei.png",
+            "size_str": "655 B",
+            "size_bytes": 655,
+            "mtime": "2026-11-04 00:35:25",
+            "exists": true,
+            "thumb": "thumbs/yybld/b3b6a5ce3844.png",
+            "source": "entity-file",
+            "stem": "qiaokeli_caomei",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "packaged",
+        "category_name": "包装食品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 3,
+        "icon": "thumbs/yybld/04d4a39884f1.png"
+      },
+      {
+        "id": "yybld_tangguo_putao",
+        "identifier": "yybld:yybld_tangguo_putao",
+        "chinese_name": "葡萄味糖果",
+        "models": [
+          {
+            "file_name": "yybld_display_tangguo.geo.json",
+            "file_stem": "yybld_display_tangguo",
+            "file_key": "yybld_display_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_tangguo.geo.json",
+            "size_str": "7.4 KB",
+            "size_bytes": 7586,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_tangguo.geo.json",
+            "file_stem": "yybld_tangguo",
+            "file_key": "yybld_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
+            "size_str": "43.4 KB",
+            "size_bytes": 44409,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yybld_tangguo_eat.animation.json",
+            "file_stem": "yybld_tangguo_eat",
+            "rel_path": "\\resource_pack\\animations\\yybld_tangguo_eat.animation.json",
+            "size_str": "34.8 KB",
+            "size_bytes": 35625,
+            "mtime": "2026-11-03 16:41:20",
+            "animation_ids": [
+              "animation.yybld_tangguo_eat.first_hold",
+              "animation.yybld_tangguo_eat.eat",
+              "animation.yybld_tangguo_eat.first_scale",
+              "animation.yybld_tangguo_eat.idle",
+              "animation.yybld_tangguo_eat.take"
+            ],
+            "prefix": "animation.yybld_tangguo_eat",
+            "stem": "yybld_tangguo_eat",
+            "tag": "normal",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yybld_tangguo_putao",
+            "identifier": "yybld:yybld_tangguo_putao",
+            "path": "textures/items/yybld_tangguo_putao",
+            "file_name": "yybld_tangguo_putao.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_tangguo_putao.png",
+            "size_str": "5.1 KB",
+            "size_bytes": 5241,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/13f1e4026bce.png",
+            "source": "item",
+            "stem": "yybld_tangguo_putao",
+            "group": "block"
+          },
+          {
+            "key": "yybld_tangguo_putao",
+            "identifier": "yybld:yybld_tangguo_putao",
+            "path": "textures/entity/yybld_tangguo_putao",
+            "file_name": "yybld_tangguo_putao.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yybld_tangguo_putao.png",
+            "size_str": "2.3 KB",
+            "size_bytes": 2381,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/24e8c9c62738.png",
+            "source": "terrain",
+            "stem": "yybld_tangguo_putao",
+            "group": "block"
+          },
+          {
+            "key": "tangguo_putao",
+            "identifier": "yybld:tangguo_putao",
+            "path": "textures/entity/display/tangguo_putao",
+            "file_name": "tangguo_putao.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\display\\tangguo_putao.png",
+            "size_str": "810 B",
+            "size_bytes": 810,
+            "mtime": "2026-11-04 00:35:25",
+            "exists": true,
+            "thumb": "thumbs/yybld/1d711fa69142.png",
+            "source": "entity-file",
+            "stem": "tangguo_putao",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "packaged",
+        "category_name": "包装食品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 3,
+        "icon": "thumbs/yybld/13f1e4026bce.png"
+      },
+      {
         "id": "yybld_shupian_tongzhuang_haitaiwei",
         "identifier": "yybld:yybld_shupian_tongzhuang_haitaiwei",
         "chinese_name": "薯片桶装-海苔味",
@@ -5275,6 +6235,126 @@
         "icon": "thumbs/yybld/b076ebbff0e4.png"
       },
       {
+        "id": "yybld_qiaokeli_putong",
+        "identifier": "yybld:yybld_qiaokeli_putong",
+        "chinese_name": "黑巧克力",
+        "models": [
+          {
+            "file_name": "yybld_display_qiaokeli.geo.json",
+            "file_stem": "yybld_display_qiaokeli",
+            "file_key": "yybld_display_qiaokeli",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_qiaokeli.geo.json",
+            "size_str": "17.0 KB",
+            "size_bytes": 17415,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_qiaokeli"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_qiaokeli.geo.json",
+            "file_stem": "yybld_qiaokeli",
+            "file_key": "yybld_qiaokeli",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli.geo.json",
+            "size_str": "98.7 KB",
+            "size_bytes": 101055,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_qiaokeli"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "normal",
+            "group": "block"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yybld_qiaokeli_eat.animation.json",
+            "file_stem": "yybld_qiaokeli_eat",
+            "rel_path": "\\resource_pack\\animations\\yybld_qiaokeli_eat.animation.json",
+            "size_str": "58.2 KB",
+            "size_bytes": 59622,
+            "mtime": "2026-11-03 16:41:20",
+            "animation_ids": [
+              "animation.yybld_qiaokeli_eat.first_hold",
+              "animation.yybld_qiaokeli_eat.eat",
+              "animation.yybld_qiaokeli_eat.first_scale",
+              "animation.yybld_qiaokeli_eat.idle",
+              "animation.yybld_qiaokeli_eat.take"
+            ],
+            "prefix": "animation.yybld_qiaokeli_eat",
+            "stem": "yybld_qiaokeli_eat",
+            "tag": "normal",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yybld_qiaokeli_putong",
+            "identifier": "yybld:yybld_qiaokeli_putong",
+            "path": "textures/items/yybld_qiaokeli_putong",
+            "file_name": "yybld_qiaokeli_putong.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yybld_qiaokeli_putong.png",
+            "size_str": "4.9 KB",
+            "size_bytes": 5012,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/50eb5503e85f.png",
+            "source": "item",
+            "stem": "yybld_qiaokeli_putong",
+            "group": "block"
+          },
+          {
+            "key": "yybld_qiaokeli_putong",
+            "identifier": "yybld:yybld_qiaokeli_putong",
+            "path": "textures/entity/yybld_qiaokeli_putong",
+            "file_name": "yybld_qiaokeli_putong.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yybld_qiaokeli_putong.png",
+            "size_str": "1.7 KB",
+            "size_bytes": 1768,
+            "mtime": "2026-11-03 16:41:20",
+            "exists": true,
+            "thumb": "thumbs/yybld/a78b6149c70c.png",
+            "source": "terrain",
+            "stem": "yybld_qiaokeli_putong",
+            "group": "block"
+          },
+          {
+            "key": "qiaokeli_putong",
+            "identifier": "yybld:qiaokeli_putong",
+            "path": "textures/entity/display/qiaokeli_putong",
+            "file_name": "qiaokeli_putong.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\display\\qiaokeli_putong.png",
+            "size_str": "644 B",
+            "size_bytes": 644,
+            "mtime": "2026-11-04 00:35:25",
+            "exists": true,
+            "thumb": "thumbs/yybld/3f0de4010018.png",
+            "source": "entity-file",
+            "stem": "qiaokeli_putong",
+            "group": "block"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "packaged",
+        "category_name": "包装食品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 3,
+        "icon": "thumbs/yybld/50eb5503e85f.png"
+      },
+      {
         "id": "yybld_tiezhigunzhou",
         "identifier": "yybld:yybld_tiezhigunzhou",
         "chinese_name": "便利店资产-yybld_tiezhigunzhou",
@@ -5363,807 +6443,6 @@
         "anim_count": 1,
         "texture_count": 2,
         "icon": "thumbs/yybld/31c61496c619.png"
-      },
-      {
-        "id": "yybld_tangguo_hamigua",
-        "identifier": "yybld:yybld_tangguo_hamigua",
-        "chinese_name": "哈密瓜味糖果",
-        "models": [
-          {
-            "file_name": "yybld_tangguo.geo.json",
-            "file_stem": "yybld_tangguo",
-            "file_key": "yybld_tangguo",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
-            "size_str": "43.4 KB",
-            "size_bytes": 44409,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_tangguo"
-            ],
-            "kind": "entity",
-            "stem": "yybld_tangguo",
-            "tag": "normal",
-            "group": "block"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yybld_tangguo_eat.animation.json",
-            "file_stem": "yybld_tangguo_eat",
-            "rel_path": "\\resource_pack\\animations\\yybld_tangguo_eat.animation.json",
-            "size_str": "34.8 KB",
-            "size_bytes": 35625,
-            "mtime": "2026-11-03 16:41:20",
-            "animation_ids": [
-              "animation.yybld_tangguo_eat.first_hold",
-              "animation.yybld_tangguo_eat.eat",
-              "animation.yybld_tangguo_eat.first_scale",
-              "animation.yybld_tangguo_eat.idle",
-              "animation.yybld_tangguo_eat.take"
-            ],
-            "prefix": "animation.yybld_tangguo_eat",
-            "stem": "yybld_tangguo_eat",
-            "tag": "normal",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yybld_tangguo_hamigua",
-            "identifier": "yybld:yybld_tangguo_hamigua",
-            "path": "textures/items/yybld_tangguo_hamigua",
-            "file_name": "yybld_tangguo_hamigua.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yybld_tangguo_hamigua.png",
-            "size_str": "5.1 KB",
-            "size_bytes": 5227,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/85830cf63a05.png",
-            "source": "item",
-            "stem": "yybld_tangguo_hamigua",
-            "group": "block"
-          },
-          {
-            "key": "yybld_tangguo_hamigua",
-            "identifier": "yybld:yybld_tangguo_hamigua",
-            "path": "textures/entity/yybld_tangguo_hamigua",
-            "file_name": "yybld_tangguo_hamigua.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yybld_tangguo_hamigua.png",
-            "size_str": "2.4 KB",
-            "size_bytes": 2451,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/7770346f1f90.png",
-            "source": "terrain",
-            "stem": "yybld_tangguo_hamigua",
-            "group": "block"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "packaged",
-        "category_name": "包装食品",
-        "model_count": 1,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yybld/85830cf63a05.png"
-      },
-      {
-        "id": "yybld_tangguo_dabaitu",
-        "identifier": "yybld:yybld_tangguo_dabaitu",
-        "chinese_name": "大白兔糖果",
-        "models": [
-          {
-            "file_name": "yybld_tangguo.geo.json",
-            "file_stem": "yybld_tangguo",
-            "file_key": "yybld_tangguo",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
-            "size_str": "43.4 KB",
-            "size_bytes": 44409,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_tangguo"
-            ],
-            "kind": "entity",
-            "stem": "yybld_tangguo",
-            "tag": "normal",
-            "group": "block"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yybld_tangguo_eat.animation.json",
-            "file_stem": "yybld_tangguo_eat",
-            "rel_path": "\\resource_pack\\animations\\yybld_tangguo_eat.animation.json",
-            "size_str": "34.8 KB",
-            "size_bytes": 35625,
-            "mtime": "2026-11-03 16:41:20",
-            "animation_ids": [
-              "animation.yybld_tangguo_eat.first_hold",
-              "animation.yybld_tangguo_eat.eat",
-              "animation.yybld_tangguo_eat.first_scale",
-              "animation.yybld_tangguo_eat.idle",
-              "animation.yybld_tangguo_eat.take"
-            ],
-            "prefix": "animation.yybld_tangguo_eat",
-            "stem": "yybld_tangguo_eat",
-            "tag": "normal",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yybld_tangguo_dabaitu",
-            "identifier": "yybld:yybld_tangguo_dabaitu",
-            "path": "textures/items/yybld_tangguo_dabaitu",
-            "file_name": "yybld_tangguo_dabaitu.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yybld_tangguo_dabaitu.png",
-            "size_str": "5.8 KB",
-            "size_bytes": 5892,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/9830fe8183bf.png",
-            "source": "item",
-            "stem": "yybld_tangguo_dabaitu",
-            "group": "block"
-          },
-          {
-            "key": "yybld_tangguo_dabaitu",
-            "identifier": "yybld:yybld_tangguo_dabaitu",
-            "path": "textures/entity/yybld_tangguo_dabaitu",
-            "file_name": "yybld_tangguo_dabaitu.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yybld_tangguo_dabaitu.png",
-            "size_str": "2.6 KB",
-            "size_bytes": 2676,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/2cef4677a9b7.png",
-            "source": "terrain",
-            "stem": "yybld_tangguo_dabaitu",
-            "group": "block"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "packaged",
-        "category_name": "包装食品",
-        "model_count": 1,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yybld/9830fe8183bf.png"
-      },
-      {
-        "id": "yybld_qiaokeli_putong",
-        "identifier": "yybld:yybld_qiaokeli_putong",
-        "chinese_name": "普通巧克力",
-        "models": [
-          {
-            "file_name": "yybld_qiaokeli.geo.json",
-            "file_stem": "yybld_qiaokeli",
-            "file_key": "yybld_qiaokeli",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli.geo.json",
-            "size_str": "98.7 KB",
-            "size_bytes": 101055,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_qiaokeli"
-            ],
-            "kind": "entity",
-            "stem": "yybld_qiaokeli",
-            "tag": "normal",
-            "group": "block"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yybld_qiaokeli_eat.animation.json",
-            "file_stem": "yybld_qiaokeli_eat",
-            "rel_path": "\\resource_pack\\animations\\yybld_qiaokeli_eat.animation.json",
-            "size_str": "58.2 KB",
-            "size_bytes": 59622,
-            "mtime": "2026-11-03 16:41:20",
-            "animation_ids": [
-              "animation.yybld_qiaokeli_eat.first_hold",
-              "animation.yybld_qiaokeli_eat.eat",
-              "animation.yybld_qiaokeli_eat.first_scale",
-              "animation.yybld_qiaokeli_eat.idle",
-              "animation.yybld_qiaokeli_eat.take"
-            ],
-            "prefix": "animation.yybld_qiaokeli_eat",
-            "stem": "yybld_qiaokeli_eat",
-            "tag": "normal",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yybld_qiaokeli_putong",
-            "identifier": "yybld:yybld_qiaokeli_putong",
-            "path": "textures/items/yybld_qiaokeli_putong",
-            "file_name": "yybld_qiaokeli_putong.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yybld_qiaokeli_putong.png",
-            "size_str": "4.9 KB",
-            "size_bytes": 5012,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/50eb5503e85f.png",
-            "source": "item",
-            "stem": "yybld_qiaokeli_putong",
-            "group": "block"
-          },
-          {
-            "key": "yybld_qiaokeli_putong",
-            "identifier": "yybld:yybld_qiaokeli_putong",
-            "path": "textures/entity/yybld_qiaokeli_putong",
-            "file_name": "yybld_qiaokeli_putong.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yybld_qiaokeli_putong.png",
-            "size_str": "1.7 KB",
-            "size_bytes": 1768,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/a78b6149c70c.png",
-            "source": "terrain",
-            "stem": "yybld_qiaokeli_putong",
-            "group": "block"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "packaged",
-        "category_name": "包装食品",
-        "model_count": 1,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yybld/50eb5503e85f.png"
-      },
-      {
-        "id": "yybld_tangguo_taozi",
-        "identifier": "yybld:yybld_tangguo_taozi",
-        "chinese_name": "桃子味糖果",
-        "models": [
-          {
-            "file_name": "yybld_tangguo.geo.json",
-            "file_stem": "yybld_tangguo",
-            "file_key": "yybld_tangguo",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
-            "size_str": "43.4 KB",
-            "size_bytes": 44409,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_tangguo"
-            ],
-            "kind": "entity",
-            "stem": "yybld_tangguo",
-            "tag": "normal",
-            "group": "block"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yybld_tangguo_eat.animation.json",
-            "file_stem": "yybld_tangguo_eat",
-            "rel_path": "\\resource_pack\\animations\\yybld_tangguo_eat.animation.json",
-            "size_str": "34.8 KB",
-            "size_bytes": 35625,
-            "mtime": "2026-11-03 16:41:20",
-            "animation_ids": [
-              "animation.yybld_tangguo_eat.first_hold",
-              "animation.yybld_tangguo_eat.eat",
-              "animation.yybld_tangguo_eat.first_scale",
-              "animation.yybld_tangguo_eat.idle",
-              "animation.yybld_tangguo_eat.take"
-            ],
-            "prefix": "animation.yybld_tangguo_eat",
-            "stem": "yybld_tangguo_eat",
-            "tag": "normal",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yybld_tangguo_taozi",
-            "identifier": "yybld:yybld_tangguo_taozi",
-            "path": "textures/items/yybld_tangguo_taozi",
-            "file_name": "yybld_tangguo_taozi.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yybld_tangguo_taozi.png",
-            "size_str": "5.1 KB",
-            "size_bytes": 5208,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/eb95497b42c8.png",
-            "source": "item",
-            "stem": "yybld_tangguo_taozi",
-            "group": "block"
-          },
-          {
-            "key": "yybld_tangguo_taozi",
-            "identifier": "yybld:yybld_tangguo_taozi",
-            "path": "textures/entity/yybld_tangguo_taozi",
-            "file_name": "yybld_tangguo_taozi.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yybld_tangguo_taozi.png",
-            "size_str": "2.4 KB",
-            "size_bytes": 2421,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/ad8c340bd6b8.png",
-            "source": "terrain",
-            "stem": "yybld_tangguo_taozi",
-            "group": "block"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "packaged",
-        "category_name": "包装食品",
-        "model_count": 1,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yybld/eb95497b42c8.png"
-      },
-      {
-        "id": "yybld_tangguo_chengzi",
-        "identifier": "yybld:yybld_tangguo_chengzi",
-        "chinese_name": "橙子味糖果",
-        "models": [
-          {
-            "file_name": "yybld_tangguo.geo.json",
-            "file_stem": "yybld_tangguo",
-            "file_key": "yybld_tangguo",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
-            "size_str": "43.4 KB",
-            "size_bytes": 44409,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_tangguo"
-            ],
-            "kind": "entity",
-            "stem": "yybld_tangguo",
-            "tag": "normal",
-            "group": "block"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yybld_tangguo_eat.animation.json",
-            "file_stem": "yybld_tangguo_eat",
-            "rel_path": "\\resource_pack\\animations\\yybld_tangguo_eat.animation.json",
-            "size_str": "34.8 KB",
-            "size_bytes": 35625,
-            "mtime": "2026-11-03 16:41:20",
-            "animation_ids": [
-              "animation.yybld_tangguo_eat.first_hold",
-              "animation.yybld_tangguo_eat.eat",
-              "animation.yybld_tangguo_eat.first_scale",
-              "animation.yybld_tangguo_eat.idle",
-              "animation.yybld_tangguo_eat.take"
-            ],
-            "prefix": "animation.yybld_tangguo_eat",
-            "stem": "yybld_tangguo_eat",
-            "tag": "normal",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yybld_tangguo_chengzi",
-            "identifier": "yybld:yybld_tangguo_chengzi",
-            "path": "textures/items/yybld_tangguo_chengzi",
-            "file_name": "yybld_tangguo_chengzi.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yybld_tangguo_chengzi.png",
-            "size_str": "5.1 KB",
-            "size_bytes": 5195,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/66820c542742.png",
-            "source": "item",
-            "stem": "yybld_tangguo_chengzi",
-            "group": "block"
-          },
-          {
-            "key": "yybld_tangguo_chengzi",
-            "identifier": "yybld:yybld_tangguo_chengzi",
-            "path": "textures/entity/yybld_tangguo_chengzi",
-            "file_name": "yybld_tangguo_chengzi.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yybld_tangguo_chengzi.png",
-            "size_str": "2.3 KB",
-            "size_bytes": 2405,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/ed44ebd2d219.png",
-            "source": "terrain",
-            "stem": "yybld_tangguo_chengzi",
-            "group": "block"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "packaged",
-        "category_name": "包装食品",
-        "model_count": 1,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yybld/66820c542742.png"
-      },
-      {
-        "id": "yybld_qiaokeli_niunai",
-        "identifier": "yybld:yybld_qiaokeli_niunai",
-        "chinese_name": "牛奶巧克力",
-        "models": [
-          {
-            "file_name": "yybld_qiaokeli.geo.json",
-            "file_stem": "yybld_qiaokeli",
-            "file_key": "yybld_qiaokeli",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli.geo.json",
-            "size_str": "98.7 KB",
-            "size_bytes": 101055,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_qiaokeli"
-            ],
-            "kind": "entity",
-            "stem": "yybld_qiaokeli",
-            "tag": "normal",
-            "group": "block"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yybld_qiaokeli_eat.animation.json",
-            "file_stem": "yybld_qiaokeli_eat",
-            "rel_path": "\\resource_pack\\animations\\yybld_qiaokeli_eat.animation.json",
-            "size_str": "58.2 KB",
-            "size_bytes": 59622,
-            "mtime": "2026-11-03 16:41:20",
-            "animation_ids": [
-              "animation.yybld_qiaokeli_eat.first_hold",
-              "animation.yybld_qiaokeli_eat.eat",
-              "animation.yybld_qiaokeli_eat.first_scale",
-              "animation.yybld_qiaokeli_eat.idle",
-              "animation.yybld_qiaokeli_eat.take"
-            ],
-            "prefix": "animation.yybld_qiaokeli_eat",
-            "stem": "yybld_qiaokeli_eat",
-            "tag": "normal",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yybld_qiaokeli_niunai",
-            "identifier": "yybld:yybld_qiaokeli_niunai",
-            "path": "textures/items/yybld_qiaokeli_niunai",
-            "file_name": "yybld_qiaokeli_niunai.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yybld_qiaokeli_niunai.png",
-            "size_str": "5.2 KB",
-            "size_bytes": 5310,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/517e6db3825f.png",
-            "source": "item",
-            "stem": "yybld_qiaokeli_niunai",
-            "group": "block"
-          },
-          {
-            "key": "yybld_qiaokeli_niunai",
-            "identifier": "yybld:yybld_qiaokeli_niunai",
-            "path": "textures/entity/yybld_qiaokeli_niunai",
-            "file_name": "yybld_qiaokeli_niunai.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yybld_qiaokeli_niunai.png",
-            "size_str": "1.8 KB",
-            "size_bytes": 1812,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/0d637a1ff6ef.png",
-            "source": "terrain",
-            "stem": "yybld_qiaokeli_niunai",
-            "group": "block"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "packaged",
-        "category_name": "包装食品",
-        "model_count": 1,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yybld/517e6db3825f.png"
-      },
-      {
-        "id": "yybld_qiaokeli_baiqiao",
-        "identifier": "yybld:yybld_qiaokeli_baiqiao",
-        "chinese_name": "白巧",
-        "models": [
-          {
-            "file_name": "yybld_qiaokeli.geo.json",
-            "file_stem": "yybld_qiaokeli",
-            "file_key": "yybld_qiaokeli",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli.geo.json",
-            "size_str": "98.7 KB",
-            "size_bytes": 101055,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_qiaokeli"
-            ],
-            "kind": "entity",
-            "stem": "yybld_qiaokeli",
-            "tag": "normal",
-            "group": "block"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yybld_qiaokeli_eat.animation.json",
-            "file_stem": "yybld_qiaokeli_eat",
-            "rel_path": "\\resource_pack\\animations\\yybld_qiaokeli_eat.animation.json",
-            "size_str": "58.2 KB",
-            "size_bytes": 59622,
-            "mtime": "2026-11-03 16:41:20",
-            "animation_ids": [
-              "animation.yybld_qiaokeli_eat.first_hold",
-              "animation.yybld_qiaokeli_eat.eat",
-              "animation.yybld_qiaokeli_eat.first_scale",
-              "animation.yybld_qiaokeli_eat.idle",
-              "animation.yybld_qiaokeli_eat.take"
-            ],
-            "prefix": "animation.yybld_qiaokeli_eat",
-            "stem": "yybld_qiaokeli_eat",
-            "tag": "normal",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yybld_qiaokeli_baiqiao",
-            "identifier": "yybld:yybld_qiaokeli_baiqiao",
-            "path": "textures/items/yybld_qiaokeli_baiqiao",
-            "file_name": "yybld_qiaokeli_baiqiao.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yybld_qiaokeli_baiqiao.png",
-            "size_str": "5.5 KB",
-            "size_bytes": 5608,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/4c3782159c06.png",
-            "source": "item",
-            "stem": "yybld_qiaokeli_baiqiao",
-            "group": "block"
-          },
-          {
-            "key": "yybld_qiaokeli_baiqiao",
-            "identifier": "yybld:yybld_qiaokeli_baiqiao",
-            "path": "textures/entity/yybld_qiaokeli_baiqiao",
-            "file_name": "yybld_qiaokeli_baiqiao.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yybld_qiaokeli_baiqiao.png",
-            "size_str": "1.8 KB",
-            "size_bytes": 1798,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/77e8f208bd69.png",
-            "source": "terrain",
-            "stem": "yybld_qiaokeli_baiqiao",
-            "group": "block"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "packaged",
-        "category_name": "包装食品",
-        "model_count": 1,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yybld/4c3782159c06.png"
-      },
-      {
-        "id": "yybld_qiaokeli_caomei",
-        "identifier": "yybld:yybld_qiaokeli_caomei",
-        "chinese_name": "草莓巧克力",
-        "models": [
-          {
-            "file_name": "yybld_qiaokeli.geo.json",
-            "file_stem": "yybld_qiaokeli",
-            "file_key": "yybld_qiaokeli",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli.geo.json",
-            "size_str": "98.7 KB",
-            "size_bytes": 101055,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_qiaokeli"
-            ],
-            "kind": "entity",
-            "stem": "yybld_qiaokeli",
-            "tag": "normal",
-            "group": "block"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yybld_qiaokeli_eat.animation.json",
-            "file_stem": "yybld_qiaokeli_eat",
-            "rel_path": "\\resource_pack\\animations\\yybld_qiaokeli_eat.animation.json",
-            "size_str": "58.2 KB",
-            "size_bytes": 59622,
-            "mtime": "2026-11-03 16:41:20",
-            "animation_ids": [
-              "animation.yybld_qiaokeli_eat.first_hold",
-              "animation.yybld_qiaokeli_eat.eat",
-              "animation.yybld_qiaokeli_eat.first_scale",
-              "animation.yybld_qiaokeli_eat.idle",
-              "animation.yybld_qiaokeli_eat.take"
-            ],
-            "prefix": "animation.yybld_qiaokeli_eat",
-            "stem": "yybld_qiaokeli_eat",
-            "tag": "normal",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yybld_qiaokeli_caomei",
-            "identifier": "yybld:yybld_qiaokeli_caomei",
-            "path": "textures/items/yybld_qiaokeli_caomei",
-            "file_name": "yybld_qiaokeli_caomei.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yybld_qiaokeli_caomei.png",
-            "size_str": "5.5 KB",
-            "size_bytes": 5592,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/04d4a39884f1.png",
-            "source": "item",
-            "stem": "yybld_qiaokeli_caomei",
-            "group": "block"
-          },
-          {
-            "key": "yybld_qiaokeli_caomei",
-            "identifier": "yybld:yybld_qiaokeli_caomei",
-            "path": "textures/entity/yybld_qiaokeli_caomei",
-            "file_name": "yybld_qiaokeli_caomei.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yybld_qiaokeli_caomei.png",
-            "size_str": "1.8 KB",
-            "size_bytes": 1804,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/2e49ad2df8ca.png",
-            "source": "terrain",
-            "stem": "yybld_qiaokeli_caomei",
-            "group": "block"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "packaged",
-        "category_name": "包装食品",
-        "model_count": 1,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yybld/04d4a39884f1.png"
-      },
-      {
-        "id": "yybld_tangguo_putao",
-        "identifier": "yybld:yybld_tangguo_putao",
-        "chinese_name": "葡萄味糖果",
-        "models": [
-          {
-            "file_name": "yybld_tangguo.geo.json",
-            "file_stem": "yybld_tangguo",
-            "file_key": "yybld_tangguo",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
-            "size_str": "43.4 KB",
-            "size_bytes": 44409,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_tangguo"
-            ],
-            "kind": "entity",
-            "stem": "yybld_tangguo",
-            "tag": "normal",
-            "group": "block"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yybld_tangguo_eat.animation.json",
-            "file_stem": "yybld_tangguo_eat",
-            "rel_path": "\\resource_pack\\animations\\yybld_tangguo_eat.animation.json",
-            "size_str": "34.8 KB",
-            "size_bytes": 35625,
-            "mtime": "2026-11-03 16:41:20",
-            "animation_ids": [
-              "animation.yybld_tangguo_eat.first_hold",
-              "animation.yybld_tangguo_eat.eat",
-              "animation.yybld_tangguo_eat.first_scale",
-              "animation.yybld_tangguo_eat.idle",
-              "animation.yybld_tangguo_eat.take"
-            ],
-            "prefix": "animation.yybld_tangguo_eat",
-            "stem": "yybld_tangguo_eat",
-            "tag": "normal",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yybld_tangguo_putao",
-            "identifier": "yybld:yybld_tangguo_putao",
-            "path": "textures/items/yybld_tangguo_putao",
-            "file_name": "yybld_tangguo_putao.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yybld_tangguo_putao.png",
-            "size_str": "5.1 KB",
-            "size_bytes": 5241,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/13f1e4026bce.png",
-            "source": "item",
-            "stem": "yybld_tangguo_putao",
-            "group": "block"
-          },
-          {
-            "key": "yybld_tangguo_putao",
-            "identifier": "yybld:yybld_tangguo_putao",
-            "path": "textures/entity/yybld_tangguo_putao",
-            "file_name": "yybld_tangguo_putao.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yybld_tangguo_putao.png",
-            "size_str": "2.3 KB",
-            "size_bytes": 2381,
-            "mtime": "2026-11-03 16:41:20",
-            "exists": true,
-            "thumb": "thumbs/yybld/24e8c9c62738.png",
-            "source": "terrain",
-            "stem": "yybld_tangguo_putao",
-            "group": "block"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "packaged",
-        "category_name": "包装食品",
-        "model_count": 1,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yybld/13f1e4026bce.png"
       },
       {
         "id": "yybld_kqs_baise_b",
@@ -15673,6 +15952,76 @@
         "icon": "thumbs/yybld/03cbd6f2ad5a.png"
       },
       {
+        "id": "yybld_qiaokeli",
+        "identifier": "yybld:yybld_qiaokeli",
+        "chinese_name": "便利店资产-yybld_qiaokeli",
+        "models": [
+          {
+            "file_name": "yybld_display_qiaokeli.geo.json",
+            "file_stem": "yybld_display_qiaokeli",
+            "file_key": "yybld_display_qiaokeli",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_qiaokeli.geo.json",
+            "size_str": "17.0 KB",
+            "size_bytes": 17415,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_qiaokeli"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_qiaokeli.geo.json",
+            "file_stem": "yybld_qiaokeli",
+            "file_key": "yybld_qiaokeli",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli.geo.json",
+            "size_str": "98.7 KB",
+            "size_bytes": 101055,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_qiaokeli"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "normal",
+            "group": "block"
+          },
+          {
+            "file_name": "yybld_qiaokeli_hand.geo.json",
+            "file_stem": "yybld_qiaokeli_hand",
+            "file_key": "yybld_qiaokeli_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli_hand.geo.json",
+            "size_str": "124.1 KB",
+            "size_bytes": 127094,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_qiaokeli_hand"
+            ],
+            "kind": "entity",
+            "stem": "yybld_qiaokeli",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": false,
+          "item": false,
+          "food": false
+        },
+        "category": "decor",
+        "category_name": "装饰与建筑",
+        "model_count": 3,
+        "anim_count": 0,
+        "texture_count": 0,
+        "icon": "thumbs/yybld/4c3782159c06.png"
+      },
+      {
         "id": "yybld_shupian",
         "identifier": "yybld:yybld_shupian",
         "chinese_name": "便利店资产-yybld_shupian",
@@ -15811,6 +16160,76 @@
         "anim_count": 0,
         "texture_count": 0,
         "icon": "thumbs/yybld/af54df1c9bc9.png"
+      },
+      {
+        "id": "yybld_tangguo",
+        "identifier": "yybld:yybld_tangguo",
+        "chinese_name": "便利店资产-yybld_tangguo",
+        "models": [
+          {
+            "file_name": "yybld_display_tangguo.geo.json",
+            "file_stem": "yybld_display_tangguo",
+            "file_key": "yybld_display_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_display_tangguo.geo.json",
+            "size_str": "7.4 KB",
+            "size_bytes": 7586,
+            "mtime": "2026-11-04 00:35:25",
+            "geometry_ids": [
+              "geometry.yybld_display_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "display"
+          },
+          {
+            "file_name": "yybld_tangguo.geo.json",
+            "file_stem": "yybld_tangguo",
+            "file_key": "yybld_tangguo",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
+            "size_str": "43.4 KB",
+            "size_bytes": 44409,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_tangguo"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "normal",
+            "group": "block"
+          },
+          {
+            "file_name": "yybld_tangguo_hand.geo.json",
+            "file_stem": "yybld_tangguo_hand",
+            "file_key": "yybld_tangguo_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo_hand.geo.json",
+            "size_str": "52.4 KB",
+            "size_bytes": 53631,
+            "mtime": "2026-11-03 16:41:20",
+            "geometry_ids": [
+              "geometry.yybld_tangguo_hand"
+            ],
+            "kind": "entity",
+            "stem": "yybld_tangguo",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "animations": [],
+        "textures": [],
+        "definitions": {
+          "client_entity": false,
+          "block_entity": false,
+          "block": false,
+          "item": false,
+          "food": false
+        },
+        "category": "decor",
+        "category_name": "装饰与建筑",
+        "model_count": 3,
+        "anim_count": 0,
+        "texture_count": 0,
+        "icon": "thumbs/yybld/66820c542742.png"
       },
       {
         "id": "yybld_yl_houjiao",
@@ -16005,114 +16424,6 @@
         "anim_count": 0,
         "texture_count": 0,
         "icon": null
-      },
-      {
-        "id": "yybld_qiaokeli",
-        "identifier": "yybld:yybld_qiaokeli",
-        "chinese_name": "便利店资产-yybld_qiaokeli",
-        "models": [
-          {
-            "file_name": "yybld_qiaokeli.geo.json",
-            "file_stem": "yybld_qiaokeli",
-            "file_key": "yybld_qiaokeli",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli.geo.json",
-            "size_str": "98.7 KB",
-            "size_bytes": 101055,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_qiaokeli"
-            ],
-            "kind": "entity",
-            "stem": "yybld_qiaokeli",
-            "tag": "normal",
-            "group": "block"
-          },
-          {
-            "file_name": "yybld_qiaokeli_hand.geo.json",
-            "file_stem": "yybld_qiaokeli_hand",
-            "file_key": "yybld_qiaokeli_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_qiaokeli_hand.geo.json",
-            "size_str": "124.1 KB",
-            "size_bytes": 127094,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_qiaokeli_hand"
-            ],
-            "kind": "entity",
-            "stem": "yybld_qiaokeli",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "animations": [],
-        "textures": [],
-        "definitions": {
-          "client_entity": false,
-          "block_entity": false,
-          "block": false,
-          "item": false,
-          "food": false
-        },
-        "category": "decor",
-        "category_name": "装饰与建筑",
-        "model_count": 2,
-        "anim_count": 0,
-        "texture_count": 0,
-        "icon": "thumbs/yybld/4c3782159c06.png"
-      },
-      {
-        "id": "yybld_tangguo",
-        "identifier": "yybld:yybld_tangguo",
-        "chinese_name": "便利店资产-yybld_tangguo",
-        "models": [
-          {
-            "file_name": "yybld_tangguo.geo.json",
-            "file_stem": "yybld_tangguo",
-            "file_key": "yybld_tangguo",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo.geo.json",
-            "size_str": "43.4 KB",
-            "size_bytes": 44409,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_tangguo"
-            ],
-            "kind": "entity",
-            "stem": "yybld_tangguo",
-            "tag": "normal",
-            "group": "block"
-          },
-          {
-            "file_name": "yybld_tangguo_hand.geo.json",
-            "file_stem": "yybld_tangguo_hand",
-            "file_key": "yybld_tangguo_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yybld_tangguo_hand.geo.json",
-            "size_str": "52.4 KB",
-            "size_bytes": 53631,
-            "mtime": "2026-11-03 16:41:20",
-            "geometry_ids": [
-              "geometry.yybld_tangguo_hand"
-            ],
-            "kind": "entity",
-            "stem": "yybld_tangguo",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "animations": [],
-        "textures": [],
-        "definitions": {
-          "client_entity": false,
-          "block_entity": false,
-          "block": false,
-          "item": false,
-          "food": false
-        },
-        "category": "decor",
-        "category_name": "装饰与建筑",
-        "model_count": 2,
-        "anim_count": 0,
-        "texture_count": 0,
-        "icon": "thumbs/yybld/66820c542742.png"
       },
       {
         "id": "yybld_denglong_zhongqiu_yuan",
@@ -24070,8 +24381,8 @@
         "icon": "thumbs/yyzct/72ac2ee599f0.png"
       },
       {
-        "id": "yyzct_pidandoufu_2",
-        "identifier": "yyzct:yyzct_pidandoufu_2",
+        "id": "yyzct_pidandoufu_1",
+        "identifier": "yyzct:yyzct_pidandoufu_1",
         "chinese_name": "皮蛋豆腐",
         "models": [
           {
@@ -24138,18 +24449,18 @@
         ],
         "textures": [
           {
-            "key": "yyzct_pidandoufu_2",
-            "identifier": "yyzct:yyzct_pidandoufu_2",
-            "path": "textures/items/yyzct_pidandoufu_2",
-            "file_name": "yyzct_pidandoufu_2.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_pidandoufu_2.png",
+            "key": "yyzct_pidandoufu_1",
+            "identifier": "yyzct:yyzct_pidandoufu_1",
+            "path": "textures/items/yyzct_pidandoufu_1",
+            "file_name": "yyzct_pidandoufu_1.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_pidandoufu_1.png",
             "size_str": "4.4 KB",
-            "size_bytes": 4526,
+            "size_bytes": 4540,
             "mtime": "2026-10-29 14:09:20",
             "exists": true,
-            "thumb": "thumbs/yyzct/944b006ffb58.png",
+            "thumb": "thumbs/yyzct/00b9edb9c822.png",
             "source": "item",
-            "stem": "yyzct_pidandoufu_2",
+            "stem": "yyzct_pidandoufu_1",
             "group": "item"
           },
           {
@@ -24180,7 +24491,7 @@
         "model_count": 2,
         "anim_count": 1,
         "texture_count": 2,
-        "icon": "thumbs/yyzct/944b006ffb58.png"
+        "icon": "thumbs/yyzct/00b9edb9c822.png"
       },
       {
         "id": "yyzct_pidandoufu_3",
@@ -24296,8 +24607,8 @@
         "icon": "thumbs/yyzct/899a4ac7e850.png"
       },
       {
-        "id": "yyzct_pidandoufu_1",
-        "identifier": "yyzct:yyzct_pidandoufu_1",
+        "id": "yyzct_pidandoufu_2",
+        "identifier": "yyzct:yyzct_pidandoufu_2",
         "chinese_name": "皮蛋豆腐",
         "models": [
           {
@@ -24364,18 +24675,18 @@
         ],
         "textures": [
           {
-            "key": "yyzct_pidandoufu_1",
-            "identifier": "yyzct:yyzct_pidandoufu_1",
-            "path": "textures/items/yyzct_pidandoufu_1",
-            "file_name": "yyzct_pidandoufu_1.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_pidandoufu_1.png",
+            "key": "yyzct_pidandoufu_2",
+            "identifier": "yyzct:yyzct_pidandoufu_2",
+            "path": "textures/items/yyzct_pidandoufu_2",
+            "file_name": "yyzct_pidandoufu_2.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_pidandoufu_2.png",
             "size_str": "4.4 KB",
-            "size_bytes": 4540,
+            "size_bytes": 4526,
             "mtime": "2026-10-29 14:09:20",
             "exists": true,
-            "thumb": "thumbs/yyzct/00b9edb9c822.png",
+            "thumb": "thumbs/yyzct/944b006ffb58.png",
             "source": "item",
-            "stem": "yyzct_pidandoufu_1",
+            "stem": "yyzct_pidandoufu_2",
             "group": "item"
           },
           {
@@ -24406,120 +24717,7 @@
         "model_count": 2,
         "anim_count": 1,
         "texture_count": 2,
-        "icon": "thumbs/yyzct/00b9edb9c822.png"
-      },
-      {
-        "id": "yyzct_guobaorou_3",
-        "identifier": "yyzct:yyzct_guobaorou_3",
-        "chinese_name": "锅包肉",
-        "models": [
-          {
-            "file_name": "yyzct_guobaorou_1.geo.json",
-            "file_stem": "yyzct_guobaorou_1",
-            "file_key": "yyzct_guobaorou_1",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_1.geo.json",
-            "size_str": "275.4 KB",
-            "size_bytes": 281998,
-            "mtime": "2026-10-28 15:35:11",
-            "geometry_ids": [
-              "geometry.yyzct_guobaorou_1"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_guobaorou_1",
-            "tag": "normal",
-            "group": "block"
-          },
-          {
-            "file_name": "yyzct_guobaorou_hand.geo.json",
-            "file_stem": "yyzct_guobaorou_hand",
-            "file_key": "yyzct_guobaorou_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_hand.geo.json",
-            "size_str": "51.9 KB",
-            "size_bytes": 53174,
-            "mtime": "2026-10-28 22:47:41",
-            "geometry_ids": [
-              "geometry.yyzct_guobaorou_hand"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_guobaorou",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yyzct_guobaorou_hand.animation.json",
-            "file_stem": "yyzct_guobaorou_hand",
-            "rel_path": "\\resource_pack\\animations\\yyzct_guobaorou_hand.animation.json",
-            "size_str": "32.7 KB",
-            "size_bytes": 33500,
-            "mtime": "2026-10-28 22:47:40",
-            "animation_ids": [
-              "animation.yyzct_guobaorou_hand.first_hold",
-              "animation.yyzct_guobaorou_hand.first_scale",
-              "animation.yyzct_guobaorou_hand.idle",
-              "animation.yyzct_guobaorou_hand.take",
-              "animation.yyzct_guobaorou_hand.watch",
-              "animation.yyzct_guobaorou_hand.eat1",
-              "animation.yyzct_guobaorou_hand.eat2",
-              "animation.yyzct_guobaorou_hand.eat3",
-              "animation.yyzct_guobaorou_hand.eat4",
-              "animation.yyzct_guobaorou_hand.state2",
-              "animation.yyzct_guobaorou_hand.state3",
-              "animation.yyzct_guobaorou_hand.state4",
-              "animation.yyzct_guobaorou_hand.state5"
-            ],
-            "prefix": "animation.yyzct_guobaorou_hand",
-            "stem": "yyzct_guobaorou",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yyzct_guobaorou_3",
-            "identifier": "yyzct:yyzct_guobaorou_3",
-            "path": "textures/items/yyzct_guobaorou_3",
-            "file_name": "yyzct_guobaorou_3.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_guobaorou_3.png",
-            "size_str": "5.1 KB",
-            "size_bytes": 5253,
-            "mtime": "2026-10-29 14:19:41",
-            "exists": true,
-            "thumb": "thumbs/yyzct/e9a81a163e0c.png",
-            "source": "item",
-            "stem": "yyzct_guobaorou_3",
-            "group": "item"
-          },
-          {
-            "key": "yyzct_guobaorou",
-            "identifier": "yyzct:yyzct_guobaorou",
-            "path": "textures/entity/yyzct_guobaorou",
-            "file_name": "yyzct_guobaorou.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_guobaorou.png",
-            "size_str": "4.9 KB",
-            "size_bytes": 4969,
-            "mtime": "2026-10-28 15:35:11",
-            "exists": true,
-            "thumb": "thumbs/yyzct/8110a922ef6f.png",
-            "source": "entity-file",
-            "stem": "yyzct_guobaorou",
-            "group": "hand"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "item",
-        "category_name": "物品",
-        "model_count": 2,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yyzct/e9a81a163e0c.png"
+        "icon": "thumbs/yyzct/944b006ffb58.png"
       },
       {
         "id": "yyzct_guobaorou_1",
@@ -24861,6 +25059,232 @@
         "icon": "thumbs/yyzct/80d8d81c8964.png"
       },
       {
+        "id": "yyzct_guobaorou_3",
+        "identifier": "yyzct:yyzct_guobaorou_3",
+        "chinese_name": "锅包肉",
+        "models": [
+          {
+            "file_name": "yyzct_guobaorou_1.geo.json",
+            "file_stem": "yyzct_guobaorou_1",
+            "file_key": "yyzct_guobaorou_1",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_1.geo.json",
+            "size_str": "275.4 KB",
+            "size_bytes": 281998,
+            "mtime": "2026-10-28 15:35:11",
+            "geometry_ids": [
+              "geometry.yyzct_guobaorou_1"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_guobaorou_1",
+            "tag": "normal",
+            "group": "block"
+          },
+          {
+            "file_name": "yyzct_guobaorou_hand.geo.json",
+            "file_stem": "yyzct_guobaorou_hand",
+            "file_key": "yyzct_guobaorou_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_guobaorou_hand.geo.json",
+            "size_str": "51.9 KB",
+            "size_bytes": 53174,
+            "mtime": "2026-10-28 22:47:41",
+            "geometry_ids": [
+              "geometry.yyzct_guobaorou_hand"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_guobaorou",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yyzct_guobaorou_hand.animation.json",
+            "file_stem": "yyzct_guobaorou_hand",
+            "rel_path": "\\resource_pack\\animations\\yyzct_guobaorou_hand.animation.json",
+            "size_str": "32.7 KB",
+            "size_bytes": 33500,
+            "mtime": "2026-10-28 22:47:40",
+            "animation_ids": [
+              "animation.yyzct_guobaorou_hand.first_hold",
+              "animation.yyzct_guobaorou_hand.first_scale",
+              "animation.yyzct_guobaorou_hand.idle",
+              "animation.yyzct_guobaorou_hand.take",
+              "animation.yyzct_guobaorou_hand.watch",
+              "animation.yyzct_guobaorou_hand.eat1",
+              "animation.yyzct_guobaorou_hand.eat2",
+              "animation.yyzct_guobaorou_hand.eat3",
+              "animation.yyzct_guobaorou_hand.eat4",
+              "animation.yyzct_guobaorou_hand.state2",
+              "animation.yyzct_guobaorou_hand.state3",
+              "animation.yyzct_guobaorou_hand.state4",
+              "animation.yyzct_guobaorou_hand.state5"
+            ],
+            "prefix": "animation.yyzct_guobaorou_hand",
+            "stem": "yyzct_guobaorou",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yyzct_guobaorou_3",
+            "identifier": "yyzct:yyzct_guobaorou_3",
+            "path": "textures/items/yyzct_guobaorou_3",
+            "file_name": "yyzct_guobaorou_3.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_guobaorou_3.png",
+            "size_str": "5.1 KB",
+            "size_bytes": 5253,
+            "mtime": "2026-10-29 14:19:41",
+            "exists": true,
+            "thumb": "thumbs/yyzct/e9a81a163e0c.png",
+            "source": "item",
+            "stem": "yyzct_guobaorou_3",
+            "group": "item"
+          },
+          {
+            "key": "yyzct_guobaorou",
+            "identifier": "yyzct:yyzct_guobaorou",
+            "path": "textures/entity/yyzct_guobaorou",
+            "file_name": "yyzct_guobaorou.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_guobaorou.png",
+            "size_str": "4.9 KB",
+            "size_bytes": 4969,
+            "mtime": "2026-10-28 15:35:11",
+            "exists": true,
+            "thumb": "thumbs/yyzct/8110a922ef6f.png",
+            "source": "entity-file",
+            "stem": "yyzct_guobaorou",
+            "group": "hand"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 2,
+        "icon": "thumbs/yyzct/e9a81a163e0c.png"
+      },
+      {
+        "id": "yyzct_xianroubaozi_4",
+        "identifier": "yyzct:yyzct_xianroubaozi_4",
+        "chinese_name": "鲜肉包子",
+        "models": [
+          {
+            "file_name": "yyzct_xianroubaozi_1.geo.json",
+            "file_stem": "yyzct_xianroubaozi_1",
+            "file_key": "yyzct_xianroubaozi_1",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_1.geo.json",
+            "size_str": "623.0 KB",
+            "size_bytes": 637956,
+            "mtime": "2026-10-28 15:35:11",
+            "geometry_ids": [
+              "geometry.yyzct_xianroubaozi_1"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_xianroubaozi_1",
+            "tag": "normal",
+            "group": "block"
+          },
+          {
+            "file_name": "yyzct_xianroubaozi_hand.geo.json",
+            "file_stem": "yyzct_xianroubaozi_hand",
+            "file_key": "yyzct_xianroubaozi_hand",
+            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_hand.geo.json",
+            "size_str": "134.3 KB",
+            "size_bytes": 137536,
+            "mtime": "2026-10-28 22:47:41",
+            "geometry_ids": [
+              "geometry.yyzct_xianroubaozi_hand"
+            ],
+            "kind": "entity",
+            "stem": "yyzct_xianroubaozi",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "animations": [
+          {
+            "file_name": "yyzct_xianroubaozi_hand.animation.json",
+            "file_stem": "yyzct_xianroubaozi_hand",
+            "rel_path": "\\resource_pack\\animations\\yyzct_xianroubaozi_hand.animation.json",
+            "size_str": "28.4 KB",
+            "size_bytes": 29071,
+            "mtime": "2026-10-28 22:47:41",
+            "animation_ids": [
+              "animation.yyzct_xianroubaozi_hand.first_hold",
+              "animation.yyzct_xianroubaozi_hand.first_scale",
+              "animation.yyzct_xianroubaozi_hand.idle",
+              "animation.yyzct_xianroubaozi_hand.take",
+              "animation.yyzct_xianroubaozi_hand.watch",
+              "animation.yyzct_xianroubaozi_hand.eat1",
+              "animation.yyzct_xianroubaozi_hand.eat2",
+              "animation.yyzct_xianroubaozi_hand.eat3",
+              "animation.yyzct_xianroubaozi_hand.eat4",
+              "animation.yyzct_xianroubaozi_hand.state2",
+              "animation.yyzct_xianroubaozi_hand.state3",
+              "animation.yyzct_xianroubaozi_hand.state4",
+              "animation.yyzct_xianroubaozi_hand.state5"
+            ],
+            "prefix": "animation.yyzct_xianroubaozi_hand",
+            "stem": "yyzct_xianroubaozi",
+            "tag": "hand",
+            "group": "hand"
+          }
+        ],
+        "textures": [
+          {
+            "key": "yyzct_xianroubaozi_4",
+            "identifier": "yyzct:yyzct_xianroubaozi_4",
+            "path": "textures/items/yyzct_xianroubaozi_4",
+            "file_name": "yyzct_xianroubaozi_4.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_xianroubaozi_4.png",
+            "size_str": "4.7 KB",
+            "size_bytes": 4765,
+            "mtime": "2026-10-29 14:09:20",
+            "exists": true,
+            "thumb": "thumbs/yyzct/e0a4efa0378b.png",
+            "source": "item",
+            "stem": "yyzct_xianroubaozi_4",
+            "group": "item"
+          },
+          {
+            "key": "yyzct_xianroubaozi",
+            "identifier": "yyzct:yyzct_xianroubaozi",
+            "path": "textures/entity/yyzct_xianroubaozi",
+            "file_name": "yyzct_xianroubaozi.png",
+            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_xianroubaozi.png",
+            "size_str": "4.9 KB",
+            "size_bytes": 4985,
+            "mtime": "2026-10-28 15:35:11",
+            "exists": true,
+            "thumb": "thumbs/yyzct/bf7f434f4c95.png",
+            "source": "entity-file",
+            "stem": "yyzct_xianroubaozi",
+            "group": "hand"
+          }
+        ],
+        "definitions": {
+          "client_entity": true,
+          "block_entity": true,
+          "block": false,
+          "item": true,
+          "food": true
+        },
+        "category": "item",
+        "category_name": "物品",
+        "model_count": 2,
+        "anim_count": 1,
+        "texture_count": 2,
+        "icon": "thumbs/yyzct/e0a4efa0378b.png"
+      },
+      {
         "id": "yyzct_xianroubaozi_3",
         "identifier": "yyzct:yyzct_xianroubaozi_3",
         "chinese_name": "鲜肉包子",
@@ -25200,121 +25624,8 @@
         "icon": "thumbs/yyzct/dcd8d5e66e5e.png"
       },
       {
-        "id": "yyzct_xianroubaozi_4",
-        "identifier": "yyzct:yyzct_xianroubaozi_4",
-        "chinese_name": "鲜肉包子",
-        "models": [
-          {
-            "file_name": "yyzct_xianroubaozi_1.geo.json",
-            "file_stem": "yyzct_xianroubaozi_1",
-            "file_key": "yyzct_xianroubaozi_1",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_1.geo.json",
-            "size_str": "623.0 KB",
-            "size_bytes": 637956,
-            "mtime": "2026-10-28 15:35:11",
-            "geometry_ids": [
-              "geometry.yyzct_xianroubaozi_1"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_xianroubaozi_1",
-            "tag": "normal",
-            "group": "block"
-          },
-          {
-            "file_name": "yyzct_xianroubaozi_hand.geo.json",
-            "file_stem": "yyzct_xianroubaozi_hand",
-            "file_key": "yyzct_xianroubaozi_hand",
-            "rel_path": "\\resource_pack\\models\\entity\\yyzct_xianroubaozi_hand.geo.json",
-            "size_str": "134.3 KB",
-            "size_bytes": 137536,
-            "mtime": "2026-10-28 22:47:41",
-            "geometry_ids": [
-              "geometry.yyzct_xianroubaozi_hand"
-            ],
-            "kind": "entity",
-            "stem": "yyzct_xianroubaozi",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "animations": [
-          {
-            "file_name": "yyzct_xianroubaozi_hand.animation.json",
-            "file_stem": "yyzct_xianroubaozi_hand",
-            "rel_path": "\\resource_pack\\animations\\yyzct_xianroubaozi_hand.animation.json",
-            "size_str": "28.4 KB",
-            "size_bytes": 29071,
-            "mtime": "2026-10-28 22:47:41",
-            "animation_ids": [
-              "animation.yyzct_xianroubaozi_hand.first_hold",
-              "animation.yyzct_xianroubaozi_hand.first_scale",
-              "animation.yyzct_xianroubaozi_hand.idle",
-              "animation.yyzct_xianroubaozi_hand.take",
-              "animation.yyzct_xianroubaozi_hand.watch",
-              "animation.yyzct_xianroubaozi_hand.eat1",
-              "animation.yyzct_xianroubaozi_hand.eat2",
-              "animation.yyzct_xianroubaozi_hand.eat3",
-              "animation.yyzct_xianroubaozi_hand.eat4",
-              "animation.yyzct_xianroubaozi_hand.state2",
-              "animation.yyzct_xianroubaozi_hand.state3",
-              "animation.yyzct_xianroubaozi_hand.state4",
-              "animation.yyzct_xianroubaozi_hand.state5"
-            ],
-            "prefix": "animation.yyzct_xianroubaozi_hand",
-            "stem": "yyzct_xianroubaozi",
-            "tag": "hand",
-            "group": "hand"
-          }
-        ],
-        "textures": [
-          {
-            "key": "yyzct_xianroubaozi_4",
-            "identifier": "yyzct:yyzct_xianroubaozi_4",
-            "path": "textures/items/yyzct_xianroubaozi_4",
-            "file_name": "yyzct_xianroubaozi_4.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_xianroubaozi_4.png",
-            "size_str": "4.7 KB",
-            "size_bytes": 4765,
-            "mtime": "2026-10-29 14:09:20",
-            "exists": true,
-            "thumb": "thumbs/yyzct/e0a4efa0378b.png",
-            "source": "item",
-            "stem": "yyzct_xianroubaozi_4",
-            "group": "item"
-          },
-          {
-            "key": "yyzct_xianroubaozi",
-            "identifier": "yyzct:yyzct_xianroubaozi",
-            "path": "textures/entity/yyzct_xianroubaozi",
-            "file_name": "yyzct_xianroubaozi.png",
-            "rel_path": "\\resource_pack\\textures\\entity\\yyzct_xianroubaozi.png",
-            "size_str": "4.9 KB",
-            "size_bytes": 4985,
-            "mtime": "2026-10-28 15:35:11",
-            "exists": true,
-            "thumb": "thumbs/yyzct/bf7f434f4c95.png",
-            "source": "entity-file",
-            "stem": "yyzct_xianroubaozi",
-            "group": "hand"
-          }
-        ],
-        "definitions": {
-          "client_entity": true,
-          "block_entity": true,
-          "block": false,
-          "item": true,
-          "food": true
-        },
-        "category": "item",
-        "category_name": "物品",
-        "model_count": 2,
-        "anim_count": 1,
-        "texture_count": 2,
-        "icon": "thumbs/yyzct/e0a4efa0378b.png"
-      },
-      {
-        "id": "yyzct_mapodoufu_3",
-        "identifier": "yyzct:yyzct_mapodoufu_3",
+        "id": "yyzct_mapodoufu_2",
+        "identifier": "yyzct:yyzct_mapodoufu_2",
         "chinese_name": "麻婆豆腐",
         "models": [
           {
@@ -25381,18 +25692,18 @@
         ],
         "textures": [
           {
-            "key": "yyzct_mapodoufu_3",
-            "identifier": "yyzct:yyzct_mapodoufu_3",
-            "path": "textures/items/yyzct_mapodoufu_3",
-            "file_name": "yyzct_mapodoufu_3.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_mapodoufu_3.png",
+            "key": "yyzct_mapodoufu_2",
+            "identifier": "yyzct:yyzct_mapodoufu_2",
+            "path": "textures/items/yyzct_mapodoufu_2",
+            "file_name": "yyzct_mapodoufu_2.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_mapodoufu_2.png",
             "size_str": "5.1 KB",
-            "size_bytes": 5218,
+            "size_bytes": 5256,
             "mtime": "2026-10-29 14:09:20",
             "exists": true,
-            "thumb": "thumbs/yyzct/a8afd5796a97.png",
+            "thumb": "thumbs/yyzct/7718b2cc46a1.png",
             "source": "item",
-            "stem": "yyzct_mapodoufu_3",
+            "stem": "yyzct_mapodoufu_2",
             "group": "item"
           },
           {
@@ -25423,7 +25734,7 @@
         "model_count": 2,
         "anim_count": 1,
         "texture_count": 2,
-        "icon": "thumbs/yyzct/a8afd5796a97.png"
+        "icon": "thumbs/yyzct/7718b2cc46a1.png"
       },
       {
         "id": "yyzct_mapodoufu_1",
@@ -25539,8 +25850,8 @@
         "icon": "thumbs/yyzct/b83c1fa8c51d.png"
       },
       {
-        "id": "yyzct_mapodoufu_2",
-        "identifier": "yyzct:yyzct_mapodoufu_2",
+        "id": "yyzct_mapodoufu_3",
+        "identifier": "yyzct:yyzct_mapodoufu_3",
         "chinese_name": "麻婆豆腐",
         "models": [
           {
@@ -25607,18 +25918,18 @@
         ],
         "textures": [
           {
-            "key": "yyzct_mapodoufu_2",
-            "identifier": "yyzct:yyzct_mapodoufu_2",
-            "path": "textures/items/yyzct_mapodoufu_2",
-            "file_name": "yyzct_mapodoufu_2.png",
-            "rel_path": "\\resource_pack\\textures\\items\\yyzct_mapodoufu_2.png",
+            "key": "yyzct_mapodoufu_3",
+            "identifier": "yyzct:yyzct_mapodoufu_3",
+            "path": "textures/items/yyzct_mapodoufu_3",
+            "file_name": "yyzct_mapodoufu_3.png",
+            "rel_path": "\\resource_pack\\textures\\items\\yyzct_mapodoufu_3.png",
             "size_str": "5.1 KB",
-            "size_bytes": 5256,
+            "size_bytes": 5218,
             "mtime": "2026-10-29 14:09:20",
             "exists": true,
-            "thumb": "thumbs/yyzct/7718b2cc46a1.png",
+            "thumb": "thumbs/yyzct/a8afd5796a97.png",
             "source": "item",
-            "stem": "yyzct_mapodoufu_2",
+            "stem": "yyzct_mapodoufu_3",
             "group": "item"
           },
           {
@@ -25649,7 +25960,7 @@
         "model_count": 2,
         "anim_count": 1,
         "texture_count": 2,
-        "icon": "thumbs/yyzct/7718b2cc46a1.png"
+        "icon": "thumbs/yyzct/a8afd5796a97.png"
       },
       {
         "id": "yyzct_mapodoufu_4",
