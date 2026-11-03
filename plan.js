@@ -17,7 +17,7 @@
     return m ? (m[1] + ' ' + SEASON_BY_Q['Q' + m[2]]) : (s || '待排期');
   }
   var STATUS_OPTIONS = [['planned', '规划中'], ['ready', '已定案 · 未开项'], ['live', '开发中'], ['accept', '待验收']];
-  var SCOPES = ['前置库 / 便利店 / 中餐厅', '便利店', '中餐厅', '前置库'];
+  var SCOPES = ['便利店 / 中餐厅', '便利店', '中餐厅'];
 
   /* 在研版本（未结项）：v1.3 / v1.1 已于 2026-10-29 结项，此处为下一版方向 */
   var VERSIONS = [
@@ -26,7 +26,6 @@
       short: '便利店',
       project: '椰椰工坊：便利店',
       version: 'v1.3.2',
-      pkg: '1.3.2',
       status: '开发中',
       state: 'live',
       quarter: '待排期',
@@ -34,17 +33,16 @@
       goals: [
         '万圣节节日主题：新增节日氛围内容（商品 / 装饰 / 视觉清单待定案）',
         '贴纸玩法：贴纸作为墙面 / 家具装饰物自由贴放，支持店内自由布置（方案待定案）',
-        '节日与贴纸内容沿用现有货架、商店与统一币交易链路',
-        '纪念币限时赠礼在本版（v1.3.2）结项时移除（计划待办）'
+        '节日与贴纸商品沿用现有货架与商店购买方式',
+        '纪念币限时赠礼在本版（v1.3.2）结项时结束'
       ],
-      scope: '便利店为主，前置库按需同步'
+      scope: '便利店'
     },
     {
       key: 'yyzct',
       short: '中餐厅',
       project: '椰椰工坊：中餐厅',
       version: 'v1.2',
-      pkg: '1.2.0',
       status: '规划中',
       state: 'planned',
       quarter: '待排期',
@@ -52,10 +50,10 @@
       goals: [
         '新增菜品（数量与清单待定案）',
         '新增家具（数量与清单待定案）',
-        '新菜与家具的模型 / 贴图 / 动画 / 音效 / 上架全链路交付',
-        '纪念币限时赠礼按「结项待办」在后续版本移除'
+        '新菜与家具的制作、上架与食用体验完整交付',
+        '纪念币限时赠礼在后续版本结束'
       ],
-      scope: '中餐厅为主，前置库按需同步'
+      scope: '中餐厅'
     }
   ];
 
@@ -64,22 +62,20 @@
     {
       id: 'eco',
       title: '经济系统',
-      scope: '前置库 / 便利店 / 中餐厅',
+      scope: '便利店 / 中餐厅',
       status: '已定案 · 未开项',
       state: 'ready',
       quarter: '待排期',
-      note: '钱包与现金混合支付、个人流水、账本簿、兑换口、货架赊账、收银机、背包余额显示。',
-      src: '经济系统_实施plan.md'
+      note: '钱包与现金混合支付、个人收支记录、账本簿、兑换口、货架赊账、收银机、背包余额显示。'
     },
     {
       id: 'quest',
       title: '每日任务模块',
-      scope: '前置库 / 便利店 / 中餐厅',
-      status: '草案 · 待经济层就绪',
+      scope: '便利店 / 中餐厅',
+      status: '草案 · 待经济玩法就绪',
       state: 'draft',
       quarter: '待排期',
-      note: '委托板、任务卷轴、每日刷新、进度统计、交付与文字面板；报酬统一走经济层接口。',
-      src: '每日任务模块_实施plan.md'
+      note: '委托板、任务卷轴、每日刷新、进度统计、交付与文字面板；报酬统一用统一币结算。'
     }
   ];
 
@@ -114,7 +110,6 @@
       '<span class="ef-tag pl-no">' + pad(idx + 1) + '</span>' +
       '<b class="pl-ver">' + esc(v.version) + '</b>' +
       '<span class="ef-field">' + esc(v.short) + '</span>' +
-      '<span class="ef-field">目标包版本 ' + esc(v.pkg) + '</span>' +
       '<span class="ef-field">' + esc(v.quarter) + '</span>' +
       '<span class="ef-state pl-st" data-state="' + esc(v.state) + '">' + esc(v.status) + '</span>' +
       '</div>' +
@@ -242,7 +237,7 @@
       '<h3 class="pl-row-t">' + esc(e.title) +
       '<span class="ef-state pl-st" data-state="' + esc(e.state) + '">' + esc(e.status) + '</span></h3>' +
       (e.note ? '<p class="pl-row-note">' + esc(e.note) + '</p>' : '') +
-      '<p class="ef-field pl-row-meta">' + esc(e.scope) + ' │ 来源 ' + esc(e.src) + '</p>' +
+      '<p class="ef-field pl-row-meta">' + esc(e.scope) + '</p>' +
       '</div>' +
       (acts ? '<div class="pl-row-act">' + acts + '</div>' : '') +
       '</article>';
