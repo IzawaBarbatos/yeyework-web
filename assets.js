@@ -869,20 +869,22 @@
           if (before === next) applyAccessUI();
         }
 
-        // 启动复核：有 Token 才请求 GitHub；网络异常沿用本地缓存，401/403 直接降级访客
+        // 启动复核：有 Token 才请求 GitHub；仅 Token 失效 / 非协作者才降级，
+        // 网络异常与限流沿用本地缓存（否则会把有效 Token 误清成访客）
         function verifyAccess() {
           var A = window.EF_ACCESS;
           if (!A) return;
           var token = A.token();
           if (!token) { A.setState('guest'); applyAccessUI(); return; }
-          A.verify(token).then(function (ok) {
-            if (ok === null) return;
-            if (ok) {
+          A.verify(token).then(function (res) {
+            if (!res || res.ok === null || res.reason === 'rate-limit' || res.reason === 'http') return;
+            if (res.ok) {
               A.markMember(true);
               A.setState('member');
             } else {
               A.clearToken();
               A.setState('guest');
+              toast(A.describe(res));
             }
             applyAccessUI();
           });
@@ -897,7 +899,9 @@
             var msg = member
               ? '当前浏览器已保存协作者 Token（' + cur.slice(0, 4) + '****' + cur.slice(-4) + '）。\n\n' +
                 '输入新 Token 可更换；留空并确定则清除 Token：'
-              : '请输入 GitHub Token（需勾选 repo 权限）以验证仓库协作者身份。\n\n' +
+              : '请输入 GitHub Token 以验证仓库协作者身份。\n\n' +
+                '· Classic Token：勾选 repo 权限\n' +
+                '· Fine-grained Token：Repository access 选中本仓库，并授予 Contents / Issues 读写\n\n' +
                 '生成方式：GitHub 头像 → Settings → Developer settings → Personal access tokens。\n' +
                 '验证通过后本浏览器会自动记住，下次打开直接解锁。\n\n请输入 Token：';
             var next = window.prompt(msg, '');
@@ -910,17 +914,22 @@
               toast('已清除协作者 Token。');
               return;
             }
-            A.verify(next).then(function (ok) {
-              if (ok === true) {
+            A.verify(next).then(function (res) {
+              if (res && res.ok) {
                 A.saveToken(next);
                 A.markMember(true);
                 setAccessState('member');
                 toast('协作者验证通过，已解锁完整视图。');
-              } else if (ok === false) {
-                toast('该 Token 不具备仓库写权限。');
-              } else {
-                toast('验证请求失败，请检查网络后重试。');
+                return;
               }
+              var reason = A.describe(res);
+              // 仅 Token 失效 / 非协作者 / 无仓库授权时清除；限流、网络异常保留原 Token
+              if (res && (res.reason === 'invalid' || res.reason === 'not-member' ||
+                res.reason === 'forbidden' || res.reason === 'no-access')) {
+                A.clearToken();
+                setAccessState('guest');
+              }
+              toast(reason || '验证失败，请稍后重试。');
             });
           });
         }

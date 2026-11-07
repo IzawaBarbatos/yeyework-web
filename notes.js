@@ -319,31 +319,31 @@
       // 与站点访问控制共用同一份 Token / 成员标记，状态变化后同步全站界面
       if (window.EF_ACCESS) window.EF_ACCESS.setState(v ? 'member' : 'guest');
     },
-    // 校验当前 Token 所属用户是否为仓库协作者（拥有写权限即项目成员）；结果本地缓存
+    // 校验当前 Token 所属用户是否为仓库协作者（与站点访问控制共用同一套判定）；结果本地缓存
     checkMember: function () {
       var self = this;
       var t = this.getToken();
       if (!t) { self._setMember(false); return Promise.resolve(false); }
-      var gh = CFG.github;
-      var url = 'https://api.github.com/repos/' + gh.owner + '/' + gh.repo;
-      return fetch(url, { headers: self._headers(t) }).then(function (r) {
-        if (r.status === 401 || r.status === 403) {
-          // Token 失效或无权查看：清除并视为访客
+      var A = window.EF_ACCESS;
+      if (!A || !A.verify) return Promise.resolve(self.isMember());
+      return A.verify(t).then(function (res) {
+        // 网络异常 / 限流 / 未知状态：沿用缓存，避免把协作者误降级
+        if (!res || res.ok === null || res.reason === 'rate-limit' || res.reason === 'http') {
+          return self.isMember();
+        }
+        if (!res.ok) {
+          // 只有确认失效或无仓库权限才清除 Token
           self.setToken('');
           self._setMember(false);
           return false;
         }
-        if (!r.ok) return self.isMember(); // 非鉴权类异常沿用缓存，避免误判
-        return r.json().then(function (res) {
-          var perms = (res && res.permissions) || {};
-          var ok = !!(perms.push || perms.maintain || perms.admin);
-          self._setMember(ok);
-          return ok;
-        });
-      }).catch(function () { return self.isMember(); });
+        self._setMember(true);
+        return true;
+      });
     },
+    // 仅 401 视为 Token 失效；403 多为限流或粒度不足，不能据此清掉本地 Token
     isAuthError: function (e) {
-      return /\((401|403)\)/.test((e && e.message) || '');
+      return /\(401\)/.test((e && e.message) || '');
     },
     // 弹出 Token 输入框；retry=true 表示上次写入因鉴权失败需重设；返回 null 表示用户取消
     promptToken: function (retry) {
@@ -373,7 +373,7 @@
       if (input) return Promise.resolve(input);
       return Promise.reject(new Error('未提供 GitHub Token，无法写入。如需发帖也可直接前往 GitHub Issues 页面发帖。'));
     },
-    // 带鉴权自愈：写入遇 401/403 时清除失效 Token 并弹窗重设，填入新 Token 后自动重试一次
+    // 带鉴权自愈：写入遇 401 时清除失效 Token 并弹窗重设，填入新 Token 后自动重试一次
     withAuth: function (run) {
       var self = this;
       return self.ensureToken().then(function (token) {
@@ -391,6 +391,16 @@
       var t = token || this.getToken();
       if (t) h['Authorization'] = 'Bearer ' + t;
       return h;
+    },
+    // 统一解析写入失败原因：把 GitHub 返回的 message 带回界面，
+    // 403 多为 Token 缺 Issues 写权限（Classic 需 repo，Fine-grained 需 Issues 读写）
+    _fail: function (action, r, j) {
+      var msg = (j && j.message) || '';
+      var text = action + '失败 (' + r.status + ')' + (msg ? '：' + msg : '');
+      if (r.status === 403) {
+        text += '；当前 Token 无 Issues 写权限：Classic Token 请勾选 repo，Fine-grained Token 请授予 Issues 读写';
+      }
+      return new Error(text);
     },
     // 记录匿名调用配额：配额见底时暂停轮询，等到重置时间再继续，避免"静默失败导致新纸条永远不出现"
     _recordQuota: function (r) {
@@ -534,10 +544,10 @@
             headers: Object.assign({}, self._headers(token), { 'Content-Type': 'application/json' }),
             body: JSON.stringify({ body: body })
           }).then(function (r) {
-            if (!r.ok) throw new Error('发回复失败 (' + r.status + ')，请检查 Token 权限');
-            return r.json();
-          }).then(function (res) {
-            return 'c_' + res.id;
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              if (!r.ok) throw self._fail('发回复', r, j);
+              return 'c_' + j.id;
+            });
           });
         } else {
           // 发起主贴 Issue：标题带项目前缀，便于多项目留言板在同一仓库内相互隔离
@@ -560,10 +570,10 @@
               labels: [gh.issueLabel]
             })
           }).then(function (r) {
-            if (!r.ok) throw new Error('发布小纸条失败 (' + r.status + ')，请检查 Token 权限');
-            return r.json();
-          }).then(function (res) {
-            return String(res.number);
+            return r.json().catch(function () { return {}; }).then(function (j) {
+              if (!r.ok) throw self._fail('发布小纸条', r, j);
+              return String(j.number);
+            });
           });
         }
       });
