@@ -776,5 +776,61 @@ YYCORE_SPEC = {
 }
 
 
+# ══════════════════════════════════════════════════════════════════════════
+#  四、椰椰工坊：交易与经济（yyjyjj）—— 资源形态与前置库同口径，仅命名空间不同
+# ══════════════════════════════════════════════════════════════════════════
+
+def yyjyjj_norm_id(s):
+    """统一小写、去命名空间前缀、合并重复 yyjyjj_ 前缀。"""
+    s = str(s).strip().lower()
+    s = re.sub(r"^(?:yyjyjj|minecraft):", "", s)
+    s = s.replace("yyjyjj_yyjyjj_", "yyjyjj_")
+    return s
+
+
+def yyjyjj_group_stem(name):
+    s = yyjyjj_norm_id(name)
+    for ext in (".geo.json", ".animation.json", ".json"):
+        if s.endswith(ext):
+            s = s[: -len(ext)]
+            break
+    return re.sub(r"_kai$", "", s)  # 收银机开启态并入本体
+
+
+def yyjyjj_build_stem_cn(rp_dir):
+    key_to_cn = {}
+    lang_file = os.path.join(rp_dir, "texts", "zh_CN.lang")
+    if os.path.exists(lang_file):
+        with open(lang_file, "r", encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                k, v = line.split("=", 1)
+                m = re.match(r"^(?:tile|item|entity)\.(?:[a-z_]+:)?(.+?)\.name$", k.strip())
+                if m:
+                    key_to_cn[yyjyjj_norm_id(m.group(1))] = re.sub(r"§[0-9a-fk-or]", "", v.strip())
+    return key_to_cn
+
+
+YYJYJJ_SPEC = dict(
+    YYCORE_SPEC,
+    key="yyjyjj",
+    name="椰椰工坊：交易与经济",
+    rel_dir=r"QuModProject\椰椰工坊：交易与经济",
+    norm_id=yyjyjj_norm_id,
+    group_stem=yyjyjj_group_stem,
+    build_stem_cn=yyjyjj_build_stem_cn,
+    cn_fallback="交易与经济资产-",
+    protected_stems=set(),
+    scan_tex_dirs=["items", "entity", "blocks"],
+    head={
+        "title": "椰椰工坊：交易与经济 内容索引",
+        "sub": "Model / Animation / Texture / Name",
+        "desc": "交易与经济项目内全部已实装的模型、动画与贴图资源（多风格货架、收银机、扫码盒）；点击任一条目可展开对应的资源树状图。",
+    },
+)
+
+
 # 全部项目规格（顺序即页面项目列表顺序）
-SPECS = [YYBLD_SPEC, YYZCT_SPEC, YYCORE_SPEC]
+SPECS = [YYBLD_SPEC, YYZCT_SPEC, YYCORE_SPEC, YYJYJJ_SPEC]
